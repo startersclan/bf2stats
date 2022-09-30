@@ -3,7 +3,7 @@ name: ci-master-pr
 on:
   push:
     branches:
-    - master
+    - '2.2.0' # Build specifically for 2.2.0
     tags:
     - '**'
   pull_request:
