@@ -1,0 +1,37 @@
+version: '2.2'
+services:
+  # Battlefield 2 1.5 server with the bf2stats python scripts
+  bf2:
+    image: startersclan/docker-bf2:v1.5.3153.0
+    volumes:
+      - ./config/bf2/mods/bf2/ai/aidefault-custom.ai:/server/bf2/mods/bf2/ai/aidefault.ai:ro # Customize bots
+      - ./config/bf2/mods/bf2/ai/aibehaviours-fixlookatwrapper.ai:/server/bf2/mods/bf2/ai/aibehaviours.ai:ro # LoopAtWrapper fix
+      - ./config/bf2/mods/bf2/settings/serversettings-custom.con:/server/bf2/mods/bf2/settings/serversettings.con:ro # Server config
+      - ./config/bf2/mods/bf2/settings/maplist-custom-coop.con:/server/bf2/mods/bf2/settings/maplist.con:ro # Maplist (coop)
+      # - ./config/bf2/mods/bf2/settings/maplist-custom-cq.con:/server/bf2/mods/bf2/settings/maplist.con:ro # Maplist (cq)
+      - ./src/python:/server/bf2/python
+      - ./config/bf2/python/bf2/BF2StatisticsConfig-custom.py:/server/bf2/python/bf2/BF2StatisticsConfig.py:ro # bf2stats python config
+    ports:
+      - 16567:16567/udp
+      - 29900:29900/udp
+    networks:
+      - bf2-network
+    extra_hosts:
+      - battlefield2.available.gamespy.com:92.51.181.102 # bf2hub.com master server IP
+      - battlefield2.master.gamespy.com:92.51.181.102 # bf2hub.com master server IP
+      - battlefield2.ms14.gamespy.com:92.51.181.102 # bf2hub.com master server IP
+      - master.gamespy.com:92.51.181.102 # bf2hub.com master server IP
+      - motd.gamespy.com:92.51.181.102 # bf2hub.com master server IP
+      - gpsp.gamespy.com:92.51.181.102 # bf2hub.com master server IP
+      - gpcm.gamespy.com:92.51.181.102 # bf2hub.com master server IP
+      - gamespy.com:92.51.181.102 # bf2hub.com master server IP
+      # These entries are commented out, since ASP web server DNS should be spoofed on the `bf2-network` on `asp-nginx` service instead
+      # - bf2web.gamespy.com:192.168.1.100 # Our ASP web server IP. Use this if the ASP web server is running on a different host.
+      # - gamestats.gamespy.com:192.168.1.100 # Our ASP web server IP. Use this if the ASP web server is running on a different host.
+      # - eapusher.dice.se:192.168.1.100 # Our ASP web server IP. Use this if the ASP web server is running on a different host.
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+
+networks:
+  bf2-network:

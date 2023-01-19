@@ -61,7 +61,12 @@ services:
     ports:
       - 8081:80
     networks:
-      - bf2-network
+      # Spoof ASP web server DNS for the bf2 server
+      bf2-network:
+        aliases:
+          - bf2web.gamespy.com
+          - gamestats.gamespy.com
+          - eapusher.dice.se
     depends_on:
       - init-container
       - asp-php
@@ -147,7 +152,6 @@ services:
 
 networks:
   bf2-network:
-    name: bf2-network
 
 volumes:
   backups-volume:

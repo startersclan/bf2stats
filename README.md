@@ -23,16 +23,40 @@ See [this](docs/bf2hub-bf2stats-example) example showing how to deploy [Battlefi
 
 ## Development
 
-- Install `docker` and `docker-compose`
-- Install `vscode` for development. Install `vscode` extensions [`PHP Intelephense`](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client) for intellisense, and [xdebug](https://marketplace.visualstudio.com/items?itemName=xdebug.php-debug) and for `php` debugging.
-- To start `php` debugging, press `F5` in `vscode`. Set breakpoints in code, and whenever a page is loaded, `vscode` shows hit breakpoints. To stop debugging, press `shift+F5`.
-
 ```sh
-# Start
-docker-compose up --build
+# Start bf2stats
+docker-compose up
 # ASP available at http://localhost:8081/ASP. Username: admin, password admin. See ./config/ASP/config.php config file
 # bf2sclone available at http://localhost:8082.
 # phpmyadmin available at http://localhost:8083. Username: admin, password: admin. See ./config/ASP/config.php config file
+
+# Start bf2 server in another terminal
+docker-compose -f docker-compose.bf2.yml up
+
+# asp-php - Exec into container
+docker exec -it $( docker-compose ps -q asp-php ) sh
+# asp-php - Read logs
+docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/php_errors.log
+docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/stats_debug.log
+docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/validate_awards.log
+docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/validate_ranks.log
+# asp-php - List snapshots
+docker exec -it $( docker-compose ps -q asp-php ) ls -al /src/ASP/system/snapshots/processed
+docker exec -it $( docker-compose ps -q asp-php ) ls -al /src/ASP/system/snapshots/temp
+
+# bf2 server - Attach to the bf2 server console
+docker attach $( docker-compose -f docker-compose.bf2.yml ps -q bf2 )
+# bf2 server - Exec into container
+docker exec -it $( docker-compose -f docker-compose.bf2.yml ps -q  bf2) bash
+# bf2 server - Read python logs
+docker exec -it $( docker-compose -f docker-compose.bf2.yml ps -q bf2 ) bash -c 'cat python/bf2/logs/bf2game_*'
+# bf2 server - List snapshots
+docker exec -it $( docker-compose -f docker-compose.bf2.yml ps -q bf2 ) bash -c 'ls -al python/bf2/logs/snapshots/sent'
+docker exec -it $( docker-compose -f docker-compose.bf2.yml ps -q bf2 ) bash -c 'ls -al python/bf2/logs/snapshots/unsent'
+
+# Development - Install vscode extensions for php intellisense and php remote debugging
+code --install-extension bmewburn.vscode-intelephense-client
+code --install-extension xdebug.php-debug
 
 # If xdebug is not working, iptables INPUT chain may be set to DROP on the docker bridge.
 # Execute this to allow php to reach the host machine via the docker0 bridge
@@ -53,11 +77,15 @@ docker exec $( docker-compose ps | grep db | awk '{print $1}' ) mysqldump -uroot
 # Restore the DB
 zcat bf2stats.sql.gz | docker exec -i $( docker-compose ps | grep db | awk '{print $1}' ) mysql -uroot -padmin bf2stats
 
-# Stop
+# Stop bf2stats
 docker-compose down
+
+# Stop bf2 server
+docker-compose -f docker-compose.bf2.yml down
 
 # Cleanup
 docker-compose down
+docker-compose -f docker-compose.bf2.yml down
 docker volume rm bf2stats_backups-volume
 docker volume rm bf2stats_logs-volume
 docker volume rm bf2stats_snapshots-volume
