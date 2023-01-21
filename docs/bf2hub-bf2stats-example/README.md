@@ -52,7 +52,7 @@ The stack is now running:
 - `bf2sclone` available at https://bf2sclone.example.com on your external IP address.
 - `phpmyadmin` available at https://phpmyadmin.example.com on your external IP address.
 
-> If you are behind NAT, you will need to forward all of the above TCP and UDP ports to your external IP address, in order for clients to reach your gameserver and webserver over the internet.
+> If you are behind NAT, you will need to forward all of the above TCP and UDP ports to your external IP address, in order for clients to reach your BF2 server and webserver over the internet.
 
 ### 4. Setup the stats DB
 
@@ -62,11 +62,17 @@ Visit https://asp.example.com/ASP and login using `$admin_user` and `$admin_pass
 
 Click on `System > Install Database` and install the DB using `$db_host`,`$db_port`,`$db_name`,`$db_user`,`$db_pass` you defined in [`config.php`](./config/ASP/config.php). Click `System > Test System` and `Run System Tests` and all tests should be green, except for the `BF2Statistics Processing` test and the four `.aspx` tests, because we still don't have a Fully Qualified Domain Name (FQDN) with a public DNS record.
 
+Then, restart the BF2 server so that it begins recording stats:
+
+```sh
+docker-compose restart bf2
+```
+
 ### 5. Play
 
-Install BF2 1.5, download and install the [BF2Hub client](https://www.bf2hub.com/home/downloads.php), checking all the boxes during the installation. Laucnh the `BF2Hub Client`, and `Register Account` to sign up if you don't yet have an account. Now, to ensure our private ranking system is used, click each of the two `Basic Settings > Ranking to be used for your ingame BFHQ ...` buttons and select `Custom` and enter `asp.example.com` (or your FQDN) in the box. Then click `PLAY BATTLEFIELD2` to start the game. 
+Install BF2 1.5, download and install the [BF2Hub client](https://www.bf2hub.com/home/downloads.php), checking all the boxes during the installation. Laucnh the `BF2Hub Client`, and `Register Account` to sign up if you don't yet have an account. Now, to ensure our private ranking system is used, click each of the two `Basic Settings > Ranking to be used for your ingame BFHQ ...` buttons and select `Custom` and enter `asp.example.com` (or your FQDN) in the box. Then click `PLAY BATTLEFIELD2` to start the game.
 
-Login to your account, and click `MULTIPLAYER > JOIN INTERNET` and in the server list, you should see your server listed by the BF2Hub master server. Join your server. 
+Login to your account, and click `MULTIPLAYER > JOIN INTERNET` and in the server list, you should see your server listed by the BF2Hub master server. Join your server.
 
 At the end of the first game, you should see your stats updated at https://bf2sclone.example.com.
 

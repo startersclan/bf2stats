@@ -59,11 +59,11 @@ services:
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
-      - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=ovh"
-      # - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.myresolver.acme.email=postmaster@example.com"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - --certificatesresolvers.myresolver.acme.dnschallenge=true
+      - --certificatesresolvers.myresolver.acme.dnschallenge.provider=ovh
+      # - --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --certificatesresolvers.myresolver.acme.email=postmaster@example.com
+      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
 
   # The init container that sets up permissions for the asp and db volumes
   init-container:
@@ -134,9 +134,9 @@ services:
       bf2-network:
         aliases:
           - asp.example.com
-          - bf2web.gamespy.com # Important! Spoof Gamespy DNS for the gameserver to reach our ASP server IP
-          - gamestats.gamespy.com # Spoof Gamespy DNS for the gameserver to reach our ASP server IP. Doesn't seem to be used by the gameserver, but spoof anyway.
-          - eapusher.dice.se  # Spoof Gamespy DNS for the gameserver to reach our ASP server IP. Doesn't seem to be used by the gameserver, but spoof anyway.
+          - bf2web.gamespy.com # Important! Spoof Gamespy DNS for the BF2 server to reach our ASP server IP
+          - gamestats.gamespy.com # Spoof Gamespy DNS for the BF2 server to reach our ASP server IP. Doesn't seem to be used by the BF2 server, but spoof anyway.
+          - eapusher.dice.se  # Spoof Gamespy DNS for the BF2 server to reach our ASP server IP. Doesn't seem to be used by the BF2 server, but spoof anyway.
     depends_on:
       - init-container
       - asp-php
