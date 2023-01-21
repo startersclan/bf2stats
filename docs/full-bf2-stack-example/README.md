@@ -81,6 +81,12 @@ Visit https://asp.example.com/ASP and login using `$admin_user` and `$admin_pass
 
 Click on `System > Install Database` and install the DB using `$db_host`,`$db_port`,`$db_name`,`$db_user`,`$db_pass` you defined in [`config.php`](./config/ASP/config.php). Click `System > Test System` and `Run System Tests` and all tests should be green, except for the `BF2Statistics Processing` test and the four `.aspx` tests, because we still don't have a Fully Qualified Domain Name (FQDN) with a public DNS record.
 
+Then, restart the BF2 server so that it begins recording stats:
+
+```sh
+docker-compose restart bf2
+```
+
 ### 5. Setup DNS server
 
 Configure `coredns` to spoof all gamespy DNS in [config/coredns/hosts](config/coredns/hosts), replacing the IP addresses with your machine's external IP address which you specified in Step `2.`. Assuming your external IP is `192.168.1.100`, it should look like:
