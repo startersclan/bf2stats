@@ -1,1 +1,4 @@
 /src/ASP/system/config/config.php.bak
+/src/python/bf2/logs/*.log
+/src/python/bf2/logs/snapshots/sent/*.txt
+/src/python/bf2/logs/snapshots/unsent/*.txt

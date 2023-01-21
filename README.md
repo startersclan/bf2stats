@@ -23,20 +23,66 @@ See [this](docs/bf2hub-bf2stats-example) example showing how to deploy [Battlefi
 
 ## Development
 
-- Install `docker` and `docker-compose`
-- Install `vscode` for development. Install `vscode` extensions [`PHP Intelephense`](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client) for intellisense, and [xdebug](https://marketplace.visualstudio.com/items?itemName=xdebug.php-debug) and for `php` debugging.
-- To start `php` debugging, press `F5` in `vscode`. Set breakpoints in code, and whenever a page is loaded, `vscode` shows hit breakpoints. To stop debugging, press `shift+F5`.
-
 ```sh
-# Start
-docker-compose up --build
-# ASP available at http://localhost:8081/ASP. Username: admin, password admin. See ./config/ASP/config.php config file
+# 1. Start BF2 server, Gamespy server, and bf2stats
+docker-compose up
+# ASP available at http://localhost:8081/ASP. Username: admin, password admin. See ./config/ASP/config.php
 # bf2sclone available at http://localhost:8082.
 # phpmyadmin available at http://localhost:8083. Username: admin, password: admin. See ./config/ASP/config.php config file
 
+# 2. To setup the DB the first time, use $db_host, $db_port, $db_name, $db_user, $db_pass in ./config/ASP/config.php. Then, restart the BF2 server for stats to be recorded
+docker-compose restart bf2
+
+# 3. Before launching the BF2 client, spoof gamespy DNS by adding these entries in C:\Windows\system32\drivers\etc\hosts
+# Replace '192.168.1.100' with your development machine's IP address
+192.168.1.100 battlefield2.available.gamespy.com
+192.168.1.100 battlefield2.master.gamespy.com
+192.168.1.100 battlefield2.ms14.gamespy.com
+192.168.1.100 master.gamespy.com
+192.168.1.100 motd.gamespy.com
+192.168.1.100 gpsp.gamespy.com
+192.168.1.100 gpcm.gamespy.com
+192.168.1.100 gamespy.com
+192.168.1.100 bf2web.gamespy.com
+192.168.1.100 gamestats.gamespy.com
+192.168.1.100 eapusher.dice.se
+
+# 4. Launch BF2 client and connect to the BF2 server
+# - To use BF2Hub as the Gamespy server, launch BF2.exe, and login to your BF2Hub account, and connect to the BF2 server using MULTIPLAYER > CONNECT TO IP
+# - To use PRMasterserver in docker-compose as the Gamespy server, if you have previously patched BF2.exe using the BF2Hub patcher, you must unpatch BF2.exe. Then launch BF2.exe (do not use BF2Hub), create a new Online account, login, and connect to the BF2 server using MULTIPLAYER > CONNECT TO IP.
+# At the end of a round, the BF2 server will send a stats snapshot to the ASP. View stats in ASP and bf2sclone.
+
+# Development - Install vscode extensions
+# Once installed, set breakpoints in code, and press F5 to start debugging.
+code --install-extension bmewburn.vscode-intelephense-client # PHP intellisense
+code --install-extension xdebug.php-debug # PHP remote debugging via xdebug
+code --install-extension ms-python.python # Python intellisense
 # If xdebug is not working, iptables INPUT chain may be set to DROP on the docker bridge.
 # Execute this to allow php to reach the host machine via the docker0 bridge
 sudo iptables -A INPUT -i br+ -j ACCEPT
+
+# BF2 server - Restart server
+docker-compose restart bf2
+# BF2 server - Attach to the bf2 server console
+docker attach $( docker-compose ps -q bf2 )
+# BF2 server - Exec into container
+docker exec -it $( docker-compose ps -q  bf2) bash
+# BF2 server - Read python logs
+docker exec -it $( docker-compose ps -q bf2 ) bash -c 'cat python/bf2/logs/bf2game_*'
+# BF2 server - List snapshots
+docker exec -it $( docker-compose ps -q bf2 ) bash -c 'ls -al python/bf2/logs/snapshots/sent'
+docker exec -it $( docker-compose ps -q bf2 ) bash -c 'ls -al python/bf2/logs/snapshots/unsent'
+
+# asp-php - Exec into container
+docker exec -it $( docker-compose ps -q asp-php ) sh
+# asp-php - Read logs
+docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/php_errors.log
+docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/stats_debug.log
+docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/validate_awards.log
+docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/validate_ranks.log
+# asp-php - List snapshots
+docker exec -it $( docker-compose ps -q asp-php ) ls -al /src/ASP/system/snapshots/processed
+docker exec -it $( docker-compose ps -q asp-php ) ls -al /src/ASP/system/snapshots/temp
 
 # Test routes
 docker-compose -f docker-compose.test.yml up
@@ -53,11 +99,12 @@ docker exec $( docker-compose ps | grep db | awk '{print $1}' ) mysqldump -uroot
 # Restore the DB
 zcat bf2stats.sql.gz | docker exec -i $( docker-compose ps | grep db | awk '{print $1}' ) mysql -uroot -padmin bf2stats
 
-# Stop
+# Stop BF2 server, gamespy server and bf2stats
 docker-compose down
 
 # Cleanup
 docker-compose down
+docker volume rm bf2stats_prmasterserver-volume
 docker volume rm bf2stats_backups-volume
 docker volume rm bf2stats_logs-volume
 docker volume rm bf2stats_snapshots-volume
