@@ -36,20 +36,20 @@ services:
       - 27900:27900/udp # Master server
       - 29910:29910/udp # CD key server
     networks:
-      # Spoof all gamespy DNS for the gameserver connected to this network
+      # Spoof all gamespy DNS for the BF2 server connected to this network
       gamespy-network:
         aliases:
-          - eapusher.dice.se
           - battlefield2.available.gamespy.com
           - battlefield2.master.gamespy.com
           - battlefield2.ms14.gamespy.com
-          - gamestats.gamespy.com
           - master.gamespy.com
           - motd.gamespy.com
           - gpsp.gamespy.com
           - gpcm.gamespy.com
           - gamespy.com
           - bf2web.gamespy.com
+          - gamestats.gamespy.com
+          - eapusher.dice.se
     restart: unless-stopped
 
   # A DNS server to spoof gamespy's DNS records for BF2 clients or servers
@@ -60,7 +60,7 @@ services:
   #     ports:
   #       - 192.168.1.100:53:53/udp
   #   Test DNS records to ensure coredns responds with your machine's external IP address. For example:
-  #     nslookup  bf2web.gamespy.com 192.168.1.100
+  #     nslookup bf2web.gamespy.com 192.168.1.100
   #   Response should be:
   #     Server:  192.168.1.100
   #     Address: 192.168.1.100#53
@@ -104,11 +104,11 @@ services:
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
-      - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=ovh"
-      # - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.myresolver.acme.email=postmaster@example.com"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - --certificatesresolvers.myresolver.acme.dnschallenge=true
+      - --certificatesresolvers.myresolver.acme.dnschallenge.provider=ovh
+      # - --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --certificatesresolvers.myresolver.acme.email=postmaster@example.com
+      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
 
   # The init container that sets up permissions for the asp and db volumes
   init-container:
