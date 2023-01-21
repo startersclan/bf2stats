@@ -76,4 +76,3 @@ services:
 
 networks:
   bf2-network:
-    name: bf2-network
