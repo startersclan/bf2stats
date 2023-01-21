@@ -1,5 +1,74 @@
 version: '2.2'
 services:
+  # Battlefield 2 1.5 server with the bf2stats python scripts
+  bf2:
+    image: startersclan/docker-bf2:v1.5.3153.0
+    volumes:
+      - ./config/bf2/mods/bf2/ai/aidefault-custom.ai:/server/bf2/mods/bf2/ai/aidefault.ai:ro # Customize bots
+      - ./config/bf2/mods/bf2/ai/aibehaviours-fixlookatwrapper.ai:/server/bf2/mods/bf2/ai/aibehaviours.ai:ro # LoopAtWrapper fix
+      - ./config/bf2/mods/bf2/settings/serversettings-custom.con:/server/bf2/mods/bf2/settings/serversettings.con:ro # Server config
+      - ./config/bf2/mods/bf2/settings/maplist-custom-coop.con:/server/bf2/mods/bf2/settings/maplist.con:ro # Maplist (coop)
+      # - ./config/bf2/mods/bf2/settings/maplist-custom-cq.con:/server/bf2/mods/bf2/settings/maplist.con:ro # Maplist (cq)
+      - ./src/python:/server/bf2/python
+      - ./config/bf2/python/bf2/BF2StatisticsConfig-custom.py:/server/bf2/python/bf2/BF2StatisticsConfig.py:ro # bf2stats python config
+    ports:
+      - 16567:16567/udp
+      - 29900:29900/udp
+    networks:
+      - bf2-network
+      - gamespy-network
+    depends_on:
+    - asp-nginx
+    - asp-php
+    tty: true
+    stdin_open: true
+
+  # The gamespy server
+  prmasterserver:
+    image: startersclan/prmasterserver:v0.1.0
+    volumes:
+      - prmasterserver-volume:/data
+    ports:
+      - 29900:29900/tcp # Login server
+      - 29901:29901/tcp # Login server
+      - 28910:28910/tcp # Master server
+      - 27900:27900/udp # Master server
+      - 29910:29910/udp # CD key server
+    networks:
+      # Spoof all gamespy DNS for the BF2 server connected to this network
+      gamespy-network:
+        aliases:
+          - battlefield2.available.gamespy.com
+          - battlefield2.master.gamespy.com
+          - battlefield2.ms14.gamespy.com
+          - gamestats.gamespy.com
+          - master.gamespy.com
+          - motd.gamespy.com
+          - gpsp.gamespy.com
+          - gpcm.gamespy.com
+          - gamespy.com
+
+  # The reverse proxy for our web containers
+  # This is needed only for the BF2 client BFHQ to work properly (i.e. access the ASP via http://bf2web.gamespy.com)
+  traefik:
+    image: traefik:v2.7
+    volumes:
+      # Allow traefik to listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 80:80
+    networks:
+      - traefik-public-network
+      - traefik-network
+    restart: unless-stopped
+    command:
+      - --global.checknewversion=false
+      - --global.sendanonymoususage=false
+      # - --log.level=DEBUG
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+
   init-container:
     image: alpine:latest
     volumes:
@@ -55,13 +124,26 @@ services:
 
   asp-nginx:
     image: nginx:1.21-alpine
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${COMPOSE_PROJECT_NAME?err}_traefik-network"
+      # traefik v2
+      # http
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME?err}-asp-gamespy-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME?err}-asp-gamespy-http.rule=Host(`bf2web.gamespy.com`)" # Note: `bf2web.gamespy.com` doesn't need https. The BF2 client BFHQ makes a HTTP requests to `bf2web.gamespy.com` with `Host: bf2web.gamespy.com`.
     volumes:
       - ./src/ASP:/src/ASP
       - ./config/ASP/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - 8081:80
     networks:
-      - bf2-network
+      traefik-network:
+      # Spoof gamespy DNS for the BF2 server connected to this network
+      bf2-network:
+        aliases:
+          - bf2web.gamespy.com
+          - gamestats.gamespy.com # Unused
+          - eapusher.dice.se # Unused
     depends_on:
       - init-container
       - asp-php
@@ -146,10 +228,14 @@ services:
       - bf2-network
 
 networks:
+  gamespy-network:
   bf2-network:
-    name: bf2-network
+  traefik-public-network:
+  traefik-network:
+    internal: true
 
 volumes:
+  prmasterserver-volume:
   backups-volume:
   logs-volume:
   snapshots-volume:
