@@ -71,7 +71,7 @@ The full stack is now running:
 - `bf2sclone` available at https://bf2sclone.example.com on your external IP address.
 - `phpmyadmin` available at https://phpmyadmin.example.com on your external IP address.
 
-> If you are behind NAT, you will need to forward all of the above TCP and UDP ports to your external IP address, in order for clients to reach your gameserver and webserver over the internet.
+> If you are behind NAT, you will need to forward all of the above TCP and UDP ports to your external IP address, in order for clients to reach your BF2 server and webserver over the internet.
 
 ### 4. Setup the stats DB
 
@@ -79,7 +79,7 @@ Visit https://asp.example.com/ASP and login using `$admin_user` and `$admin_pass
 
 > Since traefik hasn't got a valid TLS certificate via `ACME`, it will serve the `TRAEFIK DEFAULT CERT`. The browser will show a security issue when visiting https://asp.example.com, https://bf2sclone.example.com, and https://phpmyadmin.example.com. Simply click "visit site anyway" button to get past the security check.
 
-Click on `System > Install Database` and install the DB using `$db_host`,`$db_port`,`$db_name`,`$db_user`,`$db_pass` you defined in [`config.php`](./config/ASP/config.php). Click `System > Test System` and `Run System Tests` and all tests should be green, except for the `BF2Statistics Processing` test and the four `.aspx` tests, because we still don't have a Fully Qualified Domain Name (FQDN) with a public DNS record.
+Click `System > Install Database` and click `Install` (The `$db_host`,`$db_port`,`$db_name`,`$db_user`,`$db_pass` in [`config.php`](./config/ASP/config.php) will be autofilled). Once the DB is installed, click `System > Test System` and `Run System Tests` and all tests should be green, except for the `BF2Statistics Processing` test and the four `.aspx` tests, because we still don't have a Fully Qualified Domain Name (FQDN) with a public DNS record.
 
 Then, restart the BF2 server so that it begins recording stats:
 
@@ -131,7 +131,7 @@ Restart `coredns` and it will be ready:
 docker-compose restart coredns
 ```
 
-### 6. Play
+### 7. Play
 
 BF2 1.5 clients should be able to connect to your gameserver. Start BF2, click `Create Account`, and once you've logged in, click `CONNECT TO IP`, and in the `IP ADDRESS` box enter the external IP address of the machine you used in Step `2.` (E.g. `192.168.1.100`). Join the server.
 
@@ -177,17 +177,34 @@ iptables -A INPUT -p udp -m udp -m conntrack --ctstate NEW --dport 29910 -j ACCE
 iptables -A INPUT -p udp -m udp -m conntrack --ctstate NEW --dport 80 -j ACCEPT
 iptables -A INPUT -p udp -m udp -m conntrack --ctstate NEW --dport 443 -j ACCEPT
 
-# Attach to the bf2 server console
-docker attach bf2stats_bf2_1
+# BF2 server - Restart server
+docker-compose restart bf2
+# BF2 server - Attach to the bf2 server console
+docker attach $( docker-compose ps -q bf2 )
+# BF2 server - Exec into container
+docker exec -it $( docker-compose ps -q bf2) bash
+# BF2 server - Read python logs
+docker exec -it $( docker-compose ps -q bf2 ) bash -c 'cat python/bf2/logs/bf2game_*'
+# BF2 server - List snapshots
+docker exec -it $( docker-compose ps -q bf2 ) bash -c 'ls -al python/bf2/logs/snapshots/sent'
+docker exec -it $( docker-compose ps -q bf2 ) bash -c 'ls -al python/bf2/logs/snapshots/unsent'
 
-# Copy logs from bf2 server to this folder
-docker cp bf2stats_bf2_1:/server/bf2/python/bf2/logs .
+# asp-php - Exec into container
+docker exec -it $( docker-compose ps -q asp-php ) sh
+# asp-php - Read logs
+docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/php_errors.log
+docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/stats_debug.log
+docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/validate_awards.log
+docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/validate_ranks.log
+# asp-php - List snapshots
+docker exec -it $( docker-compose ps -q asp-php ) ls -al /src/ASP/system/snapshots/processed
+docker exec -it $( docker-compose ps -q asp-php ) ls -al /src/ASP/system/snapshots/temp
 
 # Dump the DB
-docker exec $( docker-compose ps | grep db | awk '{print $1}' ) mysqldump -uroot -padmin bf2stats | gzip > bf2stats.sql.gz
+docker exec $( docker-compose ps -q db ) mysqldump -uroot -padmin bf2stats | gzip > bf2stats.sql.gz
 
 # Restore the DB
-zcat bf2stats.sql.gz | docker exec -i $( docker-compose ps | grep db | awk '{print $1}' ) mysql -uroot -padmin bf2stats
+zcat bf2stats.sql.gz | docker exec -i $( docker-compose ps -q db ) mysql -uroot -padmin bf2stats
 
 # Stop
 docker-compose down
