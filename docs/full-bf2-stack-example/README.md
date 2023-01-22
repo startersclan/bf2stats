@@ -192,7 +192,6 @@ docker exec -it $( docker-compose ps -q bf2 ) bash -c 'ls -al python/bf2/logs/sn
 # asp-php - Exec into container
 docker exec -it $( docker-compose ps -q asp-php ) sh
 # asp-php - Read logs
-docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/php_errors.log
 docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/stats_debug.log
 docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/validate_awards.log
 docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/validate_ranks.log
