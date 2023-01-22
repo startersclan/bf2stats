@@ -12,6 +12,7 @@ class Installdb
 		{
 			// Setup the template
 			$Template = new Template();
+			$Template->set('config', Config::FetchAll());
 			$Template->render('installdb');
 		}
 	}

@@ -19,31 +19,31 @@
 					<div class="mws-form-row">
 						<label>Database Host:</label>
 						<div class="mws-form-item small">
-							<input type="text" class="mws-textinput required" name="cfg__db_host" title="MySQL Database Host. Typically LOCALHOST."/>
+							<input type="text" class="mws-textinput required" name="cfg__db_host" value="{config.db_host}" title="MySQL Database Host. Typically LOCALHOST."/>
 						</div>
 					</div>
 					<div class="mws-form-row">
 						<label>Database Port:</label>
 						<div class="mws-form-item small">
-							<input type="text" class="mws-textinput required" name="cfg__db_port" title="MySQL database port. Typically 3306."/>
+							<input type="text" class="mws-textinput required" name="cfg__db_port" value="{config.db_port}" title="MySQL database port. Typically 3306."/>
 						</div>
 					</div>
 					<div class="mws-form-row">
 						<label>Database Name:</label>
 						<div class="mws-form-item small">
-							<input type="text" class="mws-textinput required" name="cfg__db_name" title="Database Name to store stats."/>
+							<input type="text" class="mws-textinput required" name="cfg__db_name" value="{config.db_name}" title="Database Name to store stats."/>
 						</div>
 					</div>
 					<div class="mws-form-row">
 						<label>Database Username:</label>
 						<div class="mws-form-item small">
-							<input type="text" class="mws-textinput required" name="cfg__db_user" title="Username with rights to Database."/>
+							<input type="text" class="mws-textinput required" name="cfg__db_user" value="{config.db_user}" title="Username with rights to Database."/>
 						</div>
 					</div>
 					<div class="mws-form-row">
 						<label>Database Password:</label>
 						<div class="mws-form-item small">
-							<input type="password" class="mws-textinput" name="cfg__db_pass" title="Password for Database Username."/>
+							<input type="password" class="mws-textinput" name="cfg__db_pass" value="{config.db_pass}" title="Password for Database Username."/>
 						</div>
 					</div>
 					<div class="mws-button-row">
