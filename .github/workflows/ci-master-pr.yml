@@ -62,8 +62,8 @@ jobs:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-${{ matrix.variant }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-buildx-${{ matrix.variant }}
-          ${{ runner.os }}-buildx
+          ${{ runner.os }}-buildx-${{ matrix.variant }}-
+          ${{ runner.os }}-buildx-
 
     - name: Prepare
       id: prep
