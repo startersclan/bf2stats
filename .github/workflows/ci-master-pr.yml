@@ -99,7 +99,7 @@ jobs:
           ${{ github.repository }}:${{ env.REF }}-asp-nginx
           ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-asp-nginx
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
     - name: Build asp-php (PRs)
       id: docker_build_pr_asp-php
       # Run only on pull requests
@@ -114,7 +114,7 @@ jobs:
           ${{ github.repository }}:${{ env.REF }}-asp-php
           ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-asp-php
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
     - name: Build bf2sclone-nginx (PRs)
       id: docker_build_pr_bf2sclone-nginx
@@ -130,7 +130,7 @@ jobs:
           ${{ github.repository }}:${{ env.REF }}-bf2sclone-nginx
           ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-bf2sclone-nginx
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
     - name: Build bf2sclone-php (PRs)
       id: docker_build_pr_bf2sclone-php
       # Run only on pull requests
@@ -145,7 +145,7 @@ jobs:
           ${{ github.repository }}:${{ env.REF }}-bf2sclone-php
           ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-bf2sclone-php
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
     - name: Build and push asp-nginx (master)
       id: docker_build_master_asp-nginx
@@ -161,7 +161,8 @@ jobs:
           ${{ github.repository }}:asp-nginx
           ${{ github.repository }}:${{ env.REF }}-asp-nginx
           ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-asp-nginx
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
     - name: Build and push asp-php (master)
       id: docker_build_master_asp-php
       # Run only on master
@@ -176,7 +177,8 @@ jobs:
           ${{ github.repository }}:asp-php
           ${{ github.repository }}:${{ env.REF }}-asp-php
           ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-asp-php
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
     - name: Build and push bf2sclone-nginx (master)
       id: docker_build_master_bf2sclone-nginx
@@ -192,7 +194,8 @@ jobs:
           ${{ github.repository }}:bf2sclone-nginx
           ${{ github.repository }}:${{ env.REF }}-bf2sclone-nginx
           ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-bf2sclone-nginx
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
     - name: Build and push bf2sclone-php (master)
       id: docker_build_master_bf2sclone-php
       # Run only on master
@@ -207,7 +210,8 @@ jobs:
           ${{ github.repository }}:bf2sclone-php
           ${{ github.repository }}:${{ env.REF }}-bf2sclone-php
           ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-bf2sclone-php
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
     - name: Build and push asp-nginx(release)
       id: docker_build_release_asp-nginx
@@ -223,7 +227,7 @@ jobs:
           ${{ github.repository }}:${{ env.REF }}-asp-nginx
           ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-asp-nginx
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
     - name: Build and push asp-php (release)
       id: docker_build_release_asp-php
       if: startsWith(github.ref, 'refs/tags/')
@@ -238,7 +242,7 @@ jobs:
           ${{ github.repository }}:${{ env.REF }}-asp-php
           ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-asp-php
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
     - name: Build and push bf2sclone-nginx(release)
       id: docker_build_release_bf2sclone-nginx
@@ -254,7 +258,7 @@ jobs:
           ${{ github.repository }}:${{ env.REF }}-bf2sclone-nginx
           ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-bf2sclone-nginx
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
     - name: Build and push bf2sclone-php (release)
       id: docker_build_release_bf2sclone-php
       if: startsWith(github.ref, 'refs/tags/')
@@ -269,7 +273,15 @@ jobs:
           ${{ github.repository }}:${{ env.REF }}-bf2sclone-php
           ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-bf2sclone-php
         cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+    # Temp fix
+    # https://github.com/docker/build-push-action/issues/252
+    # https://github.com/moby/buildkit/issues/1896
+    - name: Move cache
+      run: |
+        rm -rf /tmp/.buildx-cache
+        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
     - name: List docker images
       run: docker images
