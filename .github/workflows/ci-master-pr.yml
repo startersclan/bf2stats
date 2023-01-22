@@ -128,7 +128,7 @@ jobs:
         platforms: 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x'
         push: true
         tags: |
-          ${{ github.repository }}:{{ env.VARIANT_TAG }}
+          ${{ github.repository }}:${{ env.VARIANT_TAG }}
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF }}
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
         cache-from: type=local,src=/tmp/.buildx-cache
@@ -144,7 +144,7 @@ jobs:
         platforms: 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x'
         push: true
         tags: |
-          ${{ github.repository }}:{{ env.VARIANT_TAG }}
+          ${{ github.repository }}:${{ env.VARIANT_TAG }}
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF }}
           ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
         cache-from: type=local,src=/tmp/.buildx-cache
