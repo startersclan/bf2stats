@@ -23,6 +23,13 @@ jobs:
         docker-compose -f docker-compose.test.yml up
 
   build:
+    strategy:
+      matrix:
+        variant: 
+          - asp-nginx
+          - asp-php
+          - bf2sclone-nginx
+          - bf2sclone-php
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -53,9 +60,10 @@ jobs:
       uses: actions/cache@v3
       with:
         path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        key: ${{ runner.os }}-buildx-${{ matrix.variant }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-buildx-
+          ${{ runner.os }}-buildx-${{ matrix.variant }}
+          ${{ runner.os }}-buildx
 
     - name: Prepare
       id: prep
@@ -72,9 +80,17 @@ jobs:
         # Get commit hash E.g. 'b29758a'
         SHA_SHORT=$( echo "${GITHUB_SHA}" | cut -c1-7 )
 
+        # Generate the final tags. E.g. 'master-mytag' and 'master-b29758a-mytag'
+        VARIANT_TAG="${{ matrix.variant }}"
+        VARIANT_TAG_WITH_REF="${REF}-${VARIANT_TAG}"
+        VARIANT_TAG_WITH_REF_AND_SHA_SHORT="${REF}-${SHA_SHORT}-${VARIANT_TAG}"
+
         # Pass variables to next step
         # echo "CI_PROJECT_NAMESPACE=$CI_PROJECT_NAMESPACE" >> $GITHUB_ENV
         # echo "CI_PROJECT_NAME=$CI_PROJECT_NAME" >> $GITHUB_ENV
+        echo "VARIANT_TAG=$VARIANT_TAG" >> $GITHUB_ENV
+        echo "VARIANT_TAG_WITH_REF=$VARIANT_TAG_WITH_REF" >> $GITHUB_ENV
+        echo "VARIANT_TAG_WITH_REF_AND_SHA_SHORT=$VARIANT_TAG_WITH_REF_AND_SHA_SHORT" >> $GITHUB_ENV
         echo "REF=$REF" >> $GITHUB_ENV
         echo "SHA_SHORT=$SHA_SHORT" >> $GITHUB_ENV
 
@@ -85,193 +101,52 @@ jobs:
         DOCKERHUB_REGISTRY_USER: ${{ secrets.DOCKERHUB_REGISTRY_USER }}
         DOCKERHUB_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_REGISTRY_PASSWORD }}
 
-    - name: Build asp-nginx (PRs)
-      id: docker_build_pr_asp-nginx
+    - name: Build (PRs)
+      id: docker_build_pr
       # Run only on pull requests
       if: github.event_name == 'pull_request'
       uses: docker/build-push-action@v3
       with:
-        file: Dockerfile.asp-nginx.prod
+        file: Dockerfile.${{ env.VARIANT_TAG }}.prod
         context: '.'
         platforms: linux/amd64
         push: false
         tags: |
-          ${{ github.repository }}:${{ env.REF }}-asp-nginx
-          ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-asp-nginx
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-    - name: Build asp-php (PRs)
-      id: docker_build_pr_asp-php
-      # Run only on pull requests
-      if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
-      with:
-        file: Dockerfile.asp-php.prod
-        context: '.'
-        platforms: linux/amd64
-        push: false
-        tags: |
-          ${{ github.repository }}:${{ env.REF }}-asp-php
-          ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-asp-php
+          ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF }}
+          ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: Build bf2sclone-nginx (PRs)
-      id: docker_build_pr_bf2sclone-nginx
-      # Run only on pull requests
-      if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
-      with:
-        file: Dockerfile.bf2sclone-nginx.prod
-        context: '.'
-        platforms: linux/amd64
-        push: false
-        tags: |
-          ${{ github.repository }}:${{ env.REF }}-bf2sclone-nginx
-          ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-bf2sclone-nginx
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-    - name: Build bf2sclone-php (PRs)
-      id: docker_build_pr_bf2sclone-php
-      # Run only on pull requests
-      if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
-      with:
-        file: Dockerfile.bf2sclone-php.prod
-        context: '.'
-        platforms: linux/amd64
-        push: false
-        tags: |
-          ${{ github.repository }}:${{ env.REF }}-bf2sclone-php
-          ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-bf2sclone-php
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-    - name: Build and push asp-nginx (master)
-      id: docker_build_master_asp-nginx
+    - name: Build and push (master)
+      id: docker_build_master
       # Run only on master
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v3
       with:
-        file: Dockerfile.asp-nginx.prod
+        file: Dockerfile.${{ env.VARIANT_TAG }}.prod
         context: '.'
         platforms: 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x'
         push: true
         tags: |
-          ${{ github.repository }}:asp-nginx
-          ${{ github.repository }}:${{ env.REF }}-asp-nginx
-          ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-asp-nginx
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-    - name: Build and push asp-php (master)
-      id: docker_build_master_asp-php
-      # Run only on master
-      if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
-      with:
-        file: Dockerfile.asp-php.prod
-        context: '.'
-        platforms: 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x'
-        push: true
-        tags: |
-          ${{ github.repository }}:asp-php
-          ${{ github.repository }}:${{ env.REF }}-asp-php
-          ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-asp-php
+          ${{ github.repository }}:{{ env.VARIANT_TAG }}
+          ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF }}
+          ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: Build and push bf2sclone-nginx (master)
-      id: docker_build_master_bf2sclone-nginx
-      # Run only on master
-      if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
-      with:
-        file: Dockerfile.bf2sclone-nginx.prod
-        context: '.'
-        platforms: 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x'
-        push: true
-        tags: |
-          ${{ github.repository }}:bf2sclone-nginx
-          ${{ github.repository }}:${{ env.REF }}-bf2sclone-nginx
-          ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-bf2sclone-nginx
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-    - name: Build and push bf2sclone-php (master)
-      id: docker_build_master_bf2sclone-php
-      # Run only on master
-      if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
-      with:
-        file: Dockerfile.bf2sclone-php.prod
-        context: '.'
-        platforms: 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x'
-        push: true
-        tags: |
-          ${{ github.repository }}:bf2sclone-php
-          ${{ github.repository }}:${{ env.REF }}-bf2sclone-php
-          ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-bf2sclone-php
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-    - name: Build and push asp-nginx(release)
-      id: docker_build_release_asp-nginx
+    - name: Build and push (release)
+      id: docker_build_release
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v3
       with:
-        file: Dockerfile.asp-nginx.prod
+        file: Dockerfile.${{ env.VARIANT_TAG }}.prod
         context: '.'
         platforms: 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x'
         push: true
         tags: |
-          ${{ github.repository }}:asp-nginx
-          ${{ github.repository }}:${{ env.REF }}-asp-nginx
-          ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-asp-nginx
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-    - name: Build and push asp-php (release)
-      id: docker_build_release_asp-php
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
-      with:
-        file: Dockerfile.asp-php.prod
-        context: '.'
-        platforms: 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x'
-        push: true
-        tags: |
-          ${{ github.repository }}:asp-php
-          ${{ github.repository }}:${{ env.REF }}-asp-php
-          ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-asp-php
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-    - name: Build and push bf2sclone-nginx(release)
-      id: docker_build_release_bf2sclone-nginx
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
-      with:
-        file: Dockerfile.bf2sclone-nginx.prod
-        context: '.'
-        platforms: 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x'
-        push: true
-        tags: |
-          ${{ github.repository }}:bf2sclone-nginx
-          ${{ github.repository }}:${{ env.REF }}-bf2sclone-nginx
-          ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-bf2sclone-nginx
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-    - name: Build and push bf2sclone-php (release)
-      id: docker_build_release_bf2sclone-php
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
-      with:
-        file: Dockerfile.bf2sclone-php.prod
-        context: '.'
-        platforms: 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x'
-        push: true
-        tags: |
-          ${{ github.repository }}:bf2sclone-php
-          ${{ github.repository }}:${{ env.REF }}-bf2sclone-php
-          ${{ github.repository }}:${{ env.REF }}-${{ env.SHA_SHORT }}-bf2sclone-php
+          ${{ github.repository }}:{{ env.VARIANT_TAG }}
+          ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF }}
+          ${{ github.repository }}:${{ env.VARIANT_TAG_WITH_REF_AND_SHA_SHORT }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
