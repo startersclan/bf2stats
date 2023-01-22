@@ -26,14 +26,14 @@ See [this](docs/bf2hub-bf2stats-example) example showing how to deploy [Battlefi
 ```sh
 # 1. Start BF2 server, Gamespy server, and bf2stats
 docker-compose up
-# ASP available at http://localhost:8081/ASP. Username: admin, password admin. See ./config/ASP/config.php
-# bf2sclone available at http://localhost:8082.
+# ASP available at http://localhost:8081/ASP. Username: admin, password admin. Login and set up the DB the first time. See ./config/ASP/config.php
+# bf2sclone available at http://localhost:8082
 # phpmyadmin available at http://localhost:8083. Username: admin, password: admin. See ./config/ASP/config.php config file
 
-# 2. To setup the DB the first time, use $db_host, $db_port, $db_name, $db_user, $db_pass in ./config/ASP/config.php. Then, restart the BF2 server for stats to be recorded
+# 2. If you have just setup the DB the first time, restart the BF2 server to begin recording stats
 docker-compose restart bf2
 
-# 3. Before launching the BF2 client, spoof gamespy DNS by adding these entries in C:\Windows\system32\drivers\etc\hosts
+# 3. Before launching the BF2 client, spoof gamespy DNS by adding these entries in C:\Windows\system32\drivers\etc\hosts. This is needed for the BF2 client to work correctly.
 # Replace '192.168.1.100' with your development machine's IP address
 192.168.1.100 battlefield2.available.gamespy.com
 192.168.1.100 battlefield2.master.gamespy.com
@@ -54,9 +54,9 @@ docker-compose restart bf2
 
 # Development - Install vscode extensions
 # Once installed, set breakpoints in code, and press F5 to start debugging.
-code --install-extension bmewburn.vscode-intelephense-client # PHP intellisense
-code --install-extension xdebug.php-debug # PHP remote debugging via xdebug
-code --install-extension ms-python.python # Python intellisense
+code-server --install-extension bmewburn.vscode-intelephense-client # PHP intellisense
+code-server --install-extension xdebug.php-debug # PHP remote debugging via xdebug
+code-server --install-extension ms-python.python # Python intellisense
 # If xdebug is not working, iptables INPUT chain may be set to DROP on the docker bridge.
 # Execute this to allow php to reach the host machine via the docker0 bridge
 sudo iptables -A INPUT -i br+ -j ACCEPT
@@ -66,7 +66,7 @@ docker-compose restart bf2
 # BF2 server - Attach to the bf2 server console
 docker attach $( docker-compose ps -q bf2 )
 # BF2 server - Exec into container
-docker exec -it $( docker-compose ps -q  bf2) bash
+docker exec -it $( docker-compose ps -q bf2) bash
 # BF2 server - Read python logs
 docker exec -it $( docker-compose ps -q bf2 ) bash -c 'cat python/bf2/logs/bf2game_*'
 # BF2 server - List snapshots
@@ -94,10 +94,10 @@ docker build -t startersclan/bf2stats:bf2sclone-nginx -f Dockerfile.bf2sclone-ng
 docker build -t startersclan/bf2stats:bf2sclone-php -f Dockerfile.bf2sclone-php.prod .
 
 # Dump the DB
-docker exec $( docker-compose ps | grep db | awk '{print $1}' ) mysqldump -uroot -padmin bf2stats | gzip > bf2stats.sql.gz
+docker exec $( docker-compose ps -q db ) mysqldump -uroot -padmin bf2stats | gzip > bf2stats.sql.gz
 
 # Restore the DB
-zcat bf2stats.sql.gz | docker exec -i $( docker-compose ps | grep db | awk '{print $1}' ) mysql -uroot -padmin bf2stats
+zcat bf2stats.sql.gz | docker exec -i $( docker-compose ps -q db ) mysql -uroot -padmin bf2stats
 
 # Stop BF2 server, gamespy server and bf2stats
 docker-compose down
