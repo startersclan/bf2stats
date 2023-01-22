@@ -81,6 +81,7 @@ catch( Exception $e ) {
 }
     
 // Prepare output
+$nick = '';
 $out = "";
 $earned = 0;
 $availunlocks = 0;
