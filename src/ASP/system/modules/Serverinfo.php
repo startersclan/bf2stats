@@ -226,8 +226,7 @@ class Serverinfo
         $players = $p3 ? substr($players,0,$p3) : substr($players,0);
         $players = str_replace("\\ 0@splitnum\�","",$players);
         $players = str_replace("\\ 0@splitnum\\�","",$players);
-        $players = str_replace(" 0@splitnum\\","",$players);
-        $players = str_replace(" 0@splitnum\\�","",$players);
+        $players = str_replace("\\\x10\x20\x30@splitnum\\\x81\x01","",$players);
 
         //Parse Rules
         $rule_temp = substr($rules,1);
