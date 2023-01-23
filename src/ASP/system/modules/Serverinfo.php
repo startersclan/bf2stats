@@ -109,8 +109,22 @@ class Serverinfo
         $data = array();
         foreach($result as $server)
         {
-            $result = $Rcon->connect($server['ip'], $server['rcon_port'], $server['rcon_password']);
-            if($result == 0)
+            // $result = $Rcon->connect($server['ip'], $server['rcon_port'], $server['rcon_password']);
+
+            // Open our socket to the server
+            $sock = @fsockopen("udp://". $server['ip'], $server['queryport']);
+            @socket_set_timeout($sock, 0, 500000);
+
+            // Query the gamespy data
+            $queryString = "\xFE\xFD\x00\x10\x20\x30\x40\xFF\xFF\xFF\x01";
+            @fwrite($sock, $queryString);
+
+            $buffer = '';
+            while (($char = @fgets($sock, 4096))) {
+                $buffer .= $char;
+            }
+            
+            if (!$buffer)
             {
                 $status = '<font color="red">Offline</font>';
             }
