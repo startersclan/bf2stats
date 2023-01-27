@@ -3,7 +3,7 @@ $template = '
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" class="inner">
 <head>
-	<title>'. $TITLE .'</title>
+	<title>Servers, '. $TITLE .'</title>
 
 	<link rel="icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
@@ -21,7 +21,7 @@ $template = '
 <div id="page-1">
 	<div id="page-2">
 	
-		<h1 id="page-title">'. $TITLE .' Leaderboard</h1>
+		<h1 id="page-title">All Servers</h1>
 		<div id="page-3">
 			<div id="content"><div id="content-id">
 	
@@ -37,40 +37,38 @@ $template = '
 				<div id="content">
 					<div id="content-id"><!-- template header end == begin content below -->
 						<center>
-							<h2>Top '. LEADERBOARD_COUNT .' Players</h2>
+							<h2>Servers</h2>
 							
 							<table cellspacing="0" cellpadding="0" border="0" style="width: auto;" class="stat">
 							<tbody>
 								<tr>
 									<th>#</th>
-									<th>Nick</th>
-									<th>Global Score</th>
-									<th>Country</th>
-									<th>Time</th>
-									<!--
-									<th>SPM</th>
-									<th>K/D Ratio</th>
-									-->
+									<th>Name</th>
+									<th>Ranked</th>
+									<th>Punkbuster</th>
+									<th>OS</th>
+									<th>Autorecord</th>
+									<th>VOIP</th>
+									<th>Map	</th>
+									<th>Game Mode</th>
+									<th>Players</th>
+									<th>Mod</th>
 								</tr>';
 								
-								foreach($leaders as $key => $value)
-								{	
+								foreach($serversGamespyData as $k => $s) {	
 									$template .= '
 									<tr>
-										<td>'.($key+1).'</td>
-										<td>
-											<img src="'.$ROOT.'game-images/ranks/icon/rank_'.$value['rank'].'.gif">&nbsp;
-											<a href="'.$ROOT.'?pid='.$value['id'].'">'.$value['name'].'</a>
-										</td>
-										<td>'.$value['score'].'</td>
-										<td>
-											<img src="'.$ROOT.'game-images/flags/'.strtoupper($value['country']).'.png" height="12" width="16">
-										</td>
-										<td>'.intToTime($value['time']).'</td>
-										<!--
-										<td>'.$value['spm'].'</td>
-										<td>'.$value['kdr'].'</td>
-										-->
+										<td>'.esc_attr($k).'</td>
+										<td>'.esc_attr($s['server']['hostname']).'</td>
+										<td>'.esc_attr($s['server']['bf2_ranked']).'</td>
+										<td>'.esc_attr($s['server']['bf2_anticheat']).'</td>
+										<td>'.esc_attr($s['server']['bf2_os']).'</td>
+										<td>'.esc_attr($s['server']['bf2_autorec']).'</td>
+										<td>'.esc_attr($s['server']['bf2_voip']).'</td>
+										<td>'.esc_attr($s['server']['mapname']).'</td>
+										<td>'.esc_attr($s['server']['gametype']).'</td>
+										<td>'.esc_attr("{$s['server']['numplayers']} / {$s['server']['maxplayers']}").'</td>
+										<td>'.esc_attr($s['server']['gamevariant']).'</td>
 									</tr>';
 								}
 
@@ -95,7 +93,8 @@ $template = '
 		<ul id="navitems">
 			<li><a href="'. $ROOT .'">Home</a></li>
 			<li><a href="'. $ROOT .'?go=servers">Servers</a></li>
-			<li><a href="'. $ROOT .'?go=my-leaderboard">My Leader Board</a></li>
+		<li><a href="'. $ROOT .'?go=my-leaderboard">My Leader Board</a></li>
+
 			<li><a href="'. $ROOT .'?go=currentranking">Rankings</a></li>
 			<li><a href="'. $ROOT .'?go=ubar">UBAR</a></li>
 			<li><a href="http://wiki.bf2s.com/">Wiki</a></li>
