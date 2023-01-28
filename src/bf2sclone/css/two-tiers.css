@@ -549,7 +549,14 @@ border-bottom: 1px solid #444;
 background: #5c5f52;
 }
 
+/*
+* servers
+*/
 
+.servers img {
+	width: 16px;
+	height: 16px;
+}
 
 /*
 * player profile
