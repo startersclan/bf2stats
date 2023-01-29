@@ -41,10 +41,11 @@ function loadGamespyData($ip, $port)
 		$bytes = @fread($sock, 1);
 		$status = @socket_get_status($sock);
 		$length = $status['unread_bytes'];
+
 		if($length > 0)
 		{
 			$Info[$i] = $bytes . fread($sock, $length);
-			$status = @socket_get_status($sock);
+
 			preg_match("/splitnum(...)/is",$Info[$i],$regs);
 			$String = $regs[1];
 
@@ -99,6 +100,7 @@ function loadGamespyData($ip, $port)
 	$output = str_replace($changeChr, "\\", $output);
 	$rules = "x".substr($output,0,strpos($output,"\\\\".chr(1)));
 	$players = "\\".substr($output,strpos($output,"\\\\".chr(1))+3);
+
 	$p3 = strpos($players,"\\\\".chr(2));
 
 	if(!$p3) 
@@ -119,7 +121,7 @@ function loadGamespyData($ip, $port)
 	$players = str_replace("\x10\x20\x30@splitnum\\\x81\x01","",$players);
 	$players = str_replace("\x10\x20\x30@splitnum\\\x82\x02","",$players);
 	// Strip the cut-off prop. E.g. '\F. Liliegren\\score\\score_\\0\0' becomes '\F. Liliegren\\score_\\0'
-	$players = preg_replace('/\\\\{2}[^_\\\\]+(\\\\{2}[^_\\\\]+_\\\\)/',"$1",$players); 
+	$players = preg_replace('/\\\\{2}[^_\\\\]+(\\\\{2}[^_\\\\]+_\\\\)/',"$1",$players);
 
 	//Parse Rules
 	$rule_temp = substr($rules,1);
