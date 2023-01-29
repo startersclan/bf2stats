@@ -78,12 +78,20 @@ function loadGamespyData($ip, $port)
 			$end = true;
 		}
 		
+		// Smaller servers will respond with only 2 packets.
+		// If we got all 2 packets, and Packet 2 starts with this header, we're done. Don't need to wait for socket timeout
+		if ($i == 2 && stripos($Packet[2], "\x00\x10\x20\x30@splitnum\x00\x81\x01") === 0) {
+			$end = true;
+		}
+
+		// Larger servers will respond with 3 packets.
+		// If we got all 3 packets, and Packet 3 starts with this header, we're done. Don't need to wait for socket timeout
+		if ($i == 3 && stripos($Packet[3], "\x00\x10\x20\x30@splitnum\x00\x82\x02") === 0) {
+			$end = true;
+		}
+
 		$i++;
 
-		// If we got all 3 packets, we're done
-		if ($i == 3) {
-			break;
-		}
 	}
 
 	// Close the socket and build our packet string
@@ -119,23 +127,6 @@ function loadGamespyData($ip, $port)
 	$players = str_replace(" 0@splitnum\\�","",$players);
 	$players = str_replace("\x10\x20\x30@splitnum\\\x81\x01","",$players);
 	$players = str_replace("\x10\x20\x30@splitnum\\\x82\x02","",$players);
-	// $players = str_replace("\\\x10\x20\x30splitnum\\\x81\x01","",$players);
-	// $players = str_replace("\\\x10\x20\x30@splitnum\\\x82\x02","",$players);
-	// $players = str_replace("\x10\x20\x30@splitnum\\\x81\x01","",$players);
-	// $players = str_replace("\x10\x20\x30@splitnum\\\x82\x02","",$players);
-	// $players = preg_replace('/\x10\x20\x30@splitnum\\\\\x81\x01/', "", $players);
-	// $players = preg_replace('/\x10\x20\x30@splitnum\\\\\x82\x02/', "", $players);
-	// $players = preg_replace('/\x10\x20\x30@splitnum\\\\([^\\\\]+_)[\\\\]+/', '$1\\\\\\\\', $players);
-	// $players = str_replace("\x10\x20\x30@splitnum\\","",$players);
-	// $players = str_replace("\\\x10\x20\x30@splitnum\\\x81\x01","",$players);
-	// $players = str_replace("\\\x10\x20\x30@splitnum\\\x82\x02","",$players);
-	// $players = str_replace("\\\x10\x20\x30@splitnum","",$players);
-	// $players = str_replace("\x10\x20\x30@splitnum","",$players);
-	// $players = preg_replace('/[^\\\\]+\\\\{2}\x10\x20\x30@splitnum\\\\\x81\x01/',"",$players);
-	// $players = preg_replace('/[^\\\\]+\\\\{2}\x10\x20\x30@splitnum\\\\\x82\x02/',"",$players);
-	// $players = preg_replace('/\\\\{2}\x10\x20\x30@splitnum\\\\\x82\x02/',"",$players);
-	// $p = preg_replace('/.+splitnum(.........).+/', '$1', $players);
-	// echo bin2hex($p);
 
 	//Parse Rules
 	$rule_temp = substr($rules,1);
