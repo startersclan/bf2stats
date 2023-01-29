@@ -561,7 +561,7 @@ table.servers th,
 table.servers td {
 	word-break: break-all;
 	vertical-align: middle;
-	max-width: 20%;
+	max-width: 25%;
 }
 
 table.servers img {

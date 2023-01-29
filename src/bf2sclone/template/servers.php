@@ -33,9 +33,9 @@ $template = '
 						<tbody>
 							<tr>
 								<th class="nosort"></th>
-								<th style="width: 20%;">SERVER NAME</th>
+								<th style="width: 25%;">SERVER NAME</th>
 								<th>PLAYERS</th>
-								<th style="width: 20%;">MAP</th>
+								<th>MAP</th>
 								<th>SIZE </th>
 								<th>MODE</th>
 								<th>MOD</th>
