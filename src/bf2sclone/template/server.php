@@ -4,7 +4,7 @@ $template = '
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" class="inner">
 <head>
-	<title>'. esc_attr($s['data']['server']['hostname'] . ', ' . $TITLE ) . '</title>
+	<title>'. ($s['data'] ? esc_attr($s['data']['server']['hostname']) . ', ' . $TITLE : '-') . '</title>
 
 	<link rel="icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
@@ -22,7 +22,7 @@ $template = '
 <div id="page-1">
 	<div id="page-2">
 	
-		<h1 id="page-title">' . esc_attr($s['data']['server']['hostname']) . '</h1>
+		<h1 id="page-title">' . ($s['data'] ? esc_attr($s['data']['server']['hostname']) : '-') . '</h1>
 		<div id="page-3">
 		
 			<div id="content">
@@ -35,77 +35,77 @@ $template = '
 							</tr>
 							<tr>
 								<td class="column-key">Status</td>
-								<td>' . esc_attr($s['data']['server']['gamemode']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['gamemode']) : '-') . '</td>
 								<td class="column-key">Players</td>
-								<td>' . esc_attr("{$s['data']['server']['numplayers']}/{$s['data']['server']['maxplayers']}") . '</td>
+								<td>' . ($s['data'] ? esc_attr("{$s['data']['server']['numplayers']}/{$s['data']['server']['maxplayers']}") : '-') . '</td>
 							</tr>
 							<tr>
 								<td class="column-key">Dedicated</td>
-								<td>' . esc_attr($s['data']['server']['bf2_dedicated']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['bf2_dedicated']) : '-') . '</td>
 								<td class="column-key">OS</td>
-								<td>' . esc_attr($s['data']['server']['bf2_os']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['bf2_os']) : '-') . '</td>
 							</tr>
 							<tr>
 								<td class="column-key">Version</td>
-								<td>' . esc_attr($s['data']['server']['gamever']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['gamever']) : '-') . '</td>
 								<td class="column-key">Mod</td>
-								<td>' . esc_attr($s['data']['server']['gamevariant']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['gamevariant']) : '-') . '</td>
 							</tr>
 							<tr>
 								<td class="column-key">Ranked</td>
-								<td>' . esc_attr($s['data']['server']['bf2_ranked']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['bf2_ranked']) : '-') . '</td>
 								<td class="column-key">Pure</td>
-								<td>' . esc_attr($s['data']['server']['bf2_pure']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['bf2_pure']) : '-') . '</td>
 							</tr>
 							<tr>
 								<td class="column-key">BattleRecorder</td>
-								<td>' . esc_attr($s['data']['server']['bf2_autorec']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['bf2_autorec']) : '-') . '</td>
 								<td class="column-key">BattleCommo</td>
-								<td>' . esc_attr($s['data']['server']['bf2_voip']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['bf2_voip']) : '-') . '</td>
 							</tr>
 							<tr>
 								<td class="column-key">Punkbuster</td>
-								<td>' . esc_attr($s['data']['server']['bf2_anticheat']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['bf2_anticheat']) : '-') . '</td>
 								<td class="column-key">Password</td>
-								<td>' . esc_attr($s['data']['server']['password']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['password']) : '-') . '</td>
 							</tr>
 							<tr>
 								<td class="column-key">TK Mode</td>
-								<td>' . esc_attr($s['data']['server']['bf2_tkmode']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['bf2_tkmode']) : '-') . '</td>
 								<td class="column-key">Vehicles</td>
-								<td>' . esc_attr(($s['data']['server']['bf2_novehicles'] == 0 ? '1' : '0')) . '</td>
+								<td>' . ($s['data'] ? esc_attr(($s['data']['server']['bf2_novehicles'] == 0 ? '1' : '0')) : '-') . '</td>
 							</tr>
 							<tr>
 								<td class="column-key">Friendly Fire</td>
-								<td>' . esc_attr($s['data']['server']['bf2_friendlyfire']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['bf2_friendlyfire']) : '-') . '</td>
 								<td class="column-key">Allowbalance</td>
-								<td>' . esc_attr($s['data']['server']['bf2_autobalanced']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['bf2_autobalanced']) : '-') . '</td>
 							</tr>
 							<tr>
 								<td class="column-key">Rounds per Map</td>
-								<td>' . esc_attr($s['data']['server']['roundtime']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['roundtime']) : '-') . '</td>
 								<td class="column-key">Allow Global Unlocks</td>
-								<td>' . esc_attr($s['data']['server']['bf2_autobalanced']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['bf2_autobalanced']) : '-') . '</td>
 							</tr>
 							<tr>
 								<td class="column-key">Spawn Time</td>
-								<td>' . esc_attr((int)$s['data']['server']['bf2_spawntime']) . '</td>
+								<td>' . ($s['data'] ? esc_attr((int)$s['data']['server']['bf2_spawntime']) : '-') . '</td>
 								<td class="column-key">Bot Ratio</td>
-								<td>' . esc_attr(($s['data']['server']['bf2_coopbotratio'] ? $s['data']['server']['bf2_coopbotratio'] : '0')) . '</td>
+								<td>' . ($s['data'] ? esc_attr(($s['data']['server']['bf2_coopbotratio'] ? $s['data']['server']['bf2_coopbotratio'] : '0')) : '-') . '</td>
 							</tr>
 								<td class="column-key">Time Limit</td>
-								<td>' . esc_attr($s['data']['server']['timelimit']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['timelimit']) : '-') . '</td>
 								<td class="column-key">Number of Bots</td>
-								<td>' . esc_attr(($s['data']['server']['bf2_coopbotcount'] ? $s['data']['server']['bf2_coopbotcount'] : '0')) . '</td>
+								<td>' . ($s['data'] ? esc_attr(($s['data']['server']['bf2_coopbotcount'] ? $s['data']['server']['bf2_coopbotcount'] : '0')) : '-') . '</td>
 							<tr>
 								<td class="column-key">Ticket Ratio</td>
-								<td>' . esc_attr($s['data']['server']['bf2_ticketratio']) . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['bf2_ticketratio']) : '-') . '</td>
 								<td class="column-key">Bot Difficulty</td>
-								<td>' . esc_attr(($s['data']['server']['bf2_coopbotdiff'] ? $s['data']['server']['bf2_coopbotdiff'] : '0')) . '</td>
+								<td>' . ($s['data'] ? esc_attr(($s['data']['server']['bf2_coopbotdiff'] ? $s['data']['server']['bf2_coopbotdiff'] : '0')) : '-') . '</td>
 							</tr>
 							<tr>
 								<td class="column-key">Team Ratio</td>
-								<td>' . esc_attr((int)$s['data']['server']['bf2_teamratio']) . '</td>
+								<td>' . ($s['data'] ? esc_attr((int)$s['data']['server']['bf2_teamratio']) : '-') . '</td>
 								<td class="column-key"></td>
 								<td></td>
 							</tr>
@@ -113,27 +113,27 @@ $template = '
 								<td class="subheading" colspan="999">SERVER MESSAGE</td>
 							</tr>
 							<tr>
-								<td style="height: 50px;  vertical-align: top;" colspan="999">' . $s['data']['server']['bf2_sponsortext'] . '</td>
+								<td style="height: 50px;  vertical-align: top;" colspan="999">' . ($s['data'] ? esc_attr($s['data']['server']['bf2_sponsortext']) : '') . '</td>
 							</tr>
 						</tbody>
 						</table>
 					</div>
 					';
 
-					$map = str_replace(' ', '_', strtolower($s['data']['server']['mapname']));
+					$map = str_replace(' ', '_', ($s['data'] ? strtolower($s['data']['server']['mapname']) : ''));
 					// devil's Perch Fix
 					$map = str_replace('\'', '', $map);
-					$mapUrl = file_exists(ROOT . "/game-images/levels/$map.png") ? "$ROOT/game-images/levels/$map.png" : "$ROOT/game-images/levels/default.png";
+					$mapSrc = file_exists(ROOT . "/game-images/levels/$map.png") ? "$ROOT/game-images/levels/$map.png" : "$ROOT/game-images/levels/default.png";
 					$template .= '
 					<div style="display: inline-block; vertical-align: top; width: 33.3%; white-space: nowrap;">
 						<table border="0" cellspacing="0" cellpadding="0" style="width: 100%; margin: 0;" class="stat server-stat">
 						<tbody>
 							<tr>
-								<th colspan="999">' . esc_attr($s['data']['server']['mapname']) . '</th>
+								<th colspan="999">' . ($s['data'] ? esc_attr($s['data']['server']['mapname']) : '-') . '</th>
 							</tr>
 							<tr>
 								<td colspan="999">
-									<img style="width: 100%; height: auto;" src="' . esc_attr($mapUrl) . '" />
+									<img style="width: 100%; height: auto;" src="' . esc_attr($mapSrc) . '" />
 								</td>
 							</tr>
 							</tr>
@@ -141,11 +141,11 @@ $template = '
 							</tr>
 							<tr>
 								<td class="column-key">Game Mode</td>
-								<td>' . (preg_match('/gpm_coop/i', $s['data']['server']['gametype']) ? 'Co-op' : 'Conquest') . '</td>
+								<td>' . ($s['data'] ? (preg_match('/gpm_coop/i', $s['data']['server']['gametype']) ? 'Co-op' : 'Conquest') : '-') . '</td>
 							</tr>
 							</tr>
 								<td class="column-key">Map Size</td>
-								<td>' . $s['data']['server']['bf2_mapsize'] . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['bf2_mapsize']) : '') . '</td>
 							</tr>
 							';
 							$graphicUrl = $s['data']['server']['bf2_sponsorlogo_url'];
@@ -164,7 +164,8 @@ $template = '
 					</div>
 					';
 
-					$template .= '
+					if ($s['data']) {
+						$template .= '
 					<div style="margin-top: 10px; white-space: nowrap;">';
 						$teams = array('team1', 'team2');
 						foreach ($teams as $t) {
@@ -191,16 +192,16 @@ $template = '
 								foreach ($s['data'][$t] as $k => $p) {
 									$template .= '
 								<tr>
-									<td>' . esc_attr($k+1) . '</td>
+									<td>' . ($s['data'] ? esc_attr($k+1) : '-') . '</td>
 									<td>' . '
 										<img src="' . $ROOT . 'game-images/ranks/header/rank_' . esc_attr($p['rank']) . '.png" alt="' .  esc_attr(getRankByID($p['rank'])) . '" style="vertical-align: middle;" />
 										<a href="' . "$ROOT?pid=" . esc_attr($p['pid']) . '" title="' . esc_attr($p['name']) . '" style="vertical-align: middle;">' . esc_attr($p['name']) . '</a>
 									</td>
-									<td>' . esc_attr($p['score']) . '</td>
-									<td>' . esc_attr($p['kills']) . '</td>
-									<td>' . esc_attr($p['deaths']) . '</td>
-									<td>' . esc_attr($p['ping']) . '</td>
-									<td>' . esc_attr($p['ai']) . '</td>
+									<td>' . ($s['data'] ? esc_attr($p['score']) : '-') . '</td>
+									<td>' . ($s['data'] ? esc_attr($p['kills']) : '-') . '</td>
+									<td>' . ($s['data'] ? esc_attr($p['deaths']) : '-') . '</td>
+									<td>' . ($s['data'] ? esc_attr($p['ping']) : '-') . '</td>
+									<td>' . ($s['data'] ? esc_attr($p['ai']) : '-') . '</td>
 								</tr>';
 								}
 									$template .= '
@@ -209,8 +210,9 @@ $template = '
 						</div>
 						';
 						}
+					}
 
-						$template .= '
+					$template .= '
 					</div>
 
 					<a id="secondhome" href="'.$ROOT.'"> </a>

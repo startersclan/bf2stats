@@ -284,7 +284,9 @@ elseif(strcasecmp($GO, 'servers') == 0 && $SID)
 	{
 		$server = getServer($SID);
 		$server['data'] = loadGamespyData($server['ip'], $server['queryport']);
-		$server['data'] = getGamespyDataWithPlayerRanks($server['data']);
+		if ($server['data']) {
+			$server['data'] = getGamespyDataWithPlayerRanks($server['data']);
+		}
 
 		// Include our template file
 		include( TEMPLATE_PATH .'server.php');

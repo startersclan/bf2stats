@@ -42,7 +42,10 @@ $template = '
 								<th>VER</th>
 							</tr>';
 							
-							foreach($servers as $s) {	
+							foreach($servers as $s) {
+								if (!$s['data']) {
+									continue;
+								}
 								$template .= '
 								<tr>
 									<td>';
