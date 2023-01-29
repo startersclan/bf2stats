@@ -105,7 +105,7 @@ class Serverinfo
     public function Process($result)
     {
         // Load the Rcon Class
-        $Rcon = new Rcon();
+        // $Rcon = new Rcon();
         $data = array();
         foreach($result as $server)
         {
@@ -119,22 +119,15 @@ class Serverinfo
             $queryString = "\xFE\xFD\x00\x10\x20\x30\x40\xFF\xFF\xFF\x01";
             @fwrite($sock, $queryString);
 
-            $buffer = '';
-            while (($char = @fgets($sock, 4096))) {
-                $buffer .= $char;
-            }
-            
-            if (!$buffer)
-            {
-                $status = '<font color="red">Offline</font>';
-            }
-            else
-            {
+            $bytes = @fread($sock, 5);
+            if ($bytes == "\x00\x10\x20\x30\x40") {
                 $status = '<font color="green">Online</font>';
+            } else {
+                $status = '<font color="red">Offline</font>';
             }
             
             // Close the connection
-            $Rcon->close();
+            // $Rcon->close();
             $data[$server['id']] = $status;
         }
         
