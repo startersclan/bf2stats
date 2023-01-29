@@ -553,12 +553,18 @@ background: #5c5f52;
 * servers
 */
 
-.servers th,
-.servers td {
-	word-break: break-all;
+table.servers {
+	width: 80%;
 }
 
-.servers img {
+table.servers th,
+table.servers td {
+	word-break: break-all;
+	vertical-align: middle;
+	max-width: 20%;
+}
+
+table.servers img {
 	vertical-align: middle;
 	width: 16px;
 	height: 16px;

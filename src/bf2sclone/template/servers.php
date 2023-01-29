@@ -29,13 +29,13 @@ $template = '
 					<center>
 						<h2>Servers</h2>
 						
-						<table border="0" cellspacing="0" cellpadding="0" style="width: auto;" class="stat servers">
+						<table border="0" cellspacing="0" cellpadding="0" id="servers" class="stat servers sortable">
 						<tbody>
 							<tr>
-								<th></th>
-								<th>SERVER NAME</th>
+								<th class="nosort"></th>
+								<th style="width: 20%;">SERVER NAME</th>
 								<th>PLAYERS</th>
-								<th>MAP</th>
+								<th style="width: 20%;">MAP</th>
 								<th>SIZE </th>
 								<th>MODE</th>
 								<th>MOD</th>
@@ -153,8 +153,7 @@ $template = '
 		<ul id="navitems">
 			<li><a href="'. $ROOT .'">Home</a></li>
 			<li><a href="'. $ROOT .'?go=servers">Servers</a></li>
-		<li><a href="'. $ROOT .'?go=my-leaderboard">My Leader Board</a></li>
-
+			<li><a href="'. $ROOT .'?go=my-leaderboard">My Leader Board</a></li>
 			<li><a href="'. $ROOT .'?go=currentranking">Rankings</a></li>
 			<li><a href="'. $ROOT .'?go=ubar">UBAR</a></li>
 			<li><a href="http://wiki.bf2s.com/">Wiki</a></li>
