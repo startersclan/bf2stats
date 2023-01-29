@@ -28,7 +28,6 @@ function loadGamespyData($ip, $port)
 
 	// Open our socket to the server, UDP port always open so we cant determine
 	// the online status of our server yet!
-	error_log('[0] ' . microtime());
 	$sock = @fsockopen("udp://". $ip, $port);
 	@socket_set_timeout($sock, 0, 500000);
 
@@ -39,19 +38,16 @@ function loadGamespyData($ip, $port)
 	// Look through and read each of the 3 packets that get returned
 	while(!$end) 
 	{
-		error_log("[1a] i: $i, microtime: " . microtime());
+		// error_log("[1a] i: $i, microtime: " . microtime());
 		$bytes = @fread($sock, 1);
-		error_log("[1b] i: $i, microtime: " . microtime());
 		$status = @socket_get_status($sock);
 		$length = $status['unread_bytes'];
-		error_log("[1c] i: $i, microtime: " . microtime(). ', length: ' . $length);
+		// error_log("[1b] i: $i, microtime: " . microtime(). ', length: ' . $length);
 		if($length > 0)
 		{
 			$Info[$i] = $bytes . fread($sock, $length);
 			$status = @socket_get_status($sock);
-	
-			error_log("[1d] i: $i, microtime: " . microtime(). ', length: ' . $status['unread_bytes']);
-
+			// error_log("[1c] i: $i, microtime: " . microtime(). ', length: ' . $status['unread_bytes']);
 			preg_match("/splitnum(...)/is",$Info[$i],$regs);
 			$String = $regs[1];
 
@@ -91,12 +87,10 @@ function loadGamespyData($ip, $port)
 		}
 
 		$i++;
-
 	}
 
 	// Close the socket and build our packet string
 	@fclose($sock);
-	error_log("[2] i: $i, microtime: " . microtime());
 	$Info = $Packet[1] . $Packet[2] . $Packet[3];
 	
 	// If our string is empty, return false
