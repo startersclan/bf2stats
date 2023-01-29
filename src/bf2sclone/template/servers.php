@@ -3,7 +3,7 @@ $template = '
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" class="inner">
 <head>
-	<title>Servers, '. $TITLE .'</title>
+	<title>' . esc_attr('Servers, ' . $TITLE) . '</title>
 
 	<link rel="icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
@@ -70,7 +70,7 @@ $template = '
 								
 								if (file_exists(ROOT . "/game-images/mods/{$s['data']['server']['gamevariant']}/mod_icon.png")) {
 									$mod = esc_attr($s['data']['server']['gamevariant']);
-									$template .= '<img src="game-images/mods/' . esc_attr($mod) . '/mod_icon.png" alt="' . esc_attr($mod) . '.png" />';
+									$template .= '<img src="game-images/mods/' . esc_attr($mod) . '/mod_icon.png" alt="' . esc_attr($mod) . '" />';
 								} else {
 									$template .= '<img src="game-images/serverIcons/unknown_mod.png" alt="unknown_mod" />';
 								}

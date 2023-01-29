@@ -4,7 +4,7 @@ $template = '
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" class="inner">
 <head>
-	<title>'. esc_attr($s['data']['server']['hostname']) . ', ' . $TITLE .'</title>
+	<title>'. esc_attr($s['data']['server']['hostname'] . ', ' . $TITLE ) . '</title>
 
 	<link rel="icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
@@ -129,7 +129,7 @@ $template = '
 						<table border="0" cellspacing="0" cellpadding="0" style="width: 100%; margin: 0;" class="stat server-stat">
 						<tbody>
 							<tr>
-								<th colspan="999">' . esc_attr($s['data']['server']['mapname']) . ' ' . esc_attr($s['data']['server']['bf2_mapsize']) . '</th>
+								<th colspan="999">' . esc_attr($s['data']['server']['mapname']) . '</th>
 							</tr>
 							<tr>
 								<td colspan="999">
