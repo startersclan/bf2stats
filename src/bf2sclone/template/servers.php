@@ -35,11 +35,11 @@ $template = '
 								<th></th>
 								<th>SERVER NAME</th>
 								<th>PLAYERS</th>
-								<th>MAP NAME </th>
-								<th>MAP SIZE </th>
-								<th>GAME MODE</th>
-								<th>GAME MOD</th>
-								<th>VERSION</th>
+								<th>MAP</th>
+								<th>SIZE </th>
+								<th>MODE</th>
+								<th>MOD</th>
+								<th>VER</th>
 							</tr>';
 							
 							foreach($servers as $s) {	
