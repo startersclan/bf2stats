@@ -174,19 +174,19 @@ $template = '
 						<div style="display: inline-block; width: 50%; vertical-align: top;">
 							<div style="display: block; border: 1px solid #111; padding: 5px; background: #383c33; color: #fff; font: normal 17px Verdana; text-align: center;">' . esc_attr(strtoupper(getArmyName($team))) . '</div>
 							<img style="display: block; width: 100%; height: auto;" src="game-images/bigflags/bigflag_' . esc_attr($team) . '.png"/>
-							<table border="0" cellspacing="0" cellpadding="0" style="width: 100%; margin: 0;" class="stat server-scoreboard-stat">
+							<table border="0" cellspacing="0" cellpadding="0" style="width: 100%; margin: 0;" class="stat server-scoreboard-stat sortable">
 							<tbody>
 								<tr>
-									<th></th>
-									<th>PLAYER NAME</th>
-									<th><img src="game-images/playerIcons/overallscore_icon.png" alt="Overall Score" /></th>
-									<!--<th><img src="game-images/scoreboard/scoreboard_icons_overallscore.png" alt="Overall Score" /></th>-->
-									<th><img src="game-images/playerIcons/killscore_icon.png" alt="Kills" /></th>
-									<!--<th><img src="game-images/scoreboard/scoreboard_icons_killscore.png" alt="killscore" /></th>-->
-									<th><img src="game-images/playerIcons/deathscore_icon.png" alt="Deaths" /></th>
-									<!--<th><img src="game-images/scoreboard/scoreboard_icons_deathscore.png" alt="deathscore" /></th>-->
-									<th><img src="game-images/scoreboard/scoreboard_icons_ping.png" alt="Ping" /></th>
-									<th>AI</th>
+									<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;">#<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></th>
+									<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;">PLAYER NAME<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+									<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;"><img src="game-images/playerIcons/overallscore_icon.png" alt="Overall Score" /><span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+									<!--<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;"><img src="game-images/scoreboard/scoreboard_icons_overallscore.png" alt="Overall Score" /><span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>-->
+									<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;"><img src="game-images/playerIcons/killscore_icon.png" alt="Kills" /><span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+									<!--<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;"><img src="game-images/scoreboard/scoreboard_icons_killscore.png" alt="killscore" /><span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>-->
+									<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;"><img src="game-images/playerIcons/deathscore_icon.png" alt="Deaths" /><span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+									<!--<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;"><img src="game-images/scoreboard/scoreboard_icons_deathscore.png" alt="deathscore" /><span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>-->
+									<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;"><img src="game-images/scoreboard/scoreboard_icons_ping.png" alt="Ping" /><span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+									<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;">AI<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
 								</tr>
 								';
 								foreach ($s['data'][$t] as $k => $p) {
