@@ -127,6 +127,8 @@ function loadGamespyData($ip, $port)
 	$players = str_replace(" 0@splitnum\\�","",$players);
 	$players = str_replace("\x10\x20\x30@splitnum\\\x81\x01","",$players);
 	$players = str_replace("\x10\x20\x30@splitnum\\\x82\x02","",$players);
+	// Strip the cut-off prop. E.g. '\F. Liliegren\\score\\score_\\0\0' becomes '\F. Liliegren\\score_\\0'
+	$players = preg_replace('/\\\\{2}[^_\\\\]+(\\\\{2}[^_\\\\]+_\\\\)/',"$1",$players); 
 
 	//Parse Rules
 	$rule_temp = substr($rules,1);
