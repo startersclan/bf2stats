@@ -38,6 +38,7 @@ define('TEMPLATE_PATH', ROOT . DS . 'template' . DS);
 
 // IFF PID -> go show stats!
 $PID = isset($_GET["pid"]) ? mysqli_real_escape_string($GLOBALS['link'], $_GET["pid"]) : "0";
+$SID = isset($_GET["sid"]) ? mysqli_real_escape_string($GLOBALS['link'], $_GET["sid"]) : "0";
 $GO = isset($_GET["go"]) ? $_GET["go"] : "0";
 $GET = isset($_POST["get"]) ? $_POST["get"] : 0;
 $SET = isset($_POST["set"]) ? $_POST["set"] : 0;
@@ -231,7 +232,7 @@ elseif(strcasecmp($GO, 'search') == 0)
 /***************************************************************
  * SERVERS
  ***************************************************************/
-elseif(strcasecmp($GO, 'servers') == 0)
+elseif(strcasecmp($GO, 'servers') == 0 && !$SID)
 {
 	$LASTUPDATE = 0;
 	$NEXTUPDATE = 0;
@@ -244,17 +245,52 @@ elseif(strcasecmp($GO, 'servers') == 0)
 	else
 	{
 		$servers = getServers();
-		$serversGamespyData = array();
-		foreach ($servers as $server) {
-			$data = loadGamespyData($server['ip'], $server['queryport']);
-			$serversGamespyData[] = $data;
+		$serversWithGamespyData = array();
+		foreach ($servers as $s) {
+			$s['data'] = loadGamespyData($s['ip'], $s['queryport']);
+			$serversWithGamespyData[] = $s;
 		}
+		$servers = $serversWithGamespyData; 
+		unset($serversWithGamespyData);
 
 		// Include our template file
 		include( TEMPLATE_PATH .'servers.php');
 
 		// write cache file
 		writeCache('servers', $template);
+		$LASTUPDATE = intToTime(0);
+		$NEXTUPDATE = intToTime(RANKING_REFRESH_TIME);
+	}
+	$template = str_replace('{:LASTUPDATE:}', $LASTUPDATE, $template);
+	$template = str_replace('{:NEXTUPDATE:}', $NEXTUPDATE, $template);
+	#echo $template;
+}
+
+/***************************************************************
+ * SERVER
+ ***************************************************************/
+elseif(strcasecmp($GO, 'servers') == 0 && $SID)
+{
+
+	$LASTUPDATE = 0;
+	$NEXTUPDATE = 0;
+	if(isCached('server'))// already cached!
+	{
+		$template 	= getCache('server');
+		$LASTUPDATE = intToTime(getLastUpdate( CACHE_PATH . 'server.cache'));
+		$NEXTUPDATE = intToTime(getNextUpdate( CACHE_PATH . 'server.cache', RANKING_REFRESH_TIME));
+	}
+	else
+	{
+		$server = getServer($SID);
+		$server['data'] = loadGamespyData($server['ip'], $server['queryport']);
+		$server['data'] = getGamespyDataWithPlayerRanks($server['data']);
+
+		// Include our template file
+		include( TEMPLATE_PATH .'server.php');
+
+		// write cache file
+		writeCache('server', $template);
 		$LASTUPDATE = intToTime(0);
 		$NEXTUPDATE = intToTime(RANKING_REFRESH_TIME);
 	}

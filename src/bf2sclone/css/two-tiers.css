@@ -553,7 +553,37 @@ background: #5c5f52;
 * servers
 */
 
+.servers th,
+.servers td {
+	word-break: break-all;
+}
+
 .servers img {
+	vertical-align: middle;
+	width: 16px;
+	height: 16px;
+}
+
+/*
+* server
+*/
+.server-stat td {
+	width: 25%;
+}
+.server-stat td.column-key {
+	background: #484b3d;
+	border-right: 1px solid #333;
+	font-weight: bold;
+}
+
+.server-stat td.subheading {
+	padding: 4px 4px;
+	font: normal 17px Verdana;
+	background: #383c33;
+}
+
+.server-scoreboard-stat img {
+	vertical-align: middle;
 	width: 16px;
 	height: 16px;
 }

@@ -1,14 +1,22 @@
 <?php
 
+function getServer($id)
+{
+	include(ROOT . DS . 'queries'. DS .'getServerByID.php'); // imports the correct sql statement
+	$result = mysqli_query($GLOBALS['link'], $query) or die('Query failed: ' . mysqli_error($GLOBALS['link']));
+	$server = mysqli_fetch_assoc($result);
+	return $server;
+}
+
 function getServers()
 {
 	include(ROOT . DS . 'queries'. DS .'getServers.php'); // imports the correct sql statement
 	$result = mysqli_query($GLOBALS['link'], $query) or die('Query failed: ' . mysqli_error($GLOBALS['link']));
-	$data = array();
+	$servers = array();
 	while ($row = mysqli_fetch_assoc($result)) {
-		$data[] = $row;
+		$servers[] = $row;
 	}
-	return $data;
+	return $servers;
 }
 
 function loadGamespyData($ip, $port)
@@ -29,23 +37,26 @@ function loadGamespyData($ip, $port)
 	@fwrite($sock, $queryString);
 
 	// Look through and read each of the 3 packets that get returned
-	$i = 0;
 	while(!$end) 
 	{
-		$i++;
-		if ($i == 3) {
+		if ($i == 2) {
 			@socket_set_timeout($sock, 0, 100000);
 		}
-		error_log('[1a] ' . microtime());
+		error_log("[1a] i: $i, microtime: " . microtime());
 		$bytes = @fread($sock, 1);
-		error_log('[1b] ' . microtime());
+		error_log("[1b] i: $i, microtime: " . microtime());
 		$status = @socket_get_status($sock);
-		error_log('[1c] ' . microtime());
 		$length = $status['unread_bytes'];
-		error_log('[1d] ' . microtime(). ', length: ' . $length);
+		error_log("[1c] i: $i, microtime: " . microtime(). ', length: ' . $length);
+		if ($i == 3) {
+			$test = 1;
+		}
 		if($length > 0)
 		{
 			$Info[$i] = $bytes . fread($sock, $length);
+			$status = @socket_get_status($sock);
+	
+			error_log("[1d] i: $i, microtime: " . microtime(). ', length: ' . $status['unread_bytes']);
 
 			preg_match("/splitnum(...)/is",$Info[$i],$regs);
 			$String = $regs[1];
@@ -68,6 +79,17 @@ function loadGamespyData($ip, $port)
 			}
 		}
 
+		// A packet's maximum size is 1400 bytes (header is 1 byte and body is 1399 bytes).
+		// If we got packet 1 and 2, packet 2's body is smaller than 1399 bytes, there's no packet 3 coming, so don't wait for it
+		// if ($Packet[1] && $Packet[2] && $length < 1400 - 1) {
+		// 	$end = false;
+		// }
+
+		// If we got packet 1 and 2, and packet 2 is the end (last 3 characters is '\x00'), don't wait for packet 3
+			// if ($Packet[1] && $Packet[2] && bin2hex(substr($Packet[2], -3)) == '000000') {
+			// 	$end = true;
+			// }
+
 		if($length == 0) 
 		{
 			$end = true;
@@ -78,7 +100,7 @@ function loadGamespyData($ip, $port)
 
 	// Close the socket and build our packet string
 	@fclose($sock);
-	error_log('[2] ' . microtime());
+	error_log("[2] i: $i, microtime: " . microtime());
 	$Info = $Packet[1] . $Packet[2] . $Packet[3];
 	
 	// If our string is empty, return false
@@ -90,7 +112,6 @@ function loadGamespyData($ip, $port)
 	$output = str_replace($changeChr, "\\", $output);
 	$rules = "x".substr($output,0,strpos($output,"\\\\".chr(1)));
 	$players = "\\".substr($output,strpos($output,"\\\\".chr(1))+3);
-
 	$p3 = strpos($players,"\\\\".chr(2));
 
 	if(!$p3) 
@@ -106,7 +127,27 @@ function loadGamespyData($ip, $port)
 	$players = $p3 ? substr($players,0,$p3) : substr($players,0);
 	$players = str_replace("\\ 0@splitnum\�","",$players);
 	$players = str_replace("\\ 0@splitnum\\�","",$players);
-	$players = str_replace("\\\x10\x20\x30@splitnum\\\x81\x01","",$players);
+	$players = str_replace(" 0@splitnum\\","",$players);
+	$players = str_replace(" 0@splitnum\\�","",$players);
+	$players = str_replace("\x10\x20\x30@splitnum\\\x81\x01","",$players);
+	$players = str_replace("\x10\x20\x30@splitnum\\\x82\x02","",$players);
+	// $players = str_replace("\\\x10\x20\x30splitnum\\\x81\x01","",$players);
+	// $players = str_replace("\\\x10\x20\x30@splitnum\\\x82\x02","",$players);
+	// $players = str_replace("\x10\x20\x30@splitnum\\\x81\x01","",$players);
+	// $players = str_replace("\x10\x20\x30@splitnum\\\x82\x02","",$players);
+	// $players = preg_replace('/\x10\x20\x30@splitnum\\\\\x81\x01/', "", $players);
+	// $players = preg_replace('/\x10\x20\x30@splitnum\\\\\x82\x02/', "", $players);
+	// $players = preg_replace('/\x10\x20\x30@splitnum\\\\([^\\\\]+_)[\\\\]+/', '$1\\\\\\\\', $players);
+	// $players = str_replace("\x10\x20\x30@splitnum\\","",$players);
+	// $players = str_replace("\\\x10\x20\x30@splitnum\\\x81\x01","",$players);
+	// $players = str_replace("\\\x10\x20\x30@splitnum\\\x82\x02","",$players);
+	// $players = str_replace("\\\x10\x20\x30@splitnum","",$players);
+	// $players = str_replace("\x10\x20\x30@splitnum","",$players);
+	// $players = preg_replace('/[^\\\\]+\\\\{2}\x10\x20\x30@splitnum\\\\\x81\x01/',"",$players);
+	// $players = preg_replace('/[^\\\\]+\\\\{2}\x10\x20\x30@splitnum\\\\\x82\x02/',"",$players);
+	// $players = preg_replace('/\\\\{2}\x10\x20\x30@splitnum\\\\\x82\x02/',"",$players);
+	// $p = preg_replace('/.+splitnum(.........).+/', '$1', $players);
+	// echo bin2hex($p);
 
 	//Parse Rules
 	$rule_temp = substr($rules,1);
@@ -251,6 +292,35 @@ function getArmyName($name)
 			return "Unknown Army ($name)";
 			break;
 	}
+}
+
+function getGamespyDataWithPlayerRanks($gamespyData) {
+	foreach (array('team1', 'team2') as $t) {
+		$team = array();
+		foreach ($gamespyData[$t] as $k => $p) {
+			$NICK = $p['name'];
+			include(ROOT . DS . 'queries'. DS .'getPlayerDataByName.php'); // imports the correct sql statement
+			$result = mysqli_query($GLOBALS['link'], $query);
+			$player = mysqli_fetch_assoc($result);
+			if ($player) {
+				// If it's a bot with id of '0', replace with its id in the DB
+				if ($p['pid'] == 0) {
+					$p['pid'] = $player['id'];
+					$p['rank'] = $player['rank'];
+					$team[] = $p;
+				}
+			}else {
+				// The bot is not yet in the DB. 
+				$p['pid'] = 0;
+				$p['rank'] = 0;
+				$team[] = $p;
+			}
+		}
+		if (count($team) > 0) {
+			$gamespyData[$t] = $team;
+		}
+	}
+	return $gamespyData;
 }
 
 ?>
