@@ -39,18 +39,12 @@ function loadGamespyData($ip, $port)
 	// Look through and read each of the 3 packets that get returned
 	while(!$end) 
 	{
-		if ($i == 2) {
-			@socket_set_timeout($sock, 0, 100000);
-		}
 		error_log("[1a] i: $i, microtime: " . microtime());
 		$bytes = @fread($sock, 1);
 		error_log("[1b] i: $i, microtime: " . microtime());
 		$status = @socket_get_status($sock);
 		$length = $status['unread_bytes'];
 		error_log("[1c] i: $i, microtime: " . microtime(). ', length: ' . $length);
-		if ($i == 3) {
-			$test = 1;
-		}
 		if($length > 0)
 		{
 			$Info[$i] = $bytes . fread($sock, $length);
@@ -79,23 +73,17 @@ function loadGamespyData($ip, $port)
 			}
 		}
 
-		// A packet's maximum size is 1400 bytes (header is 1 byte and body is 1399 bytes).
-		// If we got packet 1 and 2, packet 2's body is smaller than 1399 bytes, there's no packet 3 coming, so don't wait for it
-		// if ($Packet[1] && $Packet[2] && $length < 1400 - 1) {
-		// 	$end = false;
-		// }
-
-		// If we got packet 1 and 2, and packet 2 is the end (last 3 characters is '\x00'), don't wait for packet 3
-			// if ($Packet[1] && $Packet[2] && bin2hex(substr($Packet[2], -3)) == '000000') {
-			// 	$end = true;
-			// }
-
 		if($length == 0) 
 		{
 			$end = true;
 		}
 		
 		$i++;
+
+		// If we got all 3 packets, we're done
+		if ($i == 3) {
+			break;
+		}
 	}
 
 	// Close the socket and build our packet string
