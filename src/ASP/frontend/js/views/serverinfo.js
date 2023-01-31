@@ -3,7 +3,15 @@ $(document).ready(function() {
     $("#mws-validate").validate();
     
     // Create our table
-    $(".mws-datatable-fn").dataTable({sPaginationType: "full_numbers"});
+    Table = $(".mws-datatable-fn").dataTable({
+        sPaginationType: "full_numbers",
+        bProcessing: false,
+        bServerSide: true,
+        sAjaxSource: "?task=serverinfo&ajax=list",
+        fnDrawCallback: function() {
+            getStatus();
+        }
+    });
     
     // bind the Config form using 'ajaxForm' 
     $('#mws-validate').ajaxForm({
@@ -23,15 +31,41 @@ $(document).ready(function() {
         width: "600",
     });
     
-    $('#view').live('click', function(e) {
+    $('#edit').live('click', function(e) {
         e.preventDefault();
-        open_modal(this.name);
+        const sid = this.name;
+
+        // Begin the Ajax Request to request user information!
+        $.ajax({
+            type: "POST",
+            url: '?task=serverinfo&ajax=server',
+            data: { action : 'fetch', id : sid },
+            dataType: "json",
+            timeout: 3000, // in milliseconds
+            success: function(result) 
+            {
+                // Create our message!
+                if(result.success == true)
+                {
+                    open_modal(result);
+                }
+                else
+                {
+                    alert( result.message );
+                }
+            },
+            error: function(request, status, err) 
+            {
+                alert('There was an error fetching servers information. Please refresh the page and try again.');
+            }
+        });
     });
     
-    function open_modal(id)
+    function open_modal(result)
     {
         // Set our server ID
-        $('#server-id').attr('value', id);
+        $('#server-id').attr('value', result.id);
+        $('#publicaddress').attr('value', result.publicaddress);
         $('#rcon-port').attr('value', 4711);
         $('#rcon-pass').attr('value', '');
         $('#ajax-message').hide();
@@ -40,7 +74,7 @@ $(document).ready(function() {
         Modal.dialog("option", {
             modal: true, 
             open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
-            title: 'Rcon Configuration (Server ID: ' + id +')',
+            title: 'Rcon Configuration (Server ID: ' + result.id +')',
             closeOnEscape: false, 
             draggable: false,
             resizable: false,
@@ -84,7 +118,7 @@ $(document).ready(function() {
                     }
                 }]
             });
-            getStatus();
+            Table.fnDraw();
         }
         else
         {
@@ -106,7 +140,7 @@ $(document).ready(function() {
         // Begin the Ajax Request for server status
         $.ajax({
             type: "POST",
-            url: '?task=serverinfo',
+            url: '?task=serverinfo&ajax=action',
             data: { action : 'status' },
             dataType: "json",
             timeout: 10000, // in milliseconds
@@ -121,7 +155,7 @@ $(document).ready(function() {
     }
     
     // Do this now
-    getStatus();
+    // getStatus();
     
     // Set Int. to update status every few seconds
     window.setInterval(function(){

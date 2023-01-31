@@ -6,7 +6,9 @@
         <table class="mws-datatable-fn mws-table">
             <thead>
                 <tr>
-                    <th>Server Ip</th>
+                    <th>Server ID</th>
+                    <th>Public Address</th>
+                    <th>IP</th>
                     <th>Name</th>
                     <th>Prefix</th>
                     <th>Port</th>
@@ -18,6 +20,8 @@
             <tbody>
                 {servers}
                     <tr>
+                        <td>{id}</td>
+                        <td>{publicaddress}</td>
                         <td>{ip}</td>
                         <td>{name}</td>
                         <td>{prefix}</td>
@@ -26,7 +30,7 @@
                         <td><div id="status_{id}" style="text-align: center;"><img src="frontend/images/core/alerts/loading.gif"></div></td>
                         <td>
                             <center>
-                                <a href="?task=serverinfo&id={id}">View Server</a>&nbsp; - &nbsp;<a id="view" name="{id}" href="#">Set Rcon Data</a>
+                                <a href="?task=serverinfo&id={id}">View Server</a>&nbsp; - &nbsp;<a id="edit" name="{id}" href="#">Manage</a>
                             </center>
                         </td>
                     </tr>
@@ -34,15 +38,21 @@
             </tbody>
         </table>
         
-        <!-- Hidden Server Viewer -->
+        <!-- Hidden Ajax Thing -->
         <div id="ajax-dialog">
             <div class="mws-dialog-inner">
-                <form id="mws-validate" class="mws-form" action="?task=serverinfo" method="POST">
+                <form id="mws-validate" class="mws-form" action="?task=serverinfo&ajax=server" method="POST">
                     <input type="hidden" name="action" value="configure" />
                     <input type="hidden" name="id" id="server-id"/>
                     <div id="ajax-message" style="display: none;"></div>
                     
                     <div class="mws-form-inline">
+                        <div class="mws-form-row">
+                            <label>Public Address:</label>
+                            <div class="mws-form-item large">
+                                <input id="publicaddress" type="text" name="publicaddress" class="mws-textinput" placeholder="E.g. 1.2.3.4, bf2.example.com, etc."/>
+                            </div>
+                        </div>
                         <div class="mws-form-row">
                             <label>Rcon Port:</label>
                             <div class="mws-form-item large">
