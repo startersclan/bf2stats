@@ -141,9 +141,13 @@ $sqlupgrade[] = array('Alter Player Table (Add `hidden` column)', '2.4.0',
 "ALTER TABLE `player`
 	ADD COLUMN `hidden` int(6) unsigned NOT NULL default '0';");
 
-$sqlupgrade[] = array('Alter Player Table (Add `publicaddress` column)', '2.5.0',
+$sqlupgrade[] = array('Alter Servers Table (Add `publicaddress` column)', '2.5.0',
 "ALTER TABLE `servers`
 	ADD COLUMN `publicaddress` varchar(100) NOT NULL default '' AFTER `id`;");
+
+$sqlupgrade[] = array('Alter Servers Table (Increase `prefix` length)', '2.5.0',
+"ALTER TABLE `servers` 
+	CHANGE `prefix` `prefix` varchar(100) NOT NULL DEFAULT '';");
 
 $sqlupgrade[] = array('Update Version Table', CODE_VER,
 	"INSERT INTO `_version` VALUES ('". CODE_VER ."', ".time().");");
