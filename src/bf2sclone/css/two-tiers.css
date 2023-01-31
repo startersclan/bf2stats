@@ -388,6 +388,9 @@ padding: 70px 0 0 10px;
 font: normal 32px Sylfaen, "Times New Roman", Times, serif;
 line-height: 1em;
 letter-spacing: .02em;
+text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;
 }
 
 body.inner h1 img {
@@ -549,7 +552,47 @@ border-bottom: 1px solid #444;
 background: #5c5f52;
 }
 
+/*
+* servers
+*/
 
+table.servers th,
+table.servers td {
+	word-break: break-all;
+	vertical-align: middle;
+	max-width: 25%;
+}
+
+table.servers img {
+	vertical-align: middle;
+	width: 16px;
+	height: 16px;
+}
+
+/*
+* server
+*/
+
+.server-stat td {
+	width: 25%;
+}
+.server-stat td.column-key {
+	background: #484b3d;
+	border-right: 1px solid #333;
+	font-weight: bold;
+}
+
+.server-stat td.subheading {
+	padding: 4px 4px;
+	font: normal 17px Verdana;
+	background: #383c33;
+}
+
+.server-scoreboard-stat img {
+	vertical-align: middle;
+	width: 16px;
+	height: 16px;
+}
 
 /*
 * player profile

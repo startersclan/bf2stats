@@ -1131,6 +1131,7 @@ $template = '
 		
 		<ul id="navitems">
 			<li><a href="'. $ROOT .'">Home</a></li>
+			<li><a href="'. $ROOT .'?go=servers">Servers</a></li>
 			<li><a href="'. $ROOT .'?go=my-leaderboard">My Leader Board</a></li>
 			<li><a href="'. $ROOT .'?go=currentranking">Rankings</a></li>
 			<li><a href="'. $ROOT .'?go=ubar">UBAR</a></li>

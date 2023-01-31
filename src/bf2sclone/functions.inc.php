@@ -170,4 +170,9 @@ function getPercent($val1, $val2)
 	else
 		return 0;
 }
+
+function esc_attr($val) {
+	return htmlspecialchars($val, ENT_QUOTES);
+}
+
 ?>
