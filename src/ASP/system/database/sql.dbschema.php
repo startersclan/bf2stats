@@ -344,6 +344,7 @@ $sqlschema[] = array('Round History Table',
 $sqlschema[] = array('Servers Table',	
 "CREATE TABLE `servers` (
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	`publicaddress` varchar(100) NOT NULL default '',
 	`ip` varchar(15) NOT NULL default '',
 	`prefix` varchar(30) NOT NULL default '',
 	`name` varchar(100) default NULL,

@@ -28,13 +28,22 @@ class Serverinfo
         }
         
         // Check for post data
-        if($_POST['action'] == 'status')
+        if(isset($_GET['ajax']))
         {
-            $this->Process($result);
-        }
-        elseif($_POST['action'] == 'configure')
-        {
-            $this->Configure();
+            switch($_GET['ajax'])
+            {
+                case "list":
+                    $this->displayServerList();
+                    break;
+                    
+                case "server":
+                    $this->processServer($_POST['id']);
+                    break;
+                    
+                case "action":
+                    $this->processAction($_POST['action'], $result);
+                    break;
+            }
         }
         else
         {
@@ -82,16 +91,177 @@ class Serverinfo
         $Template->set('players_2', $data['team2']);
         $Template->render('serverinfo_detailed');
     }
-    
+
+    public function displayServerList()
+    {
+        /* Array of database columns which should be read and sent back to DataTables. Use a space where
+         * you want to insert a non-database field (for example a counter or static image)
+         */
+        $aColumns = array( 'id', 'publicaddress', 'ip', 'name', 'prefix', 'port', 'queryport');
+        
+        /* Indexed column (used for fast and accurate table cardinality) */
+        $sIndexColumn = "id";
+        
+        /* DB table to use */
+        $sTable = "servers";
+        
+        // Get a column count
+        $aColumnCount = count($aColumns);
+        
+        // Get database connections
+        $DB = Database::GetConnection();
+        
+        /* Paging */
+        $sLimit = "";
+        if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+            $sLimit = "LIMIT ". addslashes( $_GET['iDisplayStart'] ) .", ". addslashes( $_GET['iDisplayLength'] );
+        
+        /*  Ordering */
+        $sOrder = "";
+        if( isset( $_GET['iSortCol_0'] ) )
+        {
+            $sOrder = "ORDER BY  ";
+            for($i = 0; $i < intval($_GET['iSortingCols']); $i++)
+            {
+                if( $_GET[ 'bSortable_'. intval($_GET['iSortCol_'.$i]) ] == "true" )
+                {
+                    $sOrder .= "`". $aColumns[ intval( $_GET['iSortCol_'.$i] ) ]."`". addslashes( $_GET['sSortDir_'.$i] ) .", ";
+                }
+            }
+            
+            $sOrder = substr_replace( $sOrder, "", -2 );
+            if( $sOrder == "ORDER BY" ) $sOrder = "";
+        }
+        
+        /* 
+         * Filtering
+         * NOTE this does not match the built-in DataTables filtering which does it
+         * word by word on any field. It's possible to do here, but concerned about efficiency
+         * on very large tables, and MySQL's regex functionality is very limited
+         */
+        $sWhere = "";
+        if( isset($_GET['sSearch']) && $_GET['sSearch'] != "" )
+        {
+            $sWhere = "WHERE (";
+            for ($i = 0; $i < count($aColumns); $i++)
+            {
+                $sWhere .= "`". $aColumns[$i]."` LIKE '%". addslashes( $_GET['sSearch'] ) ."%' OR ";
+            }
+            $sWhere = substr_replace( $sWhere, "", -3 );
+            $sWhere .= ')';
+        }
+
+        
+        /* Individual column filtering */
+        for($i = 0; $i < count($aColumns); $i++)
+        {
+            if( isset($_GET['bSearchable_'.$i]) && $_GET['bSearchable_'.$i] == "true" && $_GET['sSearch_'.$i] != '' )
+            {
+                $sWhere .= ($sWhere == "") ? "WHERE " : " AND ";
+                $sWhere .= "`".$aColumns[$i]."` LIKE '%". addslashes($_GET['sSearch_'.$i]) ."%' ";
+            }
+        }
+        
+        /* SQL queries, Get data to display */
+        $columns = "`". str_replace(",``", " ", implode("`, `", $aColumns)) ."`";
+        $sQuery = "SELECT SQL_CALC_FOUND_ROWS {$columns} FROM {$sTable} {$sWhere} {$sOrder} {$sLimit}";
+        $rResult = $DB->query( $sQuery )->fetchAll();
+        
+        /* Data set length after filtering */
+        $iFilteredTotal = $DB->query( "SELECT FOUND_ROWS()" )->fetchColumn();
+        
+        /* Total data set length */
+        $iTotal = $DB->query( "SELECT COUNT(`".$sIndexColumn."`) FROM   $sTable" )->fetchColumn();
+
+        /* Output */
+        $output = array(
+            "sEcho" => intval($_GET['sEcho']),
+            "iTotalRecords" => intval($iTotal),
+            "iTotalDisplayRecords" => $iFilteredTotal,
+            "aaData" => array()
+        );
+        
+        // Now add each row to the aaData
+        foreach( $rResult as $aRow )
+        {
+            $row = array();
+            for($i = 0; $i < $aColumnCount; $i++)
+            {
+                if( $aColumns[$i] == "version" )
+                {
+                    /* Special output formatting for 'version' column */
+                    $row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
+                }
+                elseif( $aColumns[$i] != ' ' )
+                {
+                    /* General output */
+                    $row[] = $aRow[ $aColumns[$i] ];
+                }
+            }
+            
+            $row[1] = htmlspecialchars($row[1]);
+            $row[2] = htmlspecialchars($row[2]);
+            $row[3] = htmlspecialchars($row[3]);
+            $row[4] = htmlspecialchars($row[4]);
+            $row[5] = htmlspecialchars($row[5]);
+            $row[6] = htmlspecialchars($row[6]);
+            $row[7] = "<div id='status_{$row[0]}' style='text-align: center;'><img src='frontend/images/core/alerts/loading.gif'></div>";
+            // Add 'View Server' and 'Manage' button
+            $row[8] = "<a href='?task=serverinfo&id={$row[0]}'>View Server</a>&nbsp; - &nbsp;<a id='edit' name='{$row[0]}' href='#'>Manage</a>";
+            $output['aaData'][] = $row;
+        }
+        
+        echo json_encode( $output );
+    }
+
+    public function processServer($id)
+    {
+        // Load the database
+        $DB = Database::GetConnection();
+
+        // Process action
+        switch($_POST['action'])
+        {
+            case 'configure':
+                $this->Configure();
+                break;
+
+            case "fetch":
+                // Get the server
+                $query = "SELECT * FROM `servers` WHERE `id` = ". intval($id);
+                $result = $DB->query( $query );
+                if(!($result instanceof PDOStatement) || !is_array(($row = $result->fetch())))
+                {
+                    echo json_encode( array('success' => false, 'message' => "Server ID ($id) Does Not Exist!") );
+                    die();
+                }
+                
+                echo json_encode( array('success' => true) + $row );
+                break;
+        }
+    }
+
+    public function processAction($action, $result)
+    {
+        // Switch to our actions
+        switch($action)
+        {
+            case 'status':
+                $this->Process($result);
+                break;
+        }
+    }
+
     public function Configure()
     {
         // Get our post data
+        $publicaddress = trim($_POST['publicaddress'], "'`;");
         $port = intval($_POST['port']);
         $password = intval($_POST['password']);
         $id = intval($_POST['id']);
         
         // Load database and query
-        $result = $this->DB->exec("UPDATE `servers` SET `rcon_port` = '$port', `rcon_password` = '$password' WHERE `id`=$id;");
+        $result = $this->DB->exec("UPDATE `servers` SET `publicaddress` = '$publicaddress', `rcon_port` = '$port', `rcon_password` = '$password' WHERE `id`=$id;");
         if($result === false)
         {
             echo json_encode( array('success' => false, 'message' => 'Error updating Rcon data in the database. Please refresh the page and try again.') );
