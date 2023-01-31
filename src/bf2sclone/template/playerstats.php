@@ -889,246 +889,248 @@ $template = '
 								</div>';
 							}
 							$template .= '
-							</tr>
-							<tr>
-								<td>Medals</td>
-								<td class="awards-row extra-space">';
-									$oldcount = $count;
-									$awdcount = getMedalCount();
-									$count = $oldcount+$awdcount;
-									for ($i=$oldcount; $i<$count;$i++)
-									{
+						</td>
+					</tr>
+					<tr>
+						<td>Medals</td>
+						<td class="awards-row extra-space">';
+							$oldcount = $count;
+							$awdcount = getMedalCount();
+							$count = $oldcount+$awdcount;
+							for ($i=$oldcount; $i<$count;$i++)
+							{
 
-										$template .= '
-										<div class="award-inline" onMouseOver="show_mine(this);" onMouseOut="hide_mine(this);">
-											<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/';
-											if ($PlayerAwards[$i][0][LEVEL]>0)
-												$template .= 'front/'.$PlayerAwards[$i][0][AWD];
-											else
-												$template .= 'locked/'.$PlayerAwards[$i][0][AWD];
-											
-											$template .= '.png\');" width="42" height="42" alt="" />
-											<div class="award-pop dir-';
-											if ($i-$oldcount<$awdcount/2)
-												$template .= 'left';
-											else
-												$template .= 'right';
-											
-											$template .= '">
-												<p>
-													<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/perspective/'.$PlayerAwards[$i][0][AWD].'.jpg\');" width="128" height="128" alt="" />
-													<strong>'.$PlayerAwards[$i][0][NAME].'</strong>
-												</p>
-												<ul>
-													<li>First received: '.earned($PlayerAwards[$i][0][FIRST]).'</li>
-													<li>Last awarded: '.earned($PlayerAwards[$i][0][EARNED]).'</li>
-													<li>Total awards: '.$PlayerAwards[$i][0][LEVEL].'</li>
-												</ul>
-											</div>
-										</div>';
-									}
+								$template .= '
+								<div class="award-inline" onMouseOver="show_mine(this);" onMouseOut="hide_mine(this);">
+									<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/';
+									if ($PlayerAwards[$i][0][LEVEL]>0)
+										$template .= 'front/'.$PlayerAwards[$i][0][AWD];
+									else
+										$template .= 'locked/'.$PlayerAwards[$i][0][AWD];
+									
+									$template .= '.png\');" width="42" height="42" alt="" />
+									<div class="award-pop dir-';
+									if ($i-$oldcount<$awdcount/2)
+										$template .= 'left';
+									else
+										$template .= 'right';
+									
+									$template .= '">
+										<p>
+											<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/perspective/'.$PlayerAwards[$i][0][AWD].'.jpg\');" width="128" height="128" alt="" />
+											<strong>'.$PlayerAwards[$i][0][NAME].'</strong>
+										</p>
+										<ul>
+											<li>First received: '.earned($PlayerAwards[$i][0][FIRST]).'</li>
+											<li>Last awarded: '.earned($PlayerAwards[$i][0][EARNED]).'</li>
+											<li>Total awards: '.$PlayerAwards[$i][0][LEVEL].'</li>
+										</ul>
+									</div>
+								</div>';
+							}
 
+							$template .= '
+						</td>
+					</tr>
+					<tr>
+						<td>Ribbons</td>
+						<td class="awards-row extra-space">';
+							$oldcount = $count;
+							$awdcount = getRibbonCount();
+							$count = $oldcount+$awdcount;
+							for ($i=$oldcount; $i<$count;$i++)
+							{
+
+								$template .= '
+								<div class="award-inline" onMouseOver="show_mine(this);" onMouseOut="hide_mine(this);">
+									<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/';
+									if ($PlayerAwards[$i][0][LEVEL]>0)
+										$template .= 'front/'.$PlayerAwards[$i][0][AWD];
+									else
+										$template .= 'locked/'.$PlayerAwards[$i][0][AWD];
+									
+									$template .= '.png\');" width="42" height="42" alt="" />
+									<div class="award-pop dir-';
+									if ($i-$oldcount<$awdcount/2)
+										$template .= 'left';
+									else
+										$template .= 'right';
+									
+									$template .= '">
+										<p>
+											<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/perspective/'.$PlayerAwards[$i][0][AWD].'.jpg\');" width="128" height="128" alt="" />
+											<strong>'.$PlayerAwards[$i][0][NAME].'</strong>
+										</p>
+										<ul>
+											<li>First received: '.earned($PlayerAwards[$i][0][EARNED]).'</li>
+										</ul>
+									</div>
+								</div>';
+							}
+
+							$template .= '
+						</td>
+					</tr>
+					<tr>
+						<td>SF Badges<br />&amp; Medals</td>
+						<td class="awards-row">';
+							$oldcount = $count;
+							$awdcount = getSFBadgeCount();
+							$count = $oldcount+$awdcount;
+							for ($i=$oldcount; $i<$count;$i++)
+							{
+								$awardlevel = getBadgeLevel($PlayerAwards[$i]);
+								if ($i-$oldcount<10)
+								{
 									$template .= '
-								</td>
-							</tr>
+									<div class="award-inline" onMouseOver="show_mine(this);" onMouseOut="hide_mine(this);">
+										<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/';
+										if ($awardlevel>0)
+											$template .= 'front/'.$PlayerAwards[$i][$awardlevel][AWD].'_'.$awardlevel;
+										else
+											$template .= 'locked/'.$PlayerAwards[$i][$awardlevel][AWD].'_0';
 
-							<tr>
-								<td>Ribbons</td>
-								<td class="awards-row extra-space">';
-									$oldcount = $count;
-									$awdcount = getRibbonCount();
-									$count = $oldcount+$awdcount;
-									for ($i=$oldcount; $i<$count;$i++)
-									{
-
-										$template .= '
-										<div class="award-inline" onMouseOver="show_mine(this);" onMouseOut="hide_mine(this);">
-											<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/';
-											if ($PlayerAwards[$i][0][LEVEL]>0)
-												$template .= 'front/'.$PlayerAwards[$i][0][AWD];
-											else
-												$template .= 'locked/'.$PlayerAwards[$i][0][AWD];
+										$template .= '.png\');" width="42" height="42" alt="" />
+										<div class="award-pop dir-';
+										if ($i-$oldcount<$awdcount/2)
+											$template .= 'left';
+										else
+											$template .= 'right';
 											
-											$template .= '.png\');" width="42" height="42" alt="" />
-											<div class="award-pop dir-';
-											if ($i-$oldcount<$awdcount/2)
-												$template .= 'left';
-											else
-												$template .= 'right';
-											
-											$template .= '">
-												<p>
-													<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/perspective/'.$PlayerAwards[$i][0][AWD].'.jpg\');" width="128" height="128" alt="" />
-													<strong>'.$PlayerAwards[$i][0][NAME].'</strong>
-												</p>
-												<ul>
-													<li>First received: '.earned($PlayerAwards[$i][0][EARNED]).'</li>
-												</ul>
-											</div>
-										</div>';
-									}
-
+										$template .= '">
+											<p>
+												<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/perspective/'.$PlayerAwards[$i][$awardlevel][AWD].'_'.$awardlevel.'.jpg\');" width="128" height="128" alt="" />
+												<strong>'.$PlayerAwards[$i][$awardlevel][NAME].'</strong>
+											</p>
+											<ul>
+												<li><strong>Basic</strong>'.earned($PlayerAwards[$i][1][EARNED]).'</li>
+												<li><strong>Veteran</strong>'.earned($PlayerAwards[$i][2][EARNED]).'</li>
+												<li><strong>Expert</strong>'.earned($PlayerAwards[$i][3][EARNED]).'</li>
+											</ul>
+										</div>
+									</div>';
+								}
+								else
+								{
 									$template .= '
-									<tr>
-										<td>SF Badges<br />&amp; Medals</td>
-										<td class="awards-row">';
-											$oldcount = $count;
-											$awdcount = getSFBadgeCount();
-											$count = $oldcount+$awdcount;
-											for ($i=$oldcount; $i<$count;$i++)
-											{
-												$awardlevel = getBadgeLevel($PlayerAwards[$i]);
-												if ($i-$oldcount<10)
-												{
-													$template .= '
-													<div class="award-inline" onMouseOver="show_mine(this);" onMouseOut="hide_mine(this);">
-														<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/';
-														if ($awardlevel>0)
-															$template .= 'front/'.$PlayerAwards[$i][$awardlevel][AWD].'_'.$awardlevel;
-														else
-															$template .= 'locked/'.$PlayerAwards[$i][$awardlevel][AWD].'_0';
+									<div class="award-inline" onMouseOver="show_mine(this);" onMouseOut="hide_mine(this);">
+										<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/';
+										if ($PlayerAwards[$i][0][LEVEL]>0)
+											$template .= 'front/'.$PlayerAwards[$i][0][AWD];
+										else
+											$template .= 'locked/'.$PlayerAwards[$i][0][AWD];
+										
+										$template .= '.png\');" width="42" height="42" alt="" />
+										<div class="award-pop dir-';
+										if ($i-$oldcount<$awdcount/2)
+											$template .= 'left';
+										else
+											$template .= 'right';
+										
+										$template .= '">
+											<p>
+												<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/perspective/'.$PlayerAwards[$i][0][AWD].'.jpg\');" width="128" height="128" alt="" />
+												<strong>'.$PlayerAwards[$i][0][NAME].'</strong>
+											</p>
+											<ul>
+												<li>First received: '.earned($PlayerAwards[$i][0][FIRST]).'</li>
+												<li>Last awarded: '.earned($PlayerAwards[$i][0][EARNED]).'</li>
+												<li>Total awards: '.$PlayerAwards[$i][0][LEVEL].'</li>
+											</ul>
+										</div>
+									</div>';
+								}
+							}
 
-														$template .= '.png\');" width="42" height="42" alt="" />
-														<div class="award-pop dir-';
-														if ($i-$oldcount<$awdcount/2)
-															$template .= 'left';
-														else
-															$template .= 'right';
-															
-														$template .= '">
-															<p>
-																<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/perspective/'.$PlayerAwards[$i][$awardlevel][AWD].'_'.$awardlevel.'.jpg\');" width="128" height="128" alt="" />
-																<strong>'.$PlayerAwards[$i][$awardlevel][NAME].'</strong>
-															</p>
-															<ul>
-																<li><strong>Basic</strong>'.earned($PlayerAwards[$i][1][EARNED]).'</li>
-																<li><strong>Veteran</strong>'.earned($PlayerAwards[$i][2][EARNED]).'</li>
-																<li><strong>Expert</strong>'.earned($PlayerAwards[$i][3][EARNED]).'</li>
-															</ul>
-														</div>
-													</div>';
-												}
-												else
-												{
-													$template .= '
-													<div class="award-inline" onMouseOver="show_mine(this);" onMouseOut="hide_mine(this);">
-														<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/';
-														if ($PlayerAwards[$i][0][LEVEL]>0)
-															$template .= 'front/'.$PlayerAwards[$i][0][AWD];
-														else
-															$template .= 'locked/'.$PlayerAwards[$i][0][AWD];
-														
-														$template .= '.png\');" width="42" height="42" alt="" />
-														<div class="award-pop dir-';
-														if ($i-$oldcount<$awdcount/2)
-															$template .= 'left';
-														else
-															$template .= 'right';
-														
-														$template .= '">
-															<p>
-																<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/perspective/'.$PlayerAwards[$i][0][AWD].'.jpg\');" width="128" height="128" alt="" />
-																<strong>'.$PlayerAwards[$i][0][NAME].'</strong>
-															</p>
-															<ul>
-																<li>First received: '.earned($PlayerAwards[$i][0][FIRST]).'</li>
-																<li>Last awarded: '.earned($PlayerAwards[$i][0][EARNED]).'</li>
-																<li>Total awards: '.$PlayerAwards[$i][0][LEVEL].'</li>
-															</ul>
-														</div>
-													</div>';
-												}
-											}
+							$template .= '
+						</td>
+					</tr>
+					<tr>
+						<td>SF Ribbons</td>
+						<td class="awards-row extra-space">';
+							$oldcount = $count;
+							$awdcount = getSFRibbonCount();
+							$count = $oldcount+$awdcount;
+							for ($i=$oldcount; $i<$count;$i++)
+							{
+								$template .= '
+								<div class="award-inline" onMouseOver="show_mine(this);" onMouseOut="hide_mine(this);">
+									<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/';
+									if ($PlayerAwards[$i][0][LEVEL]>0)
+										$template .= 'front/'.$PlayerAwards[$i][0][AWD];
+									else
+										$template .= 'locked/'.$PlayerAwards[$i][0][AWD];
+									
+									$template .= '.png\');" width="42" height="42" alt="" />
+									<div class="award-pop dir-';
+									if ($i-$oldcount<$awdcount/2)
+										$template .= 'left';
+									else
+										$template .= 'right';
+									
+									$template .= '">
+										<p>
+											<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/perspective/'.$PlayerAwards[$i][0][AWD].'.jpg\');" width="128" height="128" alt="" />
+											<strong>'.$PlayerAwards[$i][0][NAME].'</strong>
+										</p>
+										<ul>
+											<li>First received: '.earned($PlayerAwards[$i][0][EARNED]).'</li>
+										</ul>
+									</div>
+								</div>';
+							}
 
-											$template .= '
-										</td>
-									</tr>
-
-									<tr>
-										<td>SF Ribbons</td>
-										<td class="awards-row extra-space">';
-											$oldcount = $count;
-											$awdcount = getSFRibbonCount();
-											$count = $oldcount+$awdcount;
-											for ($i=$oldcount; $i<$count;$i++)
-											{
-												$template .= '
-												<div class="award-inline" onMouseOver="show_mine(this);" onMouseOut="hide_mine(this);">
-													<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/';
-													if ($PlayerAwards[$i][0][LEVEL]>0)
-														$template .= 'front/'.$PlayerAwards[$i][0][AWD];
-													else
-														$template .= 'locked/'.$PlayerAwards[$i][0][AWD];
-													
-													$template .= '.png\');" width="42" height="42" alt="" />
-													<div class="award-pop dir-';
-													if ($i-$oldcount<$awdcount/2)
-														$template .= 'left';
-													else
-														$template .= 'right';
-													
-													$template .= '">
-														<p>
-															<img src="' . $ROOT . 'spacer.gif" style="background: url(\'' . $ROOT . 'game-images/awards/perspective/'.$PlayerAwards[$i][0][AWD].'.jpg\');" width="128" height="128" alt="" />
-															<strong>'.$PlayerAwards[$i][0][NAME].'</strong>
-														</p>
-														<ul>
-															<li>First received: '.earned($PlayerAwards[$i][0][EARNED]).'</li>
-														</ul>
-													</div>
-												</div>';
-											}
-
-											$template .= '
-										</td>
-									</tr>
-								</td>
-							</tr>
-						</table>';
+							$template .= '
+						</td>
+					</tr>
+				</table>';
 			
 						$RANK_INFO = getNextRankInfo($_GET['pid']);
 						$template .= '
-						<table border="0" cellspacing="0" cellpadding="0" id="tta" class="stat">
-							<tr>
-								<th colspan="2">Time To Advancement</th>
-							</tr>
-							<tr>
-								<td>Rank</td>
-								<td>';
-								foreach($RANK_INFO as $key => $value)
-								{
-									$template .= '
-									<img src="' . $ROOT . 'game-images/ranks/progress/rank_'.$value['rank'].'.png" alt="" style="float: left; margin: 0 5px 5px 0" height="83" width="83" />			
-									<p>
-										<strong>Next Rank: '.$value['title'].'</strong>
-									</p>
-									
-									<div class="progressbar">
-										<div class="progress" style="width: '.$value['percent'].'%"><span>'.$value['percent'].'%</span></div>
-									</div>
-									
-									<small>Score: '. @number_format($player['score']) .' of '. @number_format($value['rank_points']) .'. At your historical rate, you should earn '
-										. @number_format($value['points_needed']) .' in '.$value['days'].' days (or '.$value['time_straight'].' straight).</small>
-									
-									<div class="clear"> </div>';
-								}
-								
-								$template .='	
-								</td>
-							</tr>
-						</table>
-
-						<a id="secondhome" href="'.$ROOT.'"> </a>
-						<!-- end content == footer below -->
-
-						<hr class="clear" />
-						<br><br><br><br><br><br><br><br><br>
+				<table border="0" cellspacing="0" cellpadding="0" id="tta" class="stat">
+					<tr>
+						<th colspan="2">Time To Advancement</th>
+					</tr>
+					<tr>
+						<td>Rank</td>
+						<td>';
+						foreach($RANK_INFO as $key => $value)
+						{
+							$template .= '
+							<img src="' . $ROOT . 'game-images/ranks/progress/rank_'.$value['rank'].'.png" alt="" style="float: left; margin: 0 5px 5px 0" height="83" width="83" />			
+							<p>
+								<strong>Next Rank: '.$value['title'].'</strong>
+							</p>
+							
+							<div class="progressbar">
+								<div class="progress" style="width: '.$value['percent'].'%"><span>'.$value['percent'].'%</span></div>
+							</div>
+							
+							<small>Score: '. @number_format($player['score']) .' of '. @number_format($value['rank_points']) .'. At your historical rate, you should earn '
+								. @number_format($value['points_needed']) .' in '.$value['days'].' days (or '.$value['time_straight'].' straight).</small>
+							
+							<div class="clear"> </div>';
+						}
+						
+						$template .='
+						</td>
 					</tr>
 				</table>
-			</div> <!-- Page 2 -->
-			<div id="footer">This page was processed in {:PROCESSED:} seconds.</div>
-		</div> <!-- page 1 --><!-- content -->
-		
+
+				<a id="secondhome" href="'.$ROOT.'"> </a>
+				<!-- end content == footer below -->
+
+				<hr class="clear" />
+				<br><br><br><br><br><br><br><br><br>
+			</div><!-- stats -->
+
+				</div>
+			</div> <!-- content-id --><!-- content -->
+		</div>	<!-- Page 3 -->
+
+		<div id="footer">This page was last updated {:LASTUPDATE:} ago. Next update will be in {:NEXTUPDATE:}<br>
+		This page was processed in {:PROCESSED:} seconds.</div>
+	
 		<ul id="navitems">
 			<li><a href="'. $ROOT .'">Home</a></li>
 			<li><a href="'. $ROOT .'?go=servers">Servers</a></li>
@@ -1143,7 +1145,9 @@ $template = '
 			<input type="text" name="searchvalue" id="pid" value="" />
 			<input type="submit" class="btn" value="Go" />
 		</form>
-	</div>
+
+	</div><!-- page 2 -->
+</div>
 </body>
 </html>';
 ?>
