@@ -11,10 +11,10 @@ Although BF2Statistics [`3.1.0`](https://github.com/BF2Statistics/ASP) has been 
 ## Usage
 
 ```sh
-docker pull startersclan/bf2stats:2.4.4-asp-nginx
-docker pull startersclan/bf2stats:2.4.4-asp-php
-docker pull startersclan/bf2stats:2.4.4-bf2sclone-nginx
-docker pull startersclan/bf2stats:2.4.4-bf2sclone-php
+docker pull startersclan/bf2stats:2.4.5-asp-nginx
+docker pull startersclan/bf2stats:2.4.5-asp-php
+docker pull startersclan/bf2stats:2.4.5-bf2sclone-nginx
+docker pull startersclan/bf2stats:2.4.5-bf2sclone-php
 ```
 
 See [this](docs/full-bf2-stack-example) example showing how to deploy [Battlefield 2 1.5 server](https://github.com/startersclan/docker-bf2/), [PRMasterserver](https://github.com/startersclan/PRMasterServer) as the master server, and `bf2stats` as the stats web server, using `docker-compose`.
@@ -54,9 +54,9 @@ docker-compose restart bf2
 
 # Development - Install vscode extensions
 # Once installed, set breakpoints in code, and press F5 to start debugging.
-code-server --install-extension bmewburn.vscode-intelephense-client # PHP intellisense
-code-server --install-extension xdebug.php-debug # PHP remote debugging via xdebug
-code-server --install-extension ms-python.python # Python intellisense
+code --install-extension bmewburn.vscode-intelephense-client # PHP intellisense
+code --install-extension xdebug.php-debug # PHP remote debugging via xdebug
+code --install-extension ms-python.python # Python intellisense
 # If xdebug is not working, iptables INPUT chain may be set to DROP on the docker bridge.
 # Execute this to allow php to reach the host machine via the docker0 bridge
 sudo iptables -A INPUT -i br+ -j ACCEPT
@@ -116,7 +116,7 @@ docker volume rm bf2stats_db-volume
 ```sh
 # Bump version across docs and source code
 MOST_RECENT_TAG_REGEX=$( git --no-pager tag -l --sort=-version:refname | head -n1 | sed 's@\.@\\.@g' )
-TAG=2.4.4
+TAG=2.4.5
 git ls-files | grep -E '(^docker-compose.yml|^README.md|^docs/|index.php|bf2statistics.php|BF2StatisticsConfig.py)' | while read -r l; do sed -i "s/\b$MOST_RECENT_TAG_REGEX\b/$TAG/g" "$l"; done
 git checkout -b "chore/bump-version-to-$TAG"
 git add .
