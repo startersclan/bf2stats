@@ -39,7 +39,12 @@ function intToMins($time)
 	return $mins = round($time/60, 0);
 }
 
-/* CHACHING FUNCTIONS */
+/* CACHING FUNCTIONS */
+
+function isCachedEnabled()
+{
+	return RANKING_REFRESH_TIME > 0;
+}
 
 function isCached($id)
 {
