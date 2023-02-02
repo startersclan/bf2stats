@@ -11,10 +11,10 @@ Although BF2Statistics [`3.1.0`](https://github.com/BF2Statistics/ASP) has been 
 ## Usage
 
 ```sh
-docker pull startersclan/bf2stats:2.3.7-asp-nginx
-docker pull startersclan/bf2stats:2.3.7-asp-php
-docker pull startersclan/bf2stats:2.3.7-bf2sclone-nginx
-docker pull startersclan/bf2stats:2.3.7-bf2sclone-php
+docker pull startersclan/bf2stats:2.3.8-asp-nginx
+docker pull startersclan/bf2stats:2.3.8-asp-php
+docker pull startersclan/bf2stats:2.3.8-bf2sclone-nginx
+docker pull startersclan/bf2stats:2.3.8-bf2sclone-php
 ```
 
 See [this](docs/full-bf2-stack-example) example showing how to deploy [Battlefield 2 1.5 server](https://github.com/startersclan/docker-bf2/), [PRMasterserver](https://github.com/startersclan/PRMasterServer) as the master server, and `bf2stats` as the stats web server, using `docker-compose`.
@@ -115,8 +115,8 @@ docker volume rm bf2stats_db-volume
 
 ```sh
 # Bump version across docs and source code
-MOST_RECENT_TAG_REGEX='2\.3\.5'
-TAG=2.3.7
+MOST_RECENT_TAG_REGEX='2\.3\.7'
+TAG=2.3.8
 git ls-files | grep -E '(^docker-compose.yml|^README.md|^docs/|index.php|bf2statistics.php|BF2StatisticsConfig.py)' | while read -r l; do sed -i "s/\b$MOST_RECENT_TAG_REGEX\b/$TAG/g" "$l"; done
 git checkout -b "chore/bump-version-to-$TAG"
 git add .
