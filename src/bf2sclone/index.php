@@ -128,7 +128,9 @@ if($GO == "0" && $PID)
 		include( TEMPLATE_PATH . 'playerstats.php' );
 
 		// write cache file
-		writeCache($PID, trim($template));
+		if (isCachedEnabled()) {
+			writeCache($PID, trim($template));
+		}
 		$LASTUPDATE = intToTime(0);
 		$NEXTUPDATE = intToTime(RANKING_REFRESH_TIME);
 		$template 	= str_replace('{:LASTUPDATE:}', $LASTUPDATE, $template);
@@ -156,7 +158,9 @@ elseif(strcasecmp($GO, 'currentranking') == 0)
 		include( TEMPLATE_PATH .'current-ranking.php');
 
 		// write cache file
-		writeCache('current-ranking', $template);
+		if (isCachedEnabled()) {
+			writeCache('current-ranking', $template);
+		}
 		$LASTUPDATE = intToTime(0);
 		$NEXTUPDATE = intToTime(RANKING_REFRESH_TIME);
 	}
@@ -257,7 +261,9 @@ elseif(strcasecmp($GO, 'servers') == 0 && !$SID)
 		include( TEMPLATE_PATH .'servers.php');
 
 		// write cache file
-		writeCache('servers', $template);
+		if (isCachedEnabled()) {
+			writeCache('servers', $template);
+		}
 		$LASTUPDATE = intToTime(0);
 		$NEXTUPDATE = intToTime(RANKING_REFRESH_TIME);
 	}
@@ -292,7 +298,9 @@ elseif(strcasecmp($GO, 'servers') == 0 && $SID)
 		include( TEMPLATE_PATH .'server.php');
 
 		// write cache file
-		writeCache("servers-$SID", $template);
+		if (isCachedEnabled()) {
+			writeCache("servers-$SID", $template);
+		}
 		$LASTUPDATE = intToTime(0);
 		$NEXTUPDATE = intToTime(RANKING_REFRESH_TIME);
 	}
@@ -351,7 +359,9 @@ else
 		include( TEMPLATE_PATH .'home.php');
 
 		// write cache file
-		writeCache('home', $template);
+		if (isCachedEnabled()) {
+			writeCache('home', $template);
+		}
 		$LASTUPDATE = intToTime(0);
 		$NEXTUPDATE = intToTime(RANKING_REFRESH_TIME);
 	}
