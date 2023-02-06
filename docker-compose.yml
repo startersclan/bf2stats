@@ -5,7 +5,6 @@ services:
     image: startersclan/docker-bf2:v1.5.3153.0
     volumes:
       - ./config/bf2/mods/bf2/ai/aidefault-custom.ai:/server/bf2/mods/bf2/ai/aidefault.ai:ro # Customize bots
-      - ./config/bf2/mods/bf2/ai/aibehaviours-fixlookatwrapper.ai:/server/bf2/mods/bf2/ai/aibehaviours.ai:ro # LoopAtWrapper fix
       - ./config/bf2/mods/bf2/settings/serversettings-custom.con:/server/bf2/mods/bf2/settings/serversettings.con:ro # Server config
       - ./config/bf2/mods/bf2/settings/maplist-custom-coop.con:/server/bf2/mods/bf2/settings/maplist.con:ro # Maplist (coop)
       # - ./config/bf2/mods/bf2/settings/maplist-custom-cq.con:/server/bf2/mods/bf2/settings/maplist.con:ro # Maplist (cq)
@@ -23,7 +22,7 @@ services:
     tty: true
     stdin_open: true
 
-  # The gamespy server
+  # The Gamespy master server
   prmasterserver:
     image: startersclan/prmasterserver:v0.1.0
     volumes:
