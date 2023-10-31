@@ -122,7 +122,10 @@ services:
           chown -R 999:999 /var/lib/mysql
 
   asp-nginx:
-    image: nginx:1.21-alpine
+    build:
+      dockerfile: Dockerfile.asp-nginx
+      context: .
+      target: dev
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${COMPOSE_PROJECT_NAME?err}_traefik-network"
@@ -131,7 +134,7 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME?err}-asp-gamespy-http.entrypoints=web"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME?err}-asp-gamespy-http.rule=Host(`bf2web.gamespy.com`)" # Note: `bf2web.gamespy.com` doesn't need https. The BF2 client BFHQ makes a HTTP requests to `bf2web.gamespy.com` with `Host: bf2web.gamespy.com`.
     volumes:
-      - ./src/ASP:/src/ASP
+      - ./src:/src:ro
       - ./config/ASP/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - 8081:80
@@ -150,13 +153,14 @@ services:
 
   asp-php:
     build:
-      dockerfile: Dockerfile.asp-php.dev
+      dockerfile: Dockerfile.asp-php
       context: .
+      target: dev
     volumes:
       - ./src/ASP:/src/ASP
       - ./config/ASP/config.php:/src/ASP/system/config/config.php # Main config file. Must be writeable or else ASP will throw an exception. Customize as needed
-      - ./config/ASP/php/conf.d/php.ini:/usr/local/etc/php/conf.d/php.ini:ro
-      - ./config/ASP/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+      # - ./config/ASP/php/conf.d/php.ini:/usr/local/etc/php/conf.d/php.ini:ro
+      # - ./config/ASP/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
       - backups-volume:/src/ASP/system/database/backups # This volume is effectively unused since ASP doesn't allow DB backups for a remote DB, but mount it anyway to avoid errors.
       - logs-volume:/src/ASP/system/logs
       - snapshots-volume:/src/ASP/system/snapshots
@@ -170,9 +174,12 @@ services:
       - init-container
 
   bf2sclone-nginx:
-    image: nginx:1.21-alpine
+    build:
+      dockerfile: Dockerfile.bf2sclone-nginx
+      context: .
+      target: dev
     volumes:
-      - ./src/bf2sclone:/src/bf2sclone
+      - ./src/bf2sclone:/src/bf2sclone:ro
       - ./config/bf2sclone/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - 8082:80
@@ -185,13 +192,14 @@ services:
 
   bf2sclone-php:
     build:
-      dockerfile: Dockerfile.bf2sclone-php.dev
+      dockerfile: Dockerfile.bf2sclone-php
       context: .
+      target: dev
     volumes:
       - ./src/bf2sclone:/src/bf2sclone
       - ./config/bf2sclone/config.inc.php:/src/bf2sclone/config.inc.php:ro # Main config file. Customize as needed
-      - ./config/bf2sclone/php/conf.d/php.ini:/usr/local/etc/php/conf.d/php.ini:ro
-      - ./config/bf2sclone/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+      # - ./config/bf2sclone/php/conf.d/php.ini:/usr/local/etc/php/conf.d/php.ini:ro
+      # - ./config/bf2sclone/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
       - bf2sclone-cache-volume:/src/bf2sclone/cache
     networks:
       - bf2-network
