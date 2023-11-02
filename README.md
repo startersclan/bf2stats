@@ -2,7 +2,10 @@
 
 [![github-actions](https://github.com/startersclan/bf2stats/workflows/ci-master-pr/badge.svg)](https://github.com/startersclan/bf2stats/actions)
 [![github-release](https://img.shields.io/github/v/release/startersclan/bf2stats?style=flat-square)](https://github.com/startersclan/bf2stats/releases/)
-[![docker-image-size](https://img.shields.io/docker/image-size/startersclan/bf2stats/asp-nginx)](https://hub.docker.com/r/startersclan/bf2stats)
+[![docker-image-size](https://img.shields.io/docker/image-size/startersclan/bf2stats/master-asp-nginx?label=asp-nginx)](https://hub.docker.com/r/startersclan/asp)
+[![docker-image-size](https://img.shields.io/docker/image-size/startersclan/bf2stats/master-asp-php?label=asp-php)](https://hub.docker.com/r/startersclan/asp)
+[![docker-image-size](https://img.shields.io/docker/image-size/startersclan/bf2stats/master-bf2sclone-nginx?label=bf2sclone-nginx)](https://hub.docker.com/r/startersclan/asp)
+[![docker-image-size](https://img.shields.io/docker/image-size/startersclan/bf2stats/master-bf2sclone-php?label=bf2sclone-php)](https://hub.docker.com/r/startersclan/asp)
 
 BF2Statistics [`2.x.x`](https://code.google.com/archive/p/bf2stats/) with docker support.
 
@@ -25,7 +28,7 @@ See [this](docs/bf2hub-bf2stats-example) example showing how to deploy [Battlefi
 
 ```sh
 # 1. Start BF2 server, Gamespy server, and bf2stats
-docker-compose up
+docker-compose up --build
 # ASP available at http://localhost:8081/ASP. Username: admin, password admin. Login and set up the DB the first time. See ./config/ASP/config.php
 # bf2sclone available at http://localhost:8082
 # phpmyadmin available at http://localhost:8083. Username: admin, password: admin. See ./config/ASP/config.php config file
@@ -87,10 +90,10 @@ docker exec -it $( docker-compose ps -q asp-php ) ls -al /src/ASP/system/snapsho
 docker-compose -f docker-compose.test.yml up
 
 # Test production builds locally
-docker build -t startersclan/bf2stats:asp-nginx -f Dockerfile.asp-nginx.prod .
-docker build -t startersclan/bf2stats:asp-php -f Dockerfile.asp-php.prod .
-docker build -t startersclan/bf2stats:bf2sclone-nginx -f Dockerfile.bf2sclone-nginx.prod .
-docker build -t startersclan/bf2stats:bf2sclone-php -f Dockerfile.bf2sclone-php.prod .
+docker build -t startersclan/bf2stats:asp-nginx -f Dockerfile.asp-nginx --target prod .
+docker build -t startersclan/bf2stats:asp-php -f Dockerfile.asp-php --target prod .
+docker build -t startersclan/bf2stats:bf2sclone-nginx -f Dockerfile.bf2sclone-nginx --target prod .
+docker build -t startersclan/bf2stats:bf2sclone-php -f Dockerfile.bf2sclone-php --target prod .
 
 # Dump the DB
 docker exec $( docker-compose ps -q db ) mysqldump -uroot -padmin bf2stats | gzip > bf2stats.sql.gz

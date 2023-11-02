@@ -246,7 +246,7 @@ Cons:
 
 Pros:
 
-- Most scalable. You configure the DNS server via `DHCP`, so that every client that connects to a `DHCP` server (e.g. router) are configured to use the DNS server. No client configuration needed
+- Most scalable. You configure the DNS server via `DHCP`, so that every client that connects to a `DHCP` server (e.g. router) is configured to use the DNS server. No client configuration needed
 - Easy to change to another gamespy server
 
 Cons:
