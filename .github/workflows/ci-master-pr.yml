@@ -28,6 +28,7 @@ jobs:
         key: ${{ runner.os }}-buildx-asp-nginx-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-buildx-asp-nginx-
+          ${{ runner.os }}-buildx-
 
     - name: Cache Docker layers (asp-php)
       uses: actions/cache@v3
@@ -36,6 +37,7 @@ jobs:
         key: ${{ runner.os }}-buildx-asp-php-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-buildx-asp-php-
+          ${{ runner.os }}-buildx-
 
     - name: Cache Docker layers (bf2sclone-nginx)
       uses: actions/cache@v3
@@ -44,6 +46,7 @@ jobs:
         key: ${{ runner.os }}-buildx-bf2sclone-nginx-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-buildx-bf2sclone-nginx-
+          ${{ runner.os }}-buildx-
 
     - name: Cache Docker layers (bf2sclone-php)
       uses: actions/cache@v3
@@ -52,6 +55,7 @@ jobs:
         key: ${{ runner.os }}-buildx-bf2sclone-php-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-buildx-bf2sclone-php-
+          ${{ runner.os }}-buildx-
 
     - name: Print buildx and compose
       run: |
@@ -103,7 +107,7 @@ jobs:
     - name: Cache Docker layers
       uses: actions/cache@v3
       with:
-        path: /tmp/.buildx-cache
+        path: /tmp/.buildx-cache-${{ matrix.variant }}
         key: ${{ runner.os }}-buildx-${{ matrix.variant }}-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-buildx-${{ matrix.variant }}-
@@ -149,8 +153,8 @@ jobs:
         platforms: linux/amd64
         push: false
         tags: ${{ steps.meta.outputs.tags }}
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: type=local,src=/tmp/.buildx-cache-${{ matrix.variant }}
+        cache-to: type=local,dest=/tmp/.buildx-cache-${{ matrix.variant }}-new,mode=max
 
     - name: Build and push
       # Run on master and tags
@@ -163,16 +167,16 @@ jobs:
         platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x
         push: true
         tags: ${{ steps.meta.outputs.tags }}
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        cache-from: type=local,src=/tmp/.buildx-cache-${{ matrix.variant }}
+        cache-to: type=local,dest=/tmp/.buildx-cache-${{ matrix.variant }}-new,mode=max
 
     # Temp fix
     # https://github.com/docker/build-push-action/issues/252
     # https://github.com/moby/buildkit/issues/1896
     - name: Move cache
       run: |
-        rm -rf /tmp/.buildx-cache
-        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        rm -rf /tmp/.buildx-cache-${{ matrix.variant }}
+        mv /tmp/.buildx-cache-${{ matrix.variant }}-new /tmp/.buildx-cache-${{ matrix.variant }}
 
   update-draft-release:
     needs: [test, build]
