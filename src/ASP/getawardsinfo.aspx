@@ -39,7 +39,10 @@ require(SYSTEM_PATH . DS . 'functions.php');
 // Set Error Reporting
 error_reporting(E_ALL);
 ini_set("log_errors", "1");
-ini_set("error_log", SYSTEM_PATH . DS . 'logs' . DS . 'php_errors.log');
+if (!getenv('PHP_VERSION')) {
+    # Not running in docker. Log errors to file
+    ini_set("error_log", SYSTEM_PATH . DS . 'logs' . DS . 'php_errors.log');
+}
 ini_set("display_errors", "0");
 
 //Disable Zlib Compression
@@ -62,35 +65,35 @@ else
         $connection = Database::Connect('bf2stats',
             array(
                 'driver' => 'mysql',
-                'host' => Config::Get('db_host'), 
-                'port' => Config::Get('db_port'), 
-                'database' => Config::Get('db_name'), 
-                'username' => Config::Get('db_user'), 
+                'host' => Config::Get('db_host'),
+                'port' => Config::Get('db_port'),
+                'database' => Config::Get('db_name'),
+                'username' => Config::Get('db_user'),
                 'password' => Config::Get('db_pass')
             )
         );
     }
     catch( Exception $e ) {
-        $out = "E\nH\tasof\terr\n" . 
+        $out = "E\nH\tasof\terr\n" .
             "D\t" . time() . "\tDatabase Connect Error\n";
         $num = strlen(preg_replace('/[\t\n]/', '', $out));
         $out .= "$\t$num\t$";
         die($out);
     }
-    
+
 	// Prepare our output header
 	$out = "O\n" .
 		"H\tpid\tasof\n" .
 		"D\t$pid\t" . time() . "\n" .
 		"H\taward\tlevel\twhen\tfirst\n";
-	
+
 	// Query and get all of the Players awards
 	$query = "SELECT `awd`, `level`, `earned`, `first` FROM `awards` WHERE `id` = :pid ORDER BY `id`";
-    
+
     // Use a prepared statement to prevent Sql Injection (level 1)
     $stmt = $connection->prepare($query);
     $stmt->bindValue(':pid', intval($pid), PDO::PARAM_INT);
-    
+
     // try and execute the prepared statement
 	$result = $stmt->execute();
 	while($row = $stmt->fetch())
@@ -98,7 +101,7 @@ else
 		$first = (($row['awd'] > 2000000) && ($row['awd'] < 3000000)) ? $row['first'] : 0;
 		$out .= "D\t{$row['awd']}\t{$row['level']}\t{$row['earned']}\t{$first}\n";
 	}
-	
+
 	$num = strlen(preg_replace('/[\t\n]/','',$out));
 	print $out . "$\t" . $num . "\t$";
 }
