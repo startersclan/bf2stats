@@ -29,17 +29,15 @@ You should see something like:
 
 ```sh
 $ docker-compose up
-[+] Running 10/0
- ⠿ Container bf2stats-phpmyadmin-1       Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-bf2-1              Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-traefik-1          Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-init-container-1   Created                                                                                                                                            0.0s
- ⠿ Container bf2stats-db-1               Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-asp-php-1          Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-bf2sclone-php-1    Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-asp-nginx-1        Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-bf2sclone-nginx-1  Running                                                                                                                                            0.0s
-Attaching to bf2stats-asp-nginx-1, bf2stats-asp-php-1, bf2stats-bf2-1, bf2stats-bf2sclone-nginx-1, bf2stats-bf2sclone-php-1, bf2stats-coredns-1, bf2stats-db-1, bf2stats-init-container-1, bf2stats-phpmyadmin-1, bf2stats-traefik-1
+[+] Running 7/7
+ ✔ Container bf2stats-bf2sclone-1       Running                                                                                                                                                                                0.1s
+ ✔ Container bf2stats-phpmyadmin-1      Running                                                                                                                                                                                0.0s
+ ✔ Container bf2stats-init-container-1  Running                                                                                                                                                                                0.0s
+ ✔ Container bf2stats-traefik-1         Running                                                                                                                                                                                0.0s
+ ✔ Container bf2stats-asp-1             Running                                                                                                                                                                              0.1s
+ ✔ Container bf2stats-db-1              Running                                                                                                                                                                              0.1s
+ ✔ Container bf2stats-bf2-1             Running                                                                                                                                                                              0.0s
+Attaching to bf2stats-asp-1, bf2stats-bf2-1, bf2stats-bf2sclone-1, bf2stats-db-1, bf2stats-init-container-1, bf2stats-phpmyadmin-1, bf2stats-traefik-1                                                                                                                                           0.0s
 ```
 
 The stack is now running:
@@ -113,21 +111,21 @@ docker-compose restart bf2
 docker attach $( docker-compose ps -q bf2 )
 # BF2 server - Exec into container
 docker exec -it $( docker-compose ps -q bf2) bash
-# BF2 server - Read python logs
+# BF2 server - Read logs
 docker exec -it $( docker-compose ps -q bf2 ) bash -c 'cat python/bf2/logs/bf2game_*'
 # BF2 server - List snapshots
-docker exec -it $( docker-compose ps -q bf2 ) bash -c 'ls -al python/bf2/logs/snapshots/sent'
-docker exec -it $( docker-compose ps -q bf2 ) bash -c 'ls -al python/bf2/logs/snapshots/unsent'
+docker exec -it $( docker-compose ps -q bf2 ) ls -alR python/bf2/logs/snapshots/unsent
 
-# asp-php - Exec into container
-docker exec -it $( docker-compose ps -q asp-php ) sh
-# asp-php - Read logs
-docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/stats_debug.log
-docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/validate_awards.log
-docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/validate_ranks.log
-# asp-php - List snapshots
-docker exec -it $( docker-compose ps -q asp-php ) ls -al /src/ASP/system/snapshots/processed
-docker exec -it $( docker-compose ps -q asp-php ) ls -al /src/ASP/system/snapshots/temp
+# asp - Exec into container
+docker exec -it $( docker-compose ps -q asp ) sh
+# asp - List backups
+docker exec -it $( docker-compose ps -q asp ) ls -al /src/ASP/system/database/backups
+# asp - List config
+docker exec -it $( docker-compose ps -q asp ) ls -al /src/ASP/system/config
+# asp - Read logs
+docker exec -it $( docker-compose ps -q asp ) ls -al /src/ASP/system/logs
+# asp - List snapshots
+docker exec -it $( docker-compose ps -q asp ) ls -alR /src/ASP/system/snapshots
 
 # Dump the DB
 docker exec $( docker-compose ps -q db ) mysqldump -uroot -padmin bf2stats | gzip > bf2stats.sql.gz
@@ -139,7 +137,7 @@ zcat bf2stats.sql.gz | docker exec -i $( docker-compose ps -q db ) mysql -uroot 
 docker-compose down
 
 # Cleanup. Warning: This destroys the all data!
-docker-compose down
+docker-compose down --remove-orphans
 docker volume rm bf2stats_prmasterserver-volume
 docker volume rm bf2stats_traefik-acme-volume
 docker volume rm bf2stats_backups-volume

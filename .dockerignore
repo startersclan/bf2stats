@@ -1,0 +1,8 @@
+/.github
+/.vscode
+/docs
+/src/python
+/test
+/Tools
+/docker-compose.*.yml
+/docker-compose.yml

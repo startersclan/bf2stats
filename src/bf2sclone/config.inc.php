@@ -1,23 +1,35 @@
 <?php
+function getVar($name, $default) {
+	$value = getenv($name) !== false ? getenv($name) : $default;
+	$value = gettype($default) == 'boolean' && $value == 'false' ? false : $value; // Fix string 'false' becoming true for boolean when using settype
+	settype($value, gettype($default));
+    return $value;
+}
+function defineVar($name, $default) {
+	$value = getenv($name) !== false ? getenv($name) : $default;
+	$value = gettype($default) == 'boolean' && $value == 'false' ? false : $value; // Fix string 'false' becoming true for boolean when using settype
+	settype($value, gettype($default));
+	define($name, $value);
+}
 
 // Database connection information
-$DBIP = 'db';
-$DBNAME = 'bf2stats';
-$DBLOGIN = 'admin';
-$DBPASSWORD = 'admin';
+$DBIP = getVar('DBIP', '127.0.0.1');
+$DBNAME = getVar('DBNAME', 'bf2stats');
+$DBLOGIN = getVar('DBLOGIN', 'admin');
+$DBPASSWORD = getVar('DBPASSWORD', 'admin');
 
 // Leader board title
-$TITLE = 'BF2S Clone';
+$TITLE = getVar('TITLE', 'BF2S Clone');
 
 // Refresh time in seconds for stats
-define ('RANKING_REFRESH_TIME', 600); // -> default: 600 seconds (10 minutes)
+defineVar('RANKING_REFRESH_TIME', 600); // -> default: 600 seconds (10 minutes)
 
 // Whether to hide bots from rankings
-define ('RANKING_HIDE_BOTS', false);
+defineVar('RANKING_HIDE_BOTS', false);
 
 // Whether to hide hidden players from rankings
-define ('RANKING_HIDE_HIDDEN_PLAYERS', false);
+defineVar('RANKING_HIDE_HIDDEN_PLAYERS', false);
 
 // Number of players to show on the leaderboard frontpage
-define ('LEADERBOARD_COUNT', 25);
+defineVar('LEADERBOARD_COUNT', 25);
 ?>

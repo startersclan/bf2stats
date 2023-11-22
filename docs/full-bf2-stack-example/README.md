@@ -47,18 +47,16 @@ You should see something like:
 
 ```sh
 $ docker-compose up
-[+] Running 10/0
- ⠿ Container bf2stats-prmasterserver-1   Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-phpmyadmin-1       Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-bf2-1              Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-traefik-1          Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-init-container-1   Created                                                                                                                                            0.0s
- ⠿ Container bf2stats-db-1               Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-asp-php-1          Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-bf2sclone-php-1    Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-asp-nginx-1        Running                                                                                                                                            0.0s
- ⠿ Container bf2stats-bf2sclone-nginx-1  Running                                                                                                                                            0.0s
-Attaching to bf2stats-asp-nginx-1, bf2stats-asp-php-1, bf2stats-bf2-1, bf2stats-bf2sclone-nginx-1, bf2stats-bf2sclone-php-1, bf2stats-coredns-1, bf2stats-db-1, bf2stats-init-container-1, bf2stats-phpmyadmin-1, bf2stats-prmasterserver-1, bf2stats-traefik-1
+ ✔ Container bf2stats-bf2sclone-1           Running                                                                                                                                                                            0.1s
+ ✔ Container bf2stats-init-container-1      Running                                                                                                                                                                            0.1s
+ ✔ Container bf2stats-asp-1                 Running                                                                                                                                                                            0.1s
+ ✔ Container bf2stats-phpmyadmin-1          Running                                                                                                                                                                            0.1s
+ ✔ Container bf2stats-traefik-1             Running                                                                                                                                                                            0.1s
+ ✔ Container bf2stats-prmasterserver-1      Running                                                                                                                                                                            0.0s
+ ✔ Container bf2stats-coredns-1             Running                                                                                                                                                                          0.1s
+ ✔ Container bf2stats-db-1                  Running                                                                                                                                                                            0.0s
+ ✔ Container bf2stats-bf2-1                 Running                                                                                                                                                                            0.0s
+Attaching to bf2stats-asp-1, bf2stats-bf2-1, bf2stats-bf2sclone-1, bf2stats-coredns-1, bf2stats-db-1, bf2stats-init-container-1, bf2stats-phpmyadmin-1, bf2stats-prmasterserver-1, bf2stats-traefik-1
 ```
 
 The full stack is now running:
@@ -92,17 +90,17 @@ docker-compose restart bf2
 Configure `coredns` to spoof all gamespy DNS in [config/coredns/hosts](config/coredns/hosts), replacing the IP addresses with your machine's external IP address which you specified in Step `2.`. Assuming your external IP is `192.168.1.100`, it should look like:
 
 ```txt
-192.168.1.100 eapusher.dice.se
 192.168.1.100 battlefield2.available.gamespy.com
 192.168.1.100 battlefield2.master.gamespy.com
 192.168.1.100 battlefield2.ms14.gamespy.com
-192.168.1.100 gamestats.gamespy.com
 192.168.1.100 master.gamespy.com
 192.168.1.100 motd.gamespy.com
 192.168.1.100 gpsp.gamespy.com
 192.168.1.100 gpcm.gamespy.com
 192.168.1.100 gamespy.com
 192.168.1.100 bf2web.gamespy.com
+192.168.1.100 gamestats.gamespy.com
+192.168.1.100 eapusher.dice.se
 ```
 
 Save the file. `coredns` immediately reads the changed file and serves the updated DNS records.
@@ -183,21 +181,21 @@ docker-compose restart bf2
 docker attach $( docker-compose ps -q bf2 )
 # BF2 server - Exec into container
 docker exec -it $( docker-compose ps -q bf2) bash
-# BF2 server - Read python logs
+# BF2 server - Read logs
 docker exec -it $( docker-compose ps -q bf2 ) bash -c 'cat python/bf2/logs/bf2game_*'
 # BF2 server - List snapshots
-docker exec -it $( docker-compose ps -q bf2 ) bash -c 'ls -al python/bf2/logs/snapshots/sent'
-docker exec -it $( docker-compose ps -q bf2 ) bash -c 'ls -al python/bf2/logs/snapshots/unsent'
+docker exec -it $( docker-compose ps -q bf2 ) ls -alR python/bf2/logs/snapshots/unsent
 
-# asp-php - Exec into container
-docker exec -it $( docker-compose ps -q asp-php ) sh
-# asp-php - Read logs
-docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/stats_debug.log
-docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/validate_awards.log
-docker exec -it $( docker-compose ps -q asp-php ) cat /src/ASP/system/logs/validate_ranks.log
-# asp-php - List snapshots
-docker exec -it $( docker-compose ps -q asp-php ) ls -al /src/ASP/system/snapshots/processed
-docker exec -it $( docker-compose ps -q asp-php ) ls -al /src/ASP/system/snapshots/temp
+# asp - Exec into container
+docker exec -it $( docker-compose ps -q asp ) sh
+# asp - List backups
+docker exec -it $( docker-compose ps -q asp ) ls -al /src/ASP/system/database/backups
+# asp - List config
+docker exec -it $( docker-compose ps -q asp ) ls -al /src/ASP/system/config
+# asp - Read logs
+docker exec -it $( docker-compose ps -q asp ) ls -al /src/ASP/system/logs
+# asp - List snapshots
+docker exec -it $( docker-compose ps -q asp ) ls -alR /src/ASP/system/snapshots
 
 # Dump the DB
 docker exec $( docker-compose ps -q db ) mysqldump -uroot -padmin bf2stats | gzip > bf2stats.sql.gz
@@ -209,7 +207,7 @@ zcat bf2stats.sql.gz | docker exec -i $( docker-compose ps -q db ) mysql -uroot 
 docker-compose down
 
 # Cleanup. Warning: This destroys the all data!
-docker-compose down
+docker-compose down --remove-orphans
 docker volume rm bf2stats_prmasterserver-volume
 docker volume rm bf2stats_traefik-acme-volume
 docker volume rm bf2stats_backups-volume
@@ -221,7 +219,7 @@ docker volume rm bf2stats_db-volume
 
 ## Background: Keeping Battlefield 2 working
 
-Problem: The Battlefield 2 client and server binaries are hardcoded with gamespy DNS records, e.g. `bf2web.gamespy.com`. Because gamespy has shut down, the DNS records no longer exist on public DNS servers. In order to keep the game's multiplayer working, we need:
+Problem: The Battlefield 2 client and server binaries are hardcoded with gamespy DNS records, e.g. `bf2web.gamespy.com`. Because gamespy has shut down, the DNS records no longer exist on public DNS servers (read more about it [here](https://github.com/startersclan/docker-bf2/master/docs/usage.md#dns-spoofing)). In order to keep the game's multiplayer working, we need:
 
 - A gamespy replacement - solved by `PRMasterServer`
 - DNS resolution for gamespy DNS records - solved by either by: `1.` hex patching the game binaries; `2.` spoofing DNS server responses; `3.` spoofing DNS records via `hosts` file
