@@ -21,7 +21,7 @@ if ! echo "$TAG_PREV" | grep -E "$TAG_REGEX" > /dev/null; then
 fi
 
 # Update version in docs, .php, and .sql files
-git ls-files | grep -E '(^docker-compose.yml|^README.md|^docs/|index.php|bf2statistics.php|BF2StatisticsConfig.py)' | while read -r l; do
+git ls-files | grep -E '(README.md|docker-compose.yml|BF2StatisticsConfig.*\.py|src/ASP/index\.php|src/ASP/bf2statistics\.php)' | while read -r l; do
     sed -i "s/$TAG_PREV/$TAG/g" "$l"
 done
 
