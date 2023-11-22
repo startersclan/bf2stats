@@ -11,8 +11,6 @@
             "port": 9000,
             "pathMappings": {
                 "/src": "${workspaceRoot}/src",
-                "/src/ASP/system/config/config.php": "${workspaceRoot}/config/ASP/config.php",
-                "/src/bf2sclone/config.inc.php": "${workspaceRoot}/config/bf2sclone/config.inc.php",
             },
             "xdebugSettings": {
                 "max_data": 10000,

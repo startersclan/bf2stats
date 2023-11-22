@@ -1,7 +1,10 @@
-# This is a docker compose override file, for development builds with caching for CI environments
+# This is a docker compose override file, for production builds with caching for CI environments
 services:
   asp:
     build:
+      dockerfile: Dockerfile.asp
+      context: ../../
+      target: prod
       cache_from:
         - type=local,src=/tmp/.buildx-cache-asp
       # cache_to:
@@ -9,6 +12,9 @@ services:
 
   bf2sclone:
     build:
+      dockerfile: Dockerfile.bf2sclone
+      context: ../../
+      target: prod
       cache_from:
         - type=local,src=/tmp/.buildx-cache-bf2sclone
       # cache_to:
