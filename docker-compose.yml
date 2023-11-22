@@ -39,7 +39,6 @@ services:
           - battlefield2.available.gamespy.com
           - battlefield2.master.gamespy.com
           - battlefield2.ms14.gamespy.com
-          - gamestats.gamespy.com
           - master.gamespy.com
           - motd.gamespy.com
           - gpsp.gamespy.com
