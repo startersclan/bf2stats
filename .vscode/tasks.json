@@ -12,13 +12,13 @@
         {
             "label": "Test (prod1)",
             "type": "shell",
-            "command": "./test/test.sh prod 1",
+            "command": "./test/test.sh prod1 1",
             "group": "build"
         },
         {
             "label": "Test (prod2)",
             "type": "shell",
-            "command": "./test/test.sh prod 1",
+            "command": "./test/test.sh prod2 1",
             "group": "build"
         },
         {
