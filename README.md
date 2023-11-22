@@ -2,10 +2,10 @@
 
 [![github-actions](https://github.com/startersclan/bf2stats/workflows/ci-master-pr/badge.svg)](https://github.com/startersclan/bf2stats/actions)
 [![github-release](https://img.shields.io/github/v/release/startersclan/bf2stats?style=flat-square)](https://github.com/startersclan/bf2stats/releases/)
-[![docker-image-size](https://img.shields.io/docker/image-size/startersclan/bf2stats/master-asp-nginx?label=asp-nginx)](https://hub.docker.com/r/startersclan/asp)
-[![docker-image-size](https://img.shields.io/docker/image-size/startersclan/bf2stats/master-asp-php?label=asp-php)](https://hub.docker.com/r/startersclan/asp)
-[![docker-image-size](https://img.shields.io/docker/image-size/startersclan/bf2stats/master-bf2sclone-nginx?label=bf2sclone-nginx)](https://hub.docker.com/r/startersclan/asp)
-[![docker-image-size](https://img.shields.io/docker/image-size/startersclan/bf2stats/master-bf2sclone-php?label=bf2sclone-php)](https://hub.docker.com/r/startersclan/asp)
+[![docker-image-size](https://img.shields.io/docker/image-size/startersclan/bf2stats/master-asp-nginx?label=asp-nginx)](https://hub.docker.com/r/startersclan/bf2stats)
+[![docker-image-size](https://img.shields.io/docker/image-size/startersclan/bf2stats/master-asp-php?label=asp-php)](https://hub.docker.com/r/startersclan/bf2stats)
+[![docker-image-size](https://img.shields.io/docker/image-size/startersclan/bf2stats/master-bf2sclone-nginx?label=bf2sclone-nginx)](https://hub.docker.com/r/startersclan/bf2stats)
+[![docker-image-size](https://img.shields.io/docker/image-size/startersclan/bf2stats/master-bf2sclone-php?label=bf2sclone-php)](https://hub.docker.com/r/startersclan/bf2stats)
 
 BF2Statistics [`2.x.x`](https://code.google.com/archive/p/bf2stats/) with docker support.
 
