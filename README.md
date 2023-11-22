@@ -127,13 +127,9 @@ docker volume rm bf2stats_db-volume
 ## Release
 
 ```sh
-# Bump version across docs and source code
-MOST_RECENT_TAG_REGEX=$( git --no-pager tag -l --sort=-version:refname | head -n1 | sed 's@\.@\\.@g' )
-TAG=2.5.1
-git ls-files | grep -E '(^docker-compose.yml|^README.md|^docs/|index.php|bf2statistics.php|BF2StatisticsConfig.py)' | while read -r l; do sed -i "s/\b$MOST_RECENT_TAG_REGEX\b/$TAG/g" "$l"; done
-git checkout -b "chore/bump-version-to-$TAG"
+./release.sh 2.x.x
 git add .
-git commit -m "Chore: Bump version to \`$TAG\`"
+git commit -m "Chore: Release 2.x.x"
 ```
 
 ## FAQ
