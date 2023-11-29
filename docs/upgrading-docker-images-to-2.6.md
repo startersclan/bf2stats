@@ -14,7 +14,7 @@ Benefits:
 
 These steps are demonstrated using Docker Compose.
 
-1. Merge the networks and volumes of `asp-nginx` and `asp-php` into a single `asp` container, switch to a volume and env vars for `asp` configuration, and remove `depends_on`.
+1. Merge the networks and volumes of `asp-nginx` and `asp-php` into a single `asp` container, switch to env vars and a volume for `asp` configuration, and remove `depends_on`.
 
 For instance, from this:
 
@@ -53,12 +53,15 @@ To this:
   asp:
     image: startersclan/bf2stats:2.6.0-asp
     environment:
-      # See ./src/ASP/system/config/config.php for all supported env vars
+      # See ./src/ASP/system/config/config.php for all supported env vars. Use comma-delimited value for array
       - DB_HOST=db
       - DB_PORT=3306
       - DB_NAME=bf2stats
       - DB_USER=admin
       - DB_PASS=admin
+      - ADMIN_HOSTS=127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16   # Limit admins to private IPs
+      - GAME_HOSTS=127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16    # Limit gameservers to private IPs
+      - DEBUG_LVL=2
     volumes:
       - backups-volume:/src/ASP/system/database/backups # This volume is effectively unused since ASP doesn't allow DB backups for a remote DB, but mount it anyway to avoid errors.
       - config-volume:/src/ASP/system/config # For a stateful config file
