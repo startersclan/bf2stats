@@ -23,7 +23,7 @@
 | Define Constants
 | ---------------------------------------------------------------
 */
-    define('CODE_VER', '2.6.0');
+    define('CODE_VER', '2.7.0');
     define('CODE_VER_DATE', '2013-03-12');
 	define('TIME_START', microtime(1));
 	define('DS', DIRECTORY_SEPARATOR);
