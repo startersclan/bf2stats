@@ -29,6 +29,20 @@ http://asp/ASP/searchforplayers.aspx 200
 http://asp/ASP/selectunlock.aspx 200
 
 http://bf2sclone/ 200
+http://bf2sclone/?go= 200
+http://bf2sclone/?go=currentranking 200
+http://bf2sclone/?go=leaderboard 200
+http://bf2sclone/?go=my-leaderboard 200
+http://bf2sclone/?go=servers 200
+http://bf2sclone/?go=ubar 200
+http://bf2sclone/?go=ubar&p=ribbons 200
+http://bf2sclone/?go=ubar&p=ribbons-sf 200
+http://bf2sclone/?go=ubar&p=badges 200
+http://bf2sclone/?go=ubar&p=badges-sf 200
+http://bf2sclone/?go=ubar&p=medals 200
+http://bf2sclone/?go=ubar&p=medals-sf 200
+http://bf2sclone/?go=ubar&p=ranks 200
+http://bf2sclone/?go=foo 404
 http://bf2sclone/.htaccess 401
 http://bf2sclone/cache 401
 http://bf2sclone/css/default.css 200

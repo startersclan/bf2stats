@@ -39,7 +39,8 @@ define('TEMPLATE_PATH', ROOT . DS . 'template' . DS);
 // IFF PID -> go show stats!
 $PID = isset($_GET["pid"]) ? mysqli_real_escape_string($GLOBALS['link'], $_GET["pid"]) : "0";
 $SID = isset($_GET["sid"]) ? mysqli_real_escape_string($GLOBALS['link'], $_GET["sid"]) : "0";
-$GO = isset($_GET["go"]) ? $_GET["go"] : "0";
+$GO = HOME_PAGE;
+$GO = isset($_GET["go"]) ? $_GET["go"] : $GO;
 $GET = isset($_POST["get"]) ? $_POST["get"] : 0;
 $SET = isset($_POST["set"]) ? $_POST["set"] : 0;
 $ADD = isset($_GET["add"]) ? $_GET["add"] : 0;
@@ -342,7 +343,7 @@ elseif(strcasecmp($GO, 'ubar') == 0)
 /***************************************************************
  * SHOW TOP TEN - default
  ***************************************************************/
-else
+elseif(!$GO || strcasecmp($GO, 'leaderboard') == 0)
 {  // show the top ten
 
 	$LASTUPDATE = 0;
@@ -356,7 +357,7 @@ else
 	else
 	{
 		$leaders = getTopPlayers();
-		include( TEMPLATE_PATH .'home.php');
+		include( TEMPLATE_PATH .'leaderboard.php');
 
 		// write cache file
 		if (isCachedEnabled()) {
@@ -368,6 +369,9 @@ else
 	$template = str_replace('{:LASTUPDATE:}', $LASTUPDATE, $template);
 	$template = str_replace('{:NEXTUPDATE:}', $NEXTUPDATE, $template);
 
+}else {
+	http_response_code(404);
+	die('Invalid page.');
 }
 
 // Closing connection

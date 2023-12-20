@@ -3,7 +3,7 @@ $template = '
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" class="inner">
 <head>
-	<title>' . esc_attr(TITLE) . '</title>
+	<title>Leaderboard, ' . esc_attr(TITLE) . '</title>
 
 	<link rel="icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
@@ -93,11 +93,11 @@ $template = '
 		This page was processed in {:PROCESSED:} seconds.</div>
 	
 		<ul id="navitems">
-			<li><a href="'. $ROOT .'">Home</a></li>
-			<li><a href="'. $ROOT .'?go=servers">Servers</a></li>
-			<li><a href="'. $ROOT .'?go=my-leaderboard">My Leader Board</a></li>
-			<li><a href="'. $ROOT .'?go=currentranking">Rankings</a></li>
-			<li><a href="'. $ROOT .'?go=ubar">UBAR</a></li>
+			<li class="' . ($GO == 'leaderboard' ? 'current' : '') . '"><a href="'. $ROOT .'?go=leaderboard">Leaderboard</a></li>
+			<li class="' . ($GO == 'servers' ? 'current' : '') . '"><a href="'. $ROOT .'?go=servers">Servers</a></li>
+			<li class="' . ($GO == 'my-leaderboard' ? 'current' : '') . '"><a href="'. $ROOT .'?go=my-leaderboard">My Leader Board</a></li>
+			<li class="' . ($GO == 'currentranking' ? 'current' : '') . '"><a href="'. $ROOT .'?go=currentranking">Rankings</a></li>
+			<li class="' . ($GO == 'ubar' ? 'current' : '') . '"><a href="'. $ROOT .'?go=ubar">UBAR</a></li>
 			<li><a href="http://wiki.bf2s.com/">Wiki</a></li>
 		</ul>
 		
