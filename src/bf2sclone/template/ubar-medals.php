@@ -3,7 +3,7 @@ $template = '
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" class="inner">
 <head>
-	<title>'. $TITLE .' - Medals</title>
+	<title>Medals, ' . esc_attr(TITLE) . '</title>
 
 	<link rel="icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
@@ -22,7 +22,7 @@ $template = '
 <body class="inner">
 <div id="page-1">
 	<div id="page-2">
-		<h1 id="page-title">BF2 Medals<small> '. $TITLE .' Awards and Ranks Guide</small></h1>
+		<h1 id="page-title">BF2 Medals<small> ' . esc_attr(TITLE) . ' Awards and Ranks Guide</small></h1>
 		<div id="page-3">
 			<div id="content"><div id="content-id"><!-- template header end == begin content below -->
 

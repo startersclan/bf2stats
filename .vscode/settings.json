@@ -1,9 +1,10 @@
 {
+    "editor.trimAutoWhitespace": false,
     "files.associations": {
         "*.ai": "bat",
         "*.ai.add": "bat",
         "*.con": "ini",
         "*.aspx": "php",
     },
-    // "editor.trimAutoWhitespace": false
+    "files.trimTrailingWhitespace": false,
 }
