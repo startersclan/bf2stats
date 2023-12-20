@@ -53,6 +53,20 @@ bf2web.gamespy.com/ASP/searchforplayers.aspx 200
 bf2web.gamespy.com/ASP/selectunlock.aspx 200
 
 bf2sclone.example.com/ 200
+bf2sclone.example.com/?go= 200
+bf2sclone.example.com/?go=currentranking 200
+bf2sclone.example.com/?go=leaderboard 200
+bf2sclone.example.com/?go=my-leaderboard 200
+bf2sclone.example.com/?go=servers 200
+bf2sclone.example.com/?go=ubar 200
+bf2sclone.example.com/?go=ubar&p=ribbons 200
+bf2sclone.example.com/?go=ubar&p=ribbons-sf 200
+bf2sclone.example.com/?go=ubar&p=badges 200
+bf2sclone.example.com/?go=ubar&p=badges-sf 200
+bf2sclone.example.com/?go=ubar&p=medals 200
+bf2sclone.example.com/?go=ubar&p=medals-sf 200
+bf2sclone.example.com/?go=ubar&p=ranks 200
+bf2sclone.example.com/?go=foo 404
 bf2sclone.example.com/.htaccess 401
 bf2sclone.example.com/cache 401
 bf2sclone.example.com/css/default.css 200

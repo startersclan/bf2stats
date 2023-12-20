@@ -18,8 +18,11 @@ defineVar('DBNAME', 'bf2stats');
 defineVar('DBLOGIN', 'admin');
 defineVar('DBPASSWORD', 'admin');
 
+// Home page. Possible values: 'currentranking', 'leaderboard', 'my-leaderboard', 'search', 'servers', 'ubar'
+defineVar('HOME_PAGE', 'leaderboard');
+
 // Leader board title
-defineVar('TITLE', 'BF2S Clone2');
+defineVar('TITLE', 'BF2S Clone');
 
 // Refresh time in seconds for stats
 defineVar('RANKING_REFRESH_TIME', 600); // -> default: 600 seconds (10 minutes)

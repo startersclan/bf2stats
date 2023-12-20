@@ -120,11 +120,11 @@ $template .= '
 	<div id="footer">This page was processed in {:PROCESSED:} seconds.</div>
 
 	<ul id="navitems">
-		<li><a href="'. $ROOT .'">Home</a></li>
-		<li><a href="'. $ROOT .'?go=servers">Servers</a></li>
-		<li><a href="'. $ROOT .'?go=my-leaderboard">My Leader Board</a></li>
-		<li><a href="'. $ROOT .'?go=currentranking">Rankings</a></li>
-		<li><a href="'. $ROOT .'?go=ubar">UBAR</a></li>
+		<li class="' . ($GO == 'leaderboard' ? 'current' : '') . '"><a href="'. $ROOT .'?go=leaderboard">Leaderboard</a></li>
+		<li class="' . ($GO == 'servers' ? 'current' : '') . '"><a href="'. $ROOT .'?go=servers">Servers</a></li>
+		<li class="' . ($GO == 'my-leaderboard' ? 'current' : '') . '"><a href="'. $ROOT .'?go=my-leaderboard">My Leader Board</a></li>
+		<li class="' . ($GO == 'currentranking' ? 'current' : '') . '"><a href="'. $ROOT .'?go=currentranking">Rankings</a></li>
+		<li class="' . ($GO == 'ubar' ? 'current' : '') . '"><a href="'. $ROOT .'?go=ubar">UBAR</a></li>
 		<li><a href="http://wiki.bf2s.com/">Wiki</a></li>
 	</ul>
 	

@@ -309,9 +309,14 @@ float: left;
 }
 
 body.inner #navitems li a {
-padding: 0 4px;
+margin: 0 2px;
+padding: 0 2px;
 font-weight: bold;
 font-size: 10px;
+}
+
+body.inner #navitems li.current a {
+border-bottom: 1px dotted #FFEE40;
 }
 
 body.inner #getstats {
