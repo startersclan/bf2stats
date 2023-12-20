@@ -24,8 +24,8 @@ unset($host, $site_dir, $site_url);
 include('config.inc.php');
 
 // Setup the database connection
-$link = mysqli_connect($DBIP, $DBLOGIN, $DBPASSWORD) or die('Could not connect: ' . mysqli_error($GLOBALS['link']));
-mysqli_select_db($GLOBALS['link'], $DBNAME) or die('Could not select database');
+$link = mysqli_connect(DBIP, DBLOGIN, DBPASSWORD) or die('Could not connect: ' . mysqli_error($GLOBALS['link']));
+mysqli_select_db($GLOBALS['link'], DBNAME) or die('Could not select database');
 
 // process page start:
 $time_start = microtime(true);
@@ -254,7 +254,7 @@ elseif(strcasecmp($GO, 'servers') == 0 && !$SID)
 			$s['data'] = loadGamespyData($s['ip'], $s['queryport']);
 			$serversWithGamespyData[] = $s;
 		}
-		$servers = $serversWithGamespyData; 
+		$servers = $serversWithGamespyData;
 		unset($serversWithGamespyData);
 
 		// Include our template file

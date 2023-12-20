@@ -13,13 +13,13 @@ function defineVar($name, $default) {
 }
 
 // Database connection information
-$DBIP = getVar('DBIP', '127.0.0.1');
-$DBNAME = getVar('DBNAME', 'bf2stats');
-$DBLOGIN = getVar('DBLOGIN', 'admin');
-$DBPASSWORD = getVar('DBPASSWORD', 'admin');
+defineVar('DBIP', '127.0.0.1');
+defineVar('DBNAME', 'bf2stats');
+defineVar('DBLOGIN', 'admin');
+defineVar('DBPASSWORD', 'admin');
 
 // Leader board title
-$TITLE = getVar('TITLE', 'BF2S Clone');
+defineVar('TITLE', 'BF2S Clone2');
 
 // Refresh time in seconds for stats
 defineVar('RANKING_REFRESH_TIME', 600); // -> default: 600 seconds (10 minutes)
