@@ -43,94 +43,113 @@ $template = '
 							</tr>';
 							
 							foreach($servers as $s) {
-								if (!$s['data']) {
-									continue;
-								}
+								// Show only online servers?
+								// if ($s['data'] === false) {
+								// 	continue;
+								// }
+								
 								$template .= '
-								<tr>
-									<td style="white-space: nowrap;">';
+							<tr>
+								<td style="white-space: nowrap; cursor: default;">';
+								if ($s['data'] === false) {
+										$template .= '
+									<div style="display: inline-block; vertical-align: middle; width: 10px; height: 10px; border: 0px solid #000; border-radius: 50%; background: #F6B620;" title="OFF"></div>
+									<span style="vertical-align: middle; color: #F6B620;">OFF</span>
+									<img style="vertical-align: middle;" src="game-images/serverIcons/blank.png" alt="" />
+								</td>
+								
+								<td><a href="?go=servers&sid=' . esc_attr($s['id']) . '">' . esc_attr($s['name']) . '</a></td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+							</tr>';
+								} else {
+									$template .= '<div style="display: inline-block; vertical-align: middle; width: 10px; height: 10px; border: 0px solid #000; border-radius: 50%; background: #b8ff6abd;" title="ONLINE"></div>';
+									$serverLoad = $s['data']['server']['numplayers'] / $s['data']['server']['maxplayers'];
+									if ($serverLoad >= 0.66) {
+										$template .= '<img src="game-images/serverIcons/Serverload_red.png" alt="High Load" />';
+									} else if ($serverLoad >= 0.33) {
+										$template .= '<img src="game-images/serverIcons/Serverload_orange.png" alt="Medium Load" />';
+									} else {
+										$template .= '<img src="game-images/serverIcons/Serverload_green.png" alt="Low Load" />';
+									}
+
+									if (preg_match('/^linux/', $s['data']['server']['bf2_os'])) {
+										$template .= '<img src="game-images/serverIcons/linux.png" alt="Linux" />';
+									} else {
+										$template .= '<img src="game-images/serverIcons/Windows.png" alt="Windows" />';
+									}
+
+									if (preg_match('/-64$/', $s['data']['server']['bf2_os'])) {
+										$template .= '<img src="game-images/serverIcons/64bit.png" alt="64-bit" />';
+									} else {
+										$template .= '<img src="game-images/serverIcons/Windows.png" alt="Not 64-bit" />';
+									}
 									
-								$serverLoad = $s['data']['server']['numplayers'] / $s['data']['server']['maxplayers'];
-								if ($serverLoad >= 0.66) {
-									$template .= '<img src="game-images/serverIcons/Serverload_red.png" alt="High Load" />';
-								} else if ($serverLoad >= 0.33) {
-									$template .= '<img src="game-images/serverIcons/Serverload_orange.png" alt="Medium Load" />';
-								} else {
-									$template .= '<img src="game-images/serverIcons/Serverload_green.png" alt="Low Load" />';
-								}
+									if (file_exists(ROOT . "/game-images/mods/{$s['data']['server']['gamevariant']}/mod_icon.png")) {
+										$mod = esc_attr($s['data']['server']['gamevariant']);
+										$template .= '<img src="game-images/mods/' . esc_attr($mod) . '/mod_icon.png" alt="' . esc_attr($mod) . '" />';
+									} else {
+										$template .= '<img src="game-images/serverIcons/unknown_mod.png" alt="unknown_mod" />';
+									}
 
-								if (preg_match('/^linux/', $s['data']['server']['bf2_os'])) {
-									$template .= '<img src="game-images/serverIcons/linux.png" alt="Linux" />';
-								} else {
-									$template .= '<img src="game-images/serverIcons/Windows.png" alt="Windows" />';
-								}
+									if ($s['data']['server']['bf2_ranked']) {
+										$template .= '<img src="game-images/serverIcons/Ranked.png" alt="Ranked" />';
+									} else {
+										$template .= '<img src="game-images/serverIcons/blank.png" alt="Unranked" />';
+									}
 
-								if (preg_match('/-64$/', $s['data']['server']['bf2_os'])) {
-									$template .= '<img src="game-images/serverIcons/64bit.png" alt="64-bit" />';
-								} else {
-									$template .= '<img src="game-images/serverIcons/Windows.png" alt="Not 64-bit" />';
-								}
-								
-								if (file_exists(ROOT . "/game-images/mods/{$s['data']['server']['gamevariant']}/mod_icon.png")) {
-									$mod = esc_attr($s['data']['server']['gamevariant']);
-									$template .= '<img src="game-images/mods/' . esc_attr($mod) . '/mod_icon.png" alt="' . esc_attr($mod) . '" />';
-								} else {
-									$template .= '<img src="game-images/serverIcons/unknown_mod.png" alt="unknown_mod" />';
-								}
+									if ($s['data']['server']['bf2_autorec']) {
+										$template .= '<img src="game-images/serverIcons/battlerec.png" alt="BattleRecorder On" />';
+									} else {
+										$template .= '<img src="game-images/serverIcons/blank.png" alt="BattleRecorder Off" />';
+									}
 
-								if ($s['data']['server']['bf2_ranked']) {
-									$template .= '<img src="game-images/serverIcons/Ranked.png" alt="Ranked" />';
-								} else {
-									$template .= '<img src="game-images/serverIcons/blank.png" alt="Unranked" />';
-								}
+									if ($s['data']['server']['bf2_voip']) {
+										$template .= '<img src="game-images/serverIcons/battleCom.png" alt="BattleCommo On" />';
+									} else {
+										$template .= '<img src="game-images/serverIcons/blank.png" alt="BattleCommo Off" />';
+									}
 
-								if ($s['data']['server']['bf2_autorec']) {
-									$template .= '<img src="game-images/serverIcons/battlerec.png" alt="BattleRecorder On" />';
-								} else {
-									$template .= '<img src="game-images/serverIcons/blank.png" alt="BattleRecorder Off" />';
-								}
+									if ($s['data']['server']['bf2_anticheat']) {
+										$template .= '<img src="game-images/serverIcons/punkBuster.png" alt="Punkbuster On" />';
+									} else {
+										$template .= '<img src="game-images/serverIcons/blank.png" alt="Punkbuster Off" />';
+									}
+									
+									if ($s['data']['server']['bf2_pure']) {
+										$template .= '<img src="game-images/serverIcons/PureContent.png" alt="Pure" />';
+									} else {
+										$template .= '<img src="game-images/serverIcons/blank.png" alt="Not Pure" />';
+									}
+									
+									if ($s['data']['server']['password']) {
+										$template .= '<img src="game-images/serverIcons/PasswordEnabled.png" alt="PasswordEnabled" />';
+									} else {
+										$template .= '<img src="game-images/serverIcons/blank.png" alt="No Password" />';
+									}
 
-								if ($s['data']['server']['bf2_voip']) {
-									$template .= '<img src="game-images/serverIcons/battleCom.png" alt="BattleCommo On" />';
-								} else {
-									$template .= '<img src="game-images/serverIcons/blank.png" alt="BattleCommo Off" />';
+									$map = str_replace(' ', '_', strtolower($s['data']['server']['mapname']));
+									// devil's Perch Fix
+									$map = str_replace('\'', '', $map);
+									$mapUrl = file_exists(ROOT . "/game-images/levels/$map.png") ? "$ROOT/game-images/levels/$map.png" : "$ROOT/game-images/levels/default.png";
+									$template .= '
+								</td>
+								<td><a href="?go=servers&sid=' . esc_attr($s['id']) . '">' . esc_attr($s['data']['server']['hostname']) . '</a></td>
+								<td>' . esc_attr("{$s['data']['server']['numplayers']}/{$s['data']['server']['maxplayers']}"). '</td>
+								<td> 
+									<img src="' . esc_attr($mapUrl) . '" alt="' . esc_attr($map) . '" />' .
+									' ' . esc_attr($s['data']['server']['mapname']) . '
+								</td>
+								<td>' . esc_attr($s['data']['server']['bf2_mapsize']) . '</td>
+								<td>' . (preg_match('/gpm_coop/i', $s['data']['server']['gametype']) ? 'Co-op' : 'Conquest') . '</td>
+								<td>' . esc_attr($s['data']['server']['gamevariant']). '</td>
+								<td>' . esc_attr(preg_replace('/^(\d+\.\d+).*$/', '$1', $s['data']['server']['gamever'])). '</td>
+							</tr>';
 								}
-
-								if ($s['data']['server']['bf2_anticheat']) {
-									$template .= '<img src="game-images/serverIcons/punkBuster.png" alt="Punkbuster On" />';
-								} else {
-									$template .= '<img src="game-images/serverIcons/blank.png" alt="Punkbuster Off" />';
-								}
-								
-								if ($s['data']['server']['bf2_pure']) {
-									$template .= '<img src="game-images/serverIcons/PureContent.png" alt="Pure" />';
-								} else {
-									$template .= '<img src="game-images/serverIcons/blank.png" alt="Not Pure" />';
-								}
-								
-								if ($s['data']['server']['password']) {
-									$template .= '<img src="game-images/serverIcons/PasswordEnabled.png" alt="PasswordEnabled" />';
-								} else {
-									$template .= '<img src="game-images/serverIcons/blank.png" alt="No Password" />';
-								}
-
-								$map = str_replace(' ', '_', strtolower($s['data']['server']['mapname']));
-								// devil's Perch Fix
-								$map = str_replace('\'', '', $map);
-								$mapUrl = file_exists(ROOT . "/game-images/levels/$map.png") ? "$ROOT/game-images/levels/$map.png" : "$ROOT/game-images/levels/default.png";
-								$template .= '
-									</td>
-									<td><a href="?go=servers&sid=' . esc_attr($s['id']) . '">' . esc_attr($s['data']['server']['hostname']) . '</a></td>
-									<td>' . esc_attr("{$s['data']['server']['numplayers']}/{$s['data']['server']['maxplayers']}"). '</td>
-									<td> 
-										<img src="' . esc_attr($mapUrl) . '" alt="' . esc_attr($map) . '" />' .
-										' ' . esc_attr($s['data']['server']['mapname']) . '
-									</td>
-									<td>' . esc_attr($s['data']['server']['bf2_mapsize']) . '</td>
-									<td>' . (preg_match('/gpm_coop/i', $s['data']['server']['gametype']) ? 'Co-op' : 'Conquest') . '</td>
-									<td>' . esc_attr($s['data']['server']['gamevariant']). '</td>
-									<td>' . esc_attr(preg_replace('/^(\d+\.\d+).*$/', '$1', $s['data']['server']['gamever'])). '</td>
-								</tr>';
 							}
 
 							$template .= '

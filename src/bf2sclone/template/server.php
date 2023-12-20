@@ -4,7 +4,7 @@ $template = '
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" class="inner">
 <head>
-	<title>' . (isset($s['data']) ? esc_attr($s['data']['server']['hostname']) . ', ' : 'Unknown server, ') . esc_attr(TITLE) . '</title>
+	<title>' . ($s['data'] ? esc_attr($s['data']['server']['hostname']) : esc_attr($s['name'])) . ', ' . esc_attr(TITLE) . '</title>
 
 	<link rel="icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="'.$ROOT.'favicon.ico" type="image/x-icon">
@@ -22,7 +22,7 @@ $template = '
 <div id="page-1">
 	<div id="page-2">
 	
-		<h1 id="page-title">' . ($s['data'] ? esc_attr($s['data']['server']['hostname']) : '-') . '</h1>
+		<h1 id="page-title">' . ($s['data'] ? esc_attr($s['data']['server']['hostname']) : esc_attr($s['name'])) . '</h1>
 		<div id="page-3">
 		
 			<div id="content">
@@ -50,7 +50,7 @@ $template = '
 							</tr>
 							<tr>
 								<td class="column-key">Status</td>
-								<td>' . ($s['data'] ? esc_attr($s['data']['server']['gamemode']) : '-') . '</td>
+								<td>' . ($s['data'] ? esc_attr($s['data']['server']['gamemode']) : 'OFFLINE') . '</td>
 								<td class="column-key">Players</td>
 								<td>' . ($s['data'] ? esc_attr("{$s['data']['server']['numplayers']}/{$s['data']['server']['maxplayers']}") : '-') . '</td>
 							</tr>
