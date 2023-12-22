@@ -53,9 +53,9 @@ $template = '
 								<td style="white-space: nowrap; cursor: default;">';
 								if ($s['data'] === false) {
 										$template .= '
-									<div style="display: inline-block; vertical-align: middle; width: 10px; height: 10px; border: 0px solid #000; border-radius: 50%; background: #F6B620;" title="OFF"></div>
-									<span style="vertical-align: middle; color: #F6B620;">OFF</span>
-									<img style="vertical-align: middle;" src="game-images/serverIcons/blank.png" alt="" />
+									<span style="display: inline-block; vertical-align: middle; width: 10px; height: 10px; border: 0px solid #000; border-radius: 50%; background: #f6b620;" alt="OFFLINE"></span>
+									<span style="vertical-align: middle; color: #F6B620;" alt="OFF">OFF</span>
+									<img style="vertical-align: middle;" src="game-images/serverIcons/blank.png" alt="OFF" />
 								</td>
 								
 								<td><a href="?go=servers&sid=' . esc_attr($s['id']) . '">' . esc_attr($s['name']) . '</a></td>
@@ -67,7 +67,7 @@ $template = '
 								<td>-</td>
 							</tr>';
 								} else {
-									$template .= '<div style="display: inline-block; vertical-align: middle; width: 10px; height: 10px; border: 0px solid #000; border-radius: 50%; background: #b8ff6abd;" title="ONLINE"></div>';
+									$template .= '<span style="display: inline-block; vertical-align: middle; width: 10px; height: 10px; border: 0px solid #000; border-radius: 50%; background: #5add65;" alt="ON"></span>';
 									$serverLoad = $s['data']['server']['numplayers'] / $s['data']['server']['maxplayers'];
 									if ($serverLoad >= 0.66) {
 										$template .= '<img src="game-images/serverIcons/Serverload_red.png" alt="High Load" />';
