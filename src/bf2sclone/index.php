@@ -39,8 +39,8 @@ define('TEMPLATE_PATH', ROOT . DS . 'template' . DS);
 // IFF PID -> go show stats!
 $PID = isset($_GET["pid"]) ? mysqli_real_escape_string($GLOBALS['link'], $_GET["pid"]) : "0";
 $SID = isset($_GET["sid"]) ? mysqli_real_escape_string($GLOBALS['link'], $_GET["sid"]) : "0";
-$GO = HOME_PAGE;
-$GO = isset($_GET["go"]) ? $_GET["go"] : $GO;
+$GO = isset($_GET["go"]) ? $_GET["go"] : '';
+$GO = $GO ? $GO : ($PID ? "0" : HOME_PAGE);
 $GET = isset($_POST["get"]) ? $_POST["get"] : 0;
 $SET = isset($_POST["set"]) ? $_POST["set"] : 0;
 $ADD = isset($_GET["add"]) ? $_GET["add"] : 0;
@@ -343,7 +343,7 @@ elseif(strcasecmp($GO, 'ubar') == 0)
 /***************************************************************
  * SHOW TOP TEN - default
  ***************************************************************/
-elseif(!$GO || strcasecmp($GO, 'leaderboard') == 0)
+elseif(strcasecmp($GO, 'leaderboard') == 0)
 {  // show the top ten
 
 	$LASTUPDATE = 0;
