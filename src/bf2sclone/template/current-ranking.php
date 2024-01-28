@@ -50,14 +50,14 @@ $template = '
 						$desc = (isset($value['desc']) && !empty($value['desc'])) ? $value['desc'] : '&nbsp;';
 						$template .= '
 						<tr>
-							<td>'.$value['name'].'</td>';
+							<td>' . esc_attr($value['name']) . '</td>';
 						
 						foreach($value['data'] as $v)
 						{
 							$template .= '
 							<td>
 								<img src="'.$ROOT.'game-images/ranks/icon/rank_'.$v['rank'].'.gif" alt="'.getRankByID($v['rank']).'">
-								<a href="'.$ROOT.'?pid='.$v['id'].'">'.$v['name'].'</a>
+								<a href="'.$ROOT.'?pid='.$v['id'].'">' . esc_attr(RANKING_PIDS_AS_NAMES ? $v['id'] : $v['name']) . '</a>
 								<br/>'. $v['value'] .'
 							</td>';
 						}

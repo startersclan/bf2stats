@@ -43,7 +43,7 @@ $template = '
 							<tbody>
 								<tr>
 									<th>#</th>
-									<th>Nick</th>
+									<th>' . (RANKING_PIDS_AS_NAMES ? 'PID' : 'Nick') . '</th>
 									<th>Global Score</th>
 									<th>Country</th>
 									<th>Time</th>
@@ -60,7 +60,7 @@ $template = '
 										<td>'.($key+1).'</td>
 										<td>
 											<img src="'.$ROOT.'game-images/ranks/icon/rank_'.$value['rank'].'.gif">&nbsp;
-											<a href="'.$ROOT.'?pid='.$value['id'].'">'.$value['name'].'</a>
+											<a href="'.$ROOT.'?pid='.$value['id'].'">'. esc_attr(RANKING_PIDS_AS_NAMES ? $value['id'] : $value['name']) .'</a>
 										</td>
 										<td>'.$value['score'].'</td>
 										<td>

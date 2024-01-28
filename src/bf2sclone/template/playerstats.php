@@ -3,7 +3,7 @@ $template = '
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" class="inner">
 <head>
-	<title>' . esc_attr($player['name'] . ' ' . getRankByID($player['rank']) . ' Stats, ' . TITLE) . '</title>
+	<title>' . esc_attr((RANKING_PIDS_AS_NAMES ? $player['id'] : $player['name']) . ' ' . getRankByID($player['rank']) . ' Stats, ' . TITLE) . '</title>
 	<link rel="icon" href="' . $ROOT . 'favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="' . $ROOT . 'favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" type="text/css" media="screen" href="'.$ROOT.'css/two-tiers.css">
@@ -21,7 +21,7 @@ $template = '
 	<div id="page-2">
 	
 		<h1 id="page-title">
-			<img src="' . $ROOT . 'game-images/ranks/header/rank_' . $player['rank'] . '.png" alt="" />' . $player['name'] . '<small> ' . getRankByID($player['rank']) . '</small>
+			<img src="' . $ROOT . 'game-images/ranks/header/rank_' . $player['rank'] . '.png" alt="" />' . esc_attr((RANKING_PIDS_AS_NAMES ? $player['id'] : $player['name'])) . '<small> ' . getRankByID($player['rank']) . '</small>
 		</h1>
 
 		<div id="page-3">
@@ -43,7 +43,7 @@ $template = '
 						$template .= $ROOT . 'game-images/soldiers/' . $playerFavorite['army'] . '_' . $playerFavorite['kit'] . '_' . $playerFavorite['weapon'] . '.jpg';
 					else
 						$template .= $ROOT . 'game-images/soldiers/' . $playerFavorite['army'] . '_' . $playerFavorite['kit'] . '_5.jpg'; // show pistol...
-					$template .= '" alt="' . $player['name'] . ' - ' . getArmyByID($playerFavorite['army']) . '" />
+					$template .= '" alt="' . esc_attr((RANKING_PIDS_AS_NAMES ? $player['id'] : $player['name'])) . ' - ' . getArmyByID($playerFavorite['army']) . '" />
 					<img class="weapon" src="' . $ROOT . 'game-images/weapons/weapon_' . $playerFavorite['weapon'] . '.jpg" alt="' . $weapons[$playerFavorite['weapon']]['name'] . '" />
 					<img class="vehicle" src="' . $ROOT . 'game-images/vehicles/vehicles_' . $playerFavorite['vehicle'] . '.jpg" alt="' . getVehicleByID($playerFavorite['vehicle']) . '" />
 					<img class="kit" src="' . $ROOT . 'game-images/kits/kit_' . $playerFavorite['kit'] . '.jpg" alt="' . getKitByID($playerFavorite['kit']) . '" />
@@ -719,7 +719,7 @@ $template = '
 						<tr>
 							<td>Favorite Victim<br />(Kills to) </td>';
 								if ($victims && trim($victims[0]['victim']) != '')
-								  $template .= '<td nowrap="nowrap"><acronym title="his rank is '.getRankByID(getRankFromPID($victims[0]['victim'])).'"><img src="'.$ROOT.'game-images/ranks/icon/rank_'.getRankFromPID($victims[0]['victim']).'.gif"> <a rel="nofollow" href="?pid=' . $victims[0]['victim'] . '">' . getNickFromPID($victims[0]['victim']) . '</a></acronym> (' . $victims[0]['count'] . ')</td>';
+								  $template .= '<td nowrap="nowrap"><acronym title="his rank is '.getRankByID(getRankFromPID($victims[0]['victim'])).'"><img src="'.$ROOT.'game-images/ranks/icon/rank_'.getRankFromPID($victims[0]['victim']).'.gif"> <a rel="nofollow" href="?pid=' . $victims[0]['victim'] . '">' . esc_attr(RANKING_PIDS_AS_NAMES ? $victims[0]['victim'] : getNickFromPID($victims[0]['victim'])) . '</a></acronym> (' . $victims[0]['count'] . ')</td>';
 								else
 									$template .= '<td>You are no one\'s worst enemy. Go bully someone.</td>';
 							$template .= '
@@ -738,7 +738,7 @@ $template = '
 									{
 										if ($written != 0) $template .=  ', ';
 										$written++;
-										$template .=  '<acronym title="his rank is '.getRankByID(getRankFromPID($victims[$i]['victim'])).'"><img src="'.$ROOT.'game-images/ranks/icon/rank_'.getRankFromPID($victims[$i]['victim']).'.gif"> <a rel="nofollow" href="?pid='.$victims[$i]['victim'].'">'.getNickFromPID($victims[$i]['victim']).'</a></acronym> ('.$victims[$i]['count'].')';
+										$template .=  '<acronym title="his rank is '.getRankByID(getRankFromPID($victims[$i]['victim'])).'"><img src="'.$ROOT.'game-images/ranks/icon/rank_'.getRankFromPID($victims[$i]['victim']).'.gif"> <a rel="nofollow" href="?pid='.$victims[$i]['victim'].'">' . esc_attr(RANKING_PIDS_AS_NAMES ? $victims[$i]['victim'] : getNickFromPID($victims[$i]['victim'])) . '</a></acronym> ('.$victims[$i]['count'].')';
 									}
 								}
 								$template .= '
@@ -747,7 +747,7 @@ $template = '
 						<tr>
 							<td nowrap="nowrap">Worst Enemy<br />(Deaths by)</td>';
 								if ($enemies)
-									$template .=  '<td nowrap="nowrap"><acronym title="his rank is '.getRankByID(getRankFromPID($enemies[0]['attacker'])).'"><img src="'.$ROOT.'game-images/ranks/icon/rank_'.getRankFromPID($enemies[0]['attacker']).'.gif"> <a rel="nofollow" href="?pid=' . $enemies[0]['attacker'] . '">' . getNickFromPID($enemies[0]['attacker']) . '</a></acronym> (' . $enemies[0]['count'] . ')</td>';
+									$template .=  '<td nowrap="nowrap"><acronym title="his rank is '.getRankByID(getRankFromPID($enemies[0]['attacker'])).'"><img src="'.$ROOT.'game-images/ranks/icon/rank_'.getRankFromPID($enemies[0]['attacker']).'.gif"> <a rel="nofollow" href="?pid=' . $enemies[0]['attacker'] . '">' . esc_attr(RANKING_PIDS_AS_NAMES ? $enemies[0]['attacker'] : getNickFromPID($enemies[0]['attacker'])) . '</a></acronym> (' . $enemies[0]['count'] . ')</td>';
 								else
 									$template .=  '<td>It seems you are invincible!</td>';
 								$template .= '
@@ -767,7 +767,7 @@ $template = '
 									{
 										if ($written != 0) $template .=  ', ';
 										$written++;
-										$template .=  '<acronym title="his rank is '.getRankByID(getRankFromPID($enemies[$i]['attacker'])).'"><img src="'.$ROOT.'game-images/ranks/icon/rank_'.getRankFromPID($enemies[$i]['attacker']).'.gif"> <a rel="nofollow" href="?pid='.$enemies[$i]['attacker'].'">'.getNickFromPID($enemies[$i]['attacker']).'</a></acronym> ('.$enemies[$i]['count'].')';
+										$template .=  '<acronym title="his rank is '.getRankByID(getRankFromPID($enemies[$i]['attacker'])).'"><img src="'.$ROOT.'game-images/ranks/icon/rank_'.getRankFromPID($enemies[$i]['attacker']).'.gif"> <a rel="nofollow" href="?pid='.$enemies[$i]['attacker'].'">' . esc_attr(RANKING_PIDS_AS_NAMES ? $enemies[$i]['attacker'] : getNickFromPID($enemies[$i]['attacker'])) . '</a></acronym> ('.$enemies[$i]['count'].')';
 									}
 								}
 								$template .= '	
