@@ -13,5 +13,6 @@
 		$WHERE .= ' AND player.id <= ' . RANKING_HIDE_PIDS_END;
 	}
 
-	$query = "SELECT * FROM player WHERE name like '$NICK' $WHERE;";
+	// Example when using a prefix, player name will be '<prefix> <nickname>'. 
+	$query = "SELECT * FROM player WHERE (name = '$NICK' OR name like '% $NICK') $WHERE LIMIT 1;"; 
 ?>
