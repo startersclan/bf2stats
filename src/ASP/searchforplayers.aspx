@@ -92,7 +92,7 @@ else
 	{
         $num = 1;
 		while($row = $result->fetch())
-			$out .= "D\t" . $num++ . "\t" . $row['id'] . "\t" . $row['name'] . "\t" . $row['score'] . "\n";
+			$out .= "D\t" . $num++ . "\t" . $row['id'] . "\t" . (Config::Get('bfhq_pids_as_names') ? $row['id'] : $row['name']) . "\t" . $row['score'] . "\n";
 	}
 
 	$num = strlen(preg_replace('/[\t\n]/', '', $out));

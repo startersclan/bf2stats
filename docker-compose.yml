@@ -107,6 +107,7 @@ services:
       # - BFHQ_HIDE_HIDDEN_PLAYERS=false
       # - BFHQ_HIDE_PIDS_START=1
       # - BFHQ_HIDE_PIDS_END=999999999
+      # - BFHQ_PIDS_AS_NAMES=false
       - DEBUG_LVL=2
     volumes:
       - ./src/ASP:/src/ASP

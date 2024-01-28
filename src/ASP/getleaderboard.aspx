@@ -131,7 +131,7 @@ else
                     while($row = $result->fetch())
                     {
                         $plpid = $row['id'];
-                        $name = trim($row['name']);
+                        $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
                         $country = strtoupper($row['country']);
                         $time = $row['time'];
@@ -151,7 +151,7 @@ else
                         $plpid = $row['id'];
                         if($plpid == $pid) 
                         {
-                            $name = trim($row['name']);
+                            $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                             $rank = $row['rank'];
                             $country = strtoupper($row['country']);
                             $time = $row['time'];
@@ -180,7 +180,7 @@ else
                     while($row = $result->fetch())
                     {
                         $plpid = $row['id'];
-                        $name = trim($row['name']);
+                        $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
                         $country = strtoupper($row['country']);
                         $cmdtime = $row['cmdtime'];
@@ -200,7 +200,7 @@ else
                         $plpid = $row['id'];
                         if($plpid == $pid) 
                         {
-                            $name = trim($row['name']);
+                            $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                             $rank = $row['rank'];
                             $country = strtoupper($row['country']);
                             $cmdtime = $row['cmdtime'];
@@ -229,7 +229,7 @@ else
                     while($row = $result->fetch())
                     {
                         $plpid = $row['id'];
-                        $name = trim($row['name']);
+                        $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
                         $country = strtoupper($row['country']);
                         $time = $row['time'];
@@ -248,7 +248,7 @@ else
                     {
                         $plpid = $row['id'];
                         if ($plpid == $pid) {
-                            $name = trim($row['name']);
+                            $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                             $rank = $row['rank'];
                             $country = strtoupper($row['country']);
                             $time = $row['time'];
@@ -277,7 +277,7 @@ else
                     while($row = $result->fetch())
                     {
                         $plpid = $row['id'];
-                        $name = trim($row['name']);
+                        $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
                         $country = strtoupper($row['country']);
                         $time = $row['time'];
@@ -298,7 +298,7 @@ else
                         $plpid = $row['id'];
                         if($plpid == $pid) 
                         {
-                            $name = trim($row['name']);
+                            $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                             $rank = $row['rank'];
                             $country = strtoupper($row['country']);
                             $time = $row['time'];
@@ -336,7 +336,7 @@ else
                 while($row = $result->fetch())
                 {
                     $plpid = $row['id'];
-                    $name = trim($row['name']);
+                    $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                     $rank = $row['rank'];
                     $country = strtoupper($row['country']);
                     $time = $row['time'];
@@ -361,7 +361,7 @@ else
                     $plpid = $row['id'];
                     if($plpid == $pid) 
                     {
-                        $name = trim($row['name']);
+                        $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
                         $country = strtoupper($row['country']);
                         $time = $row['time'];
@@ -391,7 +391,7 @@ else
                 while($row = $result->fetch())
                 {
                     $plpid = $row['plid'];
-                    $name = trim($row['name']);
+                    $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                     $rank = $row['rank'];
                     $country = strtoupper($row['country']);
                     $time = $row['time'];
@@ -412,7 +412,7 @@ else
                     $plpid = $row['plid'];
                     if($plpid == $pid) 
                     {
-                        $name = trim($row['name']);
+                        $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
                         $country = strtoupper($row['country']);
                         $time = $row['time'];
@@ -442,7 +442,7 @@ else
                 while($row = $result->fetch())
                 {
                     $plpid = $row['plid'];
-                    $name = trim($row['name']);
+                    $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                     $rank = $row['rank'];
                     $country = strtoupper($row['country']);
                     $time = $row['time'];
@@ -463,7 +463,7 @@ else
                     $plpid = $row['plid'];
                     if($plpid == $pid) 
                     {
-                        $name = trim($row['name']);
+                        $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
                         $country = strtoupper($row['country']);
                         $time = $row['time'];
@@ -494,7 +494,7 @@ else
                 while($row = $result->fetch())
                 {
                     $plpid = $row['plid'];
-                    $name = trim($row['name']);
+                    $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                     $rank = $row['rank'];
                     $country = strtoupper($row['country']);
                     $time = $row['time'];
@@ -516,7 +516,7 @@ else
                     $plpid = $row['plid'];
                     if($plpid == $pid) 
                     {
-                        $name = trim($row['name']);
+                        $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
                         $country = strtoupper($row['country']);
                         $time = $row['time'];
