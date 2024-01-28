@@ -33,6 +33,10 @@ defineVar('RANKING_HIDE_BOTS', false);
 // Whether to hide hidden players from rankings
 defineVar('RANKING_HIDE_HIDDEN_PLAYERS', false);
 
+// Whether to hide a range of PIDs from rankings
+defineVar('RANKING_HIDE_PIDS_START', 1);
+defineVar('RANKING_HIDE_PIDS_END', 999999999);
+
 // Number of players to show on the leaderboard frontpage
 defineVar('LEADERBOARD_COUNT', 25);
 ?>
