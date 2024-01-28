@@ -188,7 +188,7 @@ function loadGamespyData($ip, $port)
 		// Fix missing deaths bug in custom maps ??
 		if(!isset($player["deaths_"][$p])) $player["deaths_"][$p] = 0;
 		$data[] = array(
-			'name' => $player["player_"][$p], 
+			'name' => trim($player["player_"][$p]), 
 			'score' => $player["score_"][$p],
 			'kills' => $player["skill_"][$p],            
 			'deaths' => $player["deaths_"][$p], 
@@ -272,7 +272,7 @@ function getGamespyDataWithPlayerRanks($gamespyData) {
 	foreach (array('team1', 'team2') as $t) {
 		$team = array();
 		foreach ($gamespyData[$t] as $k => $p) {
-			$NICK = $p['name'];
+			$NICK = str_replace(array('"', "'", '`', ';', '%', '_'), '', $p['name']);
 			include(ROOT . DS . 'queries'. DS .'getPlayerDataByName.php'); // imports the correct sql statement
 			$result = mysqli_query($GLOBALS['link'], $query);
 			$player = mysqli_fetch_assoc($result);
@@ -281,8 +281,10 @@ function getGamespyDataWithPlayerRanks($gamespyData) {
 				if ($p['pid'] == 0) {
 					$p['pid'] = $player['id'];
 					$p['rank'] = $player['rank'];
-					$team[] = $p;
+				}else {
+					$p['rank'] = $player['rank'];
 				}
+				$team[] = $p;
 			} else {
 				// The bot is not yet in the DB. 
 				$p['pid'] = 0;
