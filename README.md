@@ -104,6 +104,9 @@ docker exec -it $( docker-compose ps -q asp ) ls -alR /src/ASP/system/snapshots
 # Test production builds 2
 ./test/test.sh prod2 1
 
+# Test a snapshot
+curl -s -A GameSpyHTTP/1.0 -H 'Content-Type: application/json' --data @test/snapshots/-test-snapshot.txt localhost:8081/ASP/bf2statistics.php
+
 # Dump the DB
 docker exec $( docker-compose ps -q db ) mysqldump -uroot -padmin bf2stats | gzip > bf2stats.sql.gz
 
