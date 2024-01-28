@@ -144,6 +144,41 @@
                     </div>
                 </div>
                 
+                <!-- BFHQ -->
+                <h3 style="margin-left: 50px; margin-top: 35px;">BFHQ Options</h3>
+                <div class="mws-form-row">
+                    <label>Hide bot stats:</label>
+                    <div class="mws-form-item small">
+                        <select name="cfg__bfhq_hide_bots" title="Hide bots stats from BFHQ ranking?">
+                            <option value="true" <?php if('{config.bfhq_hide_bots}' == true) echo 'selected="selected"'; ?>>Yes</option>
+                            <option value="false" <?php if('{config.bfhq_hide_bots}' == false) echo 'selected="selected"'; ?>>No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mws-form-row">
+                    <label>Hide hidden players:</label>
+                    <div class="mws-form-item small">
+                        <select name="cfg__bfhq_hide_hidden_players" title="Hide hidden players from BFHQ ranking?">
+                            <option value="true" <?php if('{config.bfhq_hide_hidden_players}' == true) echo 'selected="selected"'; ?>>Yes</option>
+                            <option value="false" <?php if('{config.bfhq_hide_hidden_players}' == false) echo 'selected="selected"'; ?>>No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mws-form-row">
+                    <label>Hide PIDS (lower limit):</label>
+                    <div class="mws-form-item small">
+                        <input name="cfg__bfhq_hide_pids_start" type="text" class="mws-textinput required" value="{config.bfhq_hide_pids_start}" title="Lower limit of PIDs to hide from BFHQ ranking."
+                        />
+                    </div>
+                </div>
+                <div class="mws-form-row">
+                    <label>Hide PIDS (upper limit):</label>
+                    <div class="mws-form-item small">
+                        <input name="cfg__bfhq_hide_pids_end" type="text" class="mws-textinput required" value="{config.bfhq_hide_pids_end}" title="Upper limit of PIDs to hide from BFHQ ranking."
+                        />
+                    </div>
+                </div>
+                
                 <!-- Global Config -->
                 <h3 style="margin-left: 50px; margin-top: 35px;">Global Game Server Configuration</h3>
                 <div class="mws-form-row">
