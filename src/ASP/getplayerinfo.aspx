@@ -106,6 +106,20 @@ else
 		die($out);
 	}
 
+    $WHERE = '';
+	if (Config::Get('bfhq_hide_bots')) {
+		$WHERE .= ' AND player.isbot = 0';
+	}
+	if (Config::Get('bfhq_hide_hidden_players')) {
+		$WHERE .= ' AND player.hidden = 0';
+	}
+	if (Config::Get('bfhq_hide_pids_start')) {
+		$WHERE .= ' AND player.id >= ' . stripslashes(Config::Get('bfhq_hide_pids_start'));
+	}
+	if (Config::Get('bfhq_hide_pids_end')) {
+		$WHERE .= ' AND player.id <= ' . stripslashes(Config::Get('bfhq_hide_pids_end'));
+	}
+	
 	// Player info
 	//'Reworked' for MNG stats =)
 	//omero, 2006-04-15 
@@ -330,11 +344,18 @@ else
 				$favoi = $row2['attacker'];
 				$favok = $row2['count'];
 				
-				$query = "SELECT `name`, `rank` FROM `player` WHERE `id` = {$favoi}";
+				$query = "SELECT `name`, `rank` FROM `player` WHERE `id` = {$favoi} $WHERE";
 				$result = $connection->query($query);
 				$row2 = $result->fetch();
-				$favon = trim($row2['name']);
-				$favor = $row2['rank'];
+				$favon = '';
+				$favor = '';
+				if ($row2) {
+					$favon = trim($row2['name']);
+					$favor = $row2['rank'];
+				}else {
+					$favoi = $favon = $favor = ' ';
+					$favok = '0';
+				}
 			}
 			else 
 			{
@@ -355,11 +376,18 @@ else
 				$favvk = $row2['count'];
 				
 				//
-				$query = "SELECT `name`, `rank` FROM `player` WHERE `id` = {$favvi}";
+				$query = "SELECT `name`, `rank` FROM `player` WHERE `id` = {$favvi} $WHERE";
 				$result = $connection->query($query);
 				$row2 = $result->fetch();
-				$favvn = trim($row2['name']);
-				$favvr = $row2['rank'];
+				$favvn = '';
+				$favvr = '';
+				if ($row2) {
+					$favvn = trim($row2['name']);
+					$favvr = $row2['rank'];
+				}else {
+					$favvi = $favvn = $favvr= ' ';
+					$favvk = '0';
+				}
 			} 
 			else 
 			{

@@ -103,6 +103,10 @@ services:
       - DB_PASS=admin
       - ADMIN_HOSTS=127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16   # Limit admins to private IPs
       - GAME_HOSTS=127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16    # Limit gameservers to private IPs
+      # - BFHQ_HIDE_BOTS=false
+      # - BFHQ_HIDE_HIDDEN_PLAYERS=false
+      # - BFHQ_HIDE_PIDS_START=1
+      # - BFHQ_HIDE_PIDS_END=999999999
       - DEBUG_LVL=2
     volumes:
       - ./src/ASP:/src/ASP

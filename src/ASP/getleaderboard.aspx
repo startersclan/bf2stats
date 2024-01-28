@@ -99,18 +99,32 @@ else
 	$max    = $after + 1;
 	$out    = "";
 	
+	$WHERE = '1';
+	if (Config::Get('bfhq_hide_bots')) {
+		$WHERE .= ' AND player.isbot = 0';
+	}
+	if (Config::Get('bfhq_hide_hidden_players')) {
+		$WHERE .= ' AND player.hidden = 0';
+	}
+	if (Config::Get('bfhq_hide_pids_start')) {
+		$WHERE .= ' AND player.id >= ' . Config::Get('bfhq_hide_pids_start');
+	}
+	if (Config::Get('bfhq_hide_pids_end')) {
+		$WHERE .= ' AND player.id <= ' . Config::Get('bfhq_hide_pids_end');
+	}
+    
 	if ($type == 'score')
 	{
 		if ($id == 'overall')
 		{
-			$result = $connection->query("SELECT COUNT(`id`) FROM `player` WHERE `hidden` = 0 AND `score` > 0");
+			$result = $connection->query("SELECT COUNT(`id`) FROM `player` WHERE $WHERE AND `score` > 0");
 			$count = $result->fetchColumn();
 			$out .= "D\t{$count}\t" . time() . "\n";
 			$out .= "H\tn\tpid\tnick\tscore\ttotaltime\tplayerrank\tcountrycode\n";
 			
 			if(!$pid)
 			{
-				$query = "SELECT `id`, `name`, `rank`, `country`, `time`, `score` FROM `player` WHERE `hidden` = 0 AND `score` > 0 ORDER BY `score` DESC, `name` DESC LIMIT {$min}, {$max}";
+				$query = "SELECT `id`, `name`, `rank`, `country`, `time`, `score` FROM `player` WHERE $WHERE AND `score` > 0 ORDER BY `score` DESC, `name` DESC LIMIT {$min}, {$max}";
 				$result = $connection->query($query);
                 if($result instanceof PDOStatement)
                 {
@@ -128,7 +142,7 @@ else
 			}
 			else
 			{
-				$query = "SELECT `id`, `name`, `rank`, `country`, `time`, `score` FROM `player` WHERE `hidden` = 0 AND `score` > 0 ORDER BY `score` DESC, `name` DESC";
+				$query = "SELECT `id`, `name`, `rank`, `country`, `time`, `score` FROM `player` WHERE $WHERE AND `score` > 0 ORDER BY `score` DESC, `name` DESC";
 				$result = $connection->query($query);
                 if($result instanceof PDOStatement)
                 {
@@ -152,14 +166,14 @@ else
 		}
 		elseif ($id == 'commander')
 		{
-			$result = $connection->query("SELECT COUNT(`id`) FROM `player` WHERE `hidden` = 0 AND `cmdscore` > 0");
+			$result = $connection->query("SELECT COUNT(`id`) FROM `player` WHERE $WHERE AND `cmdscore` > 0");
 			$count = $result->fetchColumn();
 			$out .= "D\t{$count}\t" . time() . "\n";
 			$out .= "H\tn\tpid\tnick\tcoscore\tcotime\tplayerrank\tcountrycode\n";
 			
 			if(!$pid)
 			{
-				$query = "SELECT `id`, `name`, `rank`, `country`, `cmdtime`, `cmdscore` FROM `player` WHERE `hidden` = 0 AND `cmdscore` > 0 ORDER BY `cmdscore` DESC, `name` DESC LIMIT {$min}, {$max}";
+				$query = "SELECT `id`, `name`, `rank`, `country`, `cmdtime`, `cmdscore` FROM `player` WHERE $WHERE AND `cmdscore` > 0 ORDER BY `cmdscore` DESC, `name` DESC LIMIT {$min}, {$max}";
 				$result = $connection->query($query);
                 if($result instanceof PDOStatement)
                 {
@@ -177,7 +191,7 @@ else
 			}
 			else
 			{
-				$query = "SELECT `id`, `name`, `rank`, `country`, `cmdtime`, `cmdscore` FROM `player` WHERE `hidden` = 0 AND `cmdscore` > 0 ORDER BY `cmdscore` DESC, `name` DESC";
+				$query = "SELECT `id`, `name`, `rank`, `country`, `cmdtime`, `cmdscore` FROM `player` WHERE $WHERE AND `cmdscore` > 0 ORDER BY `cmdscore` DESC, `name` DESC";
 				$result = $connection->query($query);
                 if($result instanceof PDOStatement)
                 {
@@ -201,14 +215,14 @@ else
 		}
 		elseif ($id ==  'team')
 		{
-			$result = $connection->query("SELECT COUNT(`id`) FROM `player` WHERE `hidden` = 0 AND `teamscore` > 0");
+			$result = $connection->query("SELECT COUNT(`id`) FROM `player` WHERE $WHERE AND `teamscore` > 0");
 			$count = $result->fetchColumn();
 			$out .= "D\t{$count}\t" . time() . "\n";
 			$out .= "H\tn\tpid\tnick\tteamscore\ttotaltime\tplayerrank\tcountrycode\n";
 			
 			if(!$pid)
 			{
-				$query = "SELECT `id`, `name`, `rank`, `country`, `time`, `teamscore` FROM `player` WHERE `hidden` = 0 AND `teamscore` > 0 ORDER BY `teamscore` DESC, `name` DESC LIMIT {$min}, {$max}";
+				$query = "SELECT `id`, `name`, `rank`, `country`, `time`, `teamscore` FROM `player` WHERE $WHERE AND `teamscore` > 0 ORDER BY `teamscore` DESC, `name` DESC LIMIT {$min}, {$max}";
 				$result = $connection->query($query);
                 if($result instanceof PDOStatement)
                 {
@@ -226,7 +240,7 @@ else
 			}
 			else
 			{
-				$query = "SELECT `id`, `name`, `rank`, `country`, `time`, `teamscore` FROM `player` WHERE `hidden` = 0 AND `teamscore` > 0 ORDER BY `teamscore` DESC, `name` DESC";
+				$query = "SELECT `id`, `name`, `rank`, `country`, `time`, `teamscore` FROM `player` WHERE $WHERE AND `teamscore` > 0 ORDER BY `teamscore` DESC, `name` DESC";
 				$result = $connection->query($query);
                 if($result instanceof PDOStatement)
                 {
@@ -249,14 +263,14 @@ else
 		}
 		elseif ($id == 'combat')
 		{
-			$result = $connection->query("SELECT COUNT(`id`) FROM `player` WHERE `hidden` = 0 AND `skillscore` > 0");
+			$result = $connection->query("SELECT COUNT(`id`) FROM `player` WHERE $WHERE AND `skillscore` > 0");
 			$count = $result->fetchColumn();
 			$out .= "D\t{$count}\t" . time() . "\n";
 			$out .= "H\tn\tpid\tnick\tscore\ttotalkills\ttotaltime\tplayerrank\tcountrycode\n";
 			
 			if(!$pid)
 			{
-				$query = "SELECT `id`, `name`, `rank`, `country`, `time`, `kills`, `skillscore` FROM `player` WHERE `hidden` = 0 AND `skillscore` > 0 ORDER BY `skillscore` DESC, `name` DESC LIMIT {$min}, {$max}";
+				$query = "SELECT `id`, `name`, `rank`, `country`, `time`, `kills`, `skillscore` FROM `player` WHERE $WHERE AND `skillscore` > 0 ORDER BY `skillscore` DESC, `name` DESC LIMIT {$min}, {$max}";
 				$result = $connection->query($query);
                 if($result instanceof PDOStatement)
                 {
@@ -275,7 +289,7 @@ else
 			}
 			else
 			{
-				$query = "SELECT `id`, `name`, `rank`, `country`, `time`, `kills`, `skillscore` FROM `player` WHERE `hidden` = 0 AND `skillscore` > 0 ORDER BY `skillscore` DESC, `name` DESC";
+				$query = "SELECT `id`, `name`, `rank`, `country`, `time`, `kills`, `skillscore` FROM `player` WHERE $WHERE AND `skillscore` > 0 ORDER BY `skillscore` DESC, `name` DESC";
 				$result = $connection->query($query);
                 if($result instanceof PDOStatement)
                 {
@@ -302,7 +316,7 @@ else
 	# Need weekly score calculations!
 	elseif ($type == 'risingstar')
 	{
-		$query = "SELECT COUNT(DISTINCT(h.`id`)) FROM `player_history` h INNER JOIN player p ON p.id = h.id WHERE p.hidden = 0 AND h.`score` > 0 AND h.`timestamp` >= (UNIX_TIMESTAMP() - (60*60*24*7))";
+		$query = "SELECT COUNT(DISTINCT(h.`id`)) FROM `player_history` h INNER JOIN player ON player.id = h.id WHERE $WHERE AND h.`score` > 0 AND h.`timestamp` >= (UNIX_TIMESTAMP() - (60*60*24*7))";
 		$result = $connection->query($query);
         $count = $result->fetchColumn();
 		$out .= "D\t{$count}\t" . time() . "\n";
@@ -310,10 +324,10 @@ else
 		
 		if(!$pid)
 		{
-			$query = "SELECT p.id, p.name, p.rank, p.country, p.time, sum(h.score) as weeklyscore, p.joined
-				FROM player AS p JOIN player_history AS h ON p.id = h.id
-				WHERE p.hidden = 0 AND h.score > 0 AND h.timestamp >= (UNIX_TIMESTAMP() - (60*60*24*7))
-				GROUP BY p.id
+			$query = "SELECT player.id, player.name, player.rank, player.country, player.time, sum(h.score) as weeklyscore, player.joined
+				FROM player JOIN player_history AS h ON player.id = h.id
+				WHERE $WHERE AND h.score > 0 AND h.timestamp >= (UNIX_TIMESTAMP() - (60*60*24*7))
+				GROUP BY player.id
 				ORDER BY weeklyscore DESC, name DESC
 				LIMIT {$min}, {$max}";
 			$result = $connection->query($query);
@@ -334,10 +348,10 @@ else
 		}
 		else
 		{
-			$query = "SELECT p.id, p.name, p.rank, p.country, p.time, sum(h.score) as weeklyscore, p.joined
-				FROM player AS p JOIN player_history AS h ON p.id = h.id
-				WHERE p.hidden = 0 AND h.score > 0 AND h.timestamp >= (UNIX_TIMESTAMP() - (60*60*24*7))
-				GROUP BY p.id
+			$query = "SELECT player.id, player.name, player.rank, player.country, player.time, sum(h.score) as weeklyscore, player.joined
+				FROM player JOIN player_history AS h ON player.id = h.id
+				WHERE $WHERE AND h.score > 0 AND h.timestamp >= (UNIX_TIMESTAMP() - (60*60*24*7))
+				GROUP BY player.id
 				ORDER BY weeklyscore DESC, name DESC";
 			$result = $connection->query($query);
             if($result instanceof PDOStatement)
@@ -363,14 +377,14 @@ else
 	}
 	elseif ($type == 'kit')
 	{
-		$result = $connection->query("SELECT COUNT(k.id) FROM kits k INNER JOIN player p ON p.id = k.id WHERE p.hidden = 0 AND `kills{$id}` > 0");
+		$result = $connection->query("SELECT COUNT(k.id) FROM kits k INNER JOIN player ON player.id = k.id WHERE $WHERE AND `kills{$id}` > 0");
         $count = $result->fetchColumn();
 		$out .= "D\t{$count}\t" . time() . "\n";
 		$out .= "H\tn\tpid\tnick\tkillswith\tdeathsby\ttimeplayed\tplayerrank\tcountrycode\n";
 		
 		if(!$pid)
 		{
-			$query = "SELECT player.id AS plid, name, rank, country, kills{$id} AS kills, deaths{$id} AS deaths, time{$id} AS time FROM player NATURAL JOIN kits WHERE hidden = 0 AND kills{$id} > 0 ORDER BY kills{$id} DESC, name DESC LIMIT {$min}, {$max}";
+			$query = "SELECT player.id AS plid, name, rank, country, kills{$id} AS kills, deaths{$id} AS deaths, time{$id} AS time FROM player NATURAL JOIN kits WHERE $WHERE AND kills{$id} > 0 ORDER BY kills{$id} DESC, name DESC LIMIT {$min}, {$max}";
 			$result = $connection->query($query);
             if($result instanceof PDOStatement)
             {
@@ -389,7 +403,7 @@ else
 		}
 		else
 		{
-			$query = "SELECT player.id AS plid, name, rank, country, kills{$id} AS kills, deaths{$id} AS deaths, time{$id} AS time FROM player NATURAL JOIN kits WHERE hidden = 0 AND kills{$id} > 0 ORDER BY kills{$id} DESC, name DESC";
+			$query = "SELECT player.id AS plid, name, rank, country, kills{$id} AS kills, deaths{$id} AS deaths, time{$id} AS time FROM player NATURAL JOIN kits WHERE $WHERE AND kills{$id} > 0 ORDER BY kills{$id} DESC, name DESC";
 			$result = $connection->query($query);
             if($result instanceof PDOStatement)
             {
@@ -414,14 +428,14 @@ else
 	}
 	elseif ($type == 'vehicle')
 	{
-		$result = $connection->query("SELECT COUNT(v.id) FROM vehicles v INNER JOIN player p ON p.id = v.id WHERE p.hidden = 0 AND `kills{$id}` > 0");
+		$result = $connection->query("SELECT COUNT(v.id) FROM vehicles v INNER JOIN player ON player.id = v.id WHERE $WHERE AND `kills{$id}` > 0");
         $count = $result->fetchColumn();
 		$out .= "D\t{$count}\t" . time() . "\n";
 		$out .= "H\tn\tpid\tnick\tkillswith\tdetahsby\ttimeused\tplayerrank\tcountrycode\n";
 		
 		if(!$pid)
 		{
-			$query = "SELECT player.id AS plid, name, rank, country, kills{$id} AS kills, deaths{$id} AS deaths, time{$id} AS time FROM player NATURAL JOIN vehicles WHERE hidden = 0 AND kills{$id} > 0 ORDER BY kills{$id} DESC, name DESC LIMIT {$min}, {$max}";
+			$query = "SELECT player.id AS plid, name, rank, country, kills{$id} AS kills, deaths{$id} AS deaths, time{$id} AS time FROM player NATURAL JOIN vehicles WHERE $WHERE AND kills{$id} > 0 ORDER BY kills{$id} DESC, name DESC LIMIT {$min}, {$max}";
 			$result = $connection->query($query);
             if($result instanceof PDOStatement)
             {
@@ -440,7 +454,7 @@ else
 		}
 		else
 		{
-			$query = "SELECT player.id AS plid, name, rank, country, kills{$id} AS kills, deaths{$id} AS deaths, time{$id} AS time FROM player NATURAL JOIN vehicles WHERE hidden = 0 AND kills{$id} > 0 ORDER BY kills{$id} DESC, name DESC";
+			$query = "SELECT player.id AS plid, name, rank, country, kills{$id} AS kills, deaths{$id} AS deaths, time{$id} AS time FROM player NATURAL JOIN vehicles WHERE $WHERE AND kills{$id} > 0 ORDER BY kills{$id} DESC, name DESC";
 			$result = $connection->query($query);
             if($result instanceof PDOStatement)
             {
@@ -465,7 +479,7 @@ else
 	}
 	elseif ($type == 'weapon')
 	{
-		$result = $connection->query("SELECT COUNT(w.id) FROM weapons w INNER JOIN player p ON p.id = w.id WHERE p.hidden = 0 AND `kills{$id}` > 0");
+		$result = $connection->query("SELECT COUNT(w.id) FROM weapons w INNER JOIN player ON player.id = w.id WHERE $WHERE AND `kills{$id}` > 0");
         $count = $result->fetchColumn();
 		$out .= "D\t{$count}\t" . time() . "\n";
 		# NOTE: EA typo (deathsby=detahsby)
@@ -473,7 +487,7 @@ else
         
 		if (!$pid)
 		{
-			$query = "SELECT player.id AS plid, name, rank, country, kills{$id} AS kills, deaths{$id} AS deaths, time{$id} AS time, hit{$id} AS hit, fired{$id} AS fired FROM player NATURAL JOIN weapons WHERE hidden = 0 AND kills{$id} > 0 ORDER BY kills{$id} DESC, name DESC LIMIT {$min}, {$max}";
+			$query = "SELECT player.id AS plid, name, rank, country, kills{$id} AS kills, deaths{$id} AS deaths, time{$id} AS time, hit{$id} AS hit, fired{$id} AS fired FROM player NATURAL JOIN weapons WHERE $WHERE AND kills{$id} > 0 ORDER BY kills{$id} DESC, name DESC LIMIT {$min}, {$max}";
 			$result = $connection->query($query);
             if($result instanceof PDOStatement)
             {
@@ -493,7 +507,7 @@ else
 		}
 		else
 		{
-			$query = "SELECT player.id AS plid, name, rank, country, kills{$id} AS kills, deaths{$id} AS deaths, time{$id} AS time, hit{$id} AS hit, fired{$id} AS fired FROM player NATURAL JOIN weapons WHERE hidden = 0 AND kills{$id} > 0 ORDER BY kills{$id} DESC, name DESC";
+			$query = "SELECT player.id AS plid, name, rank, country, kills{$id} AS kills, deaths{$id} AS deaths, time{$id} AS time, hit{$id} AS hit, fired{$id} AS fired FROM player NATURAL JOIN weapons WHERE $WHERE AND kills{$id} > 0 ORDER BY kills{$id} DESC, name DESC";
 			$result = $connection->query($query);
             if($result instanceof PDOStatement)
             {
