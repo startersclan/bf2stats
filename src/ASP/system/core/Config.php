@@ -70,6 +70,7 @@ class Config
 			'admin_backup_ext' => '.bak',
 			'admin_ignore_ai' => 0,
 			'stats_ignore_ai' => 0,
+			'stats_hide_new_players' => false,
 			'stats_min_game_time' => 0,
 			'stats_min_player_game_time' => 0,
 			'stats_players_min' => 1,
