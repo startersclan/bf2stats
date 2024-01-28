@@ -18,12 +18,10 @@ echo "Setting permissions on backup volume"
 setup /src/ASP/system/database/backups 1
 
 echo "Setting up config file"
-CONFIG_FILE_SAMPLE=/config.sample/config.php
 CONFIG_FILE=/src/ASP/system/config/config.php
-if [ ! -f "$CONFIG_FILE" ]; then
-    echo "Creating new config file: $CONFIG_FILE"
-    cp -v "$CONFIG_FILE_SAMPLE" "$CONFIG_FILE"
-fi
+php /src/ASP/index.php > /dev/null 
+ls -al $CONFIG_FILE
+
 echo "Setting permissions on config volume"
 setup /src/ASP/system/config 1
 
@@ -49,7 +47,9 @@ write_config() {
     VAL=$( printenv "$ENVVAR" || true )
     if [ -n "$VAL" ]; then
         echo "Writing key '$KEY' of type '$TYPE' to config file"
-        if [ "$TYPE" == 'string' ]; then
+        if [ "$TYPE" == 'boolean' ]; then
+            sed -i "s|^.$KEY =.*|\$$KEY = $VAL;|" "$CONFIG_FILE"  # E.g. $bfhq_hide_bots = false;
+        elif [ "$TYPE" == 'string' ]; then
             sed -i "s|^.$KEY =.*|\$$KEY = '$VAL';|" "$CONFIG_FILE"  # E.g. $db_host = '127.0.0.1';
         elif [ "$TYPE" == 'int' ]; then
             sed -i "s|^.$KEY =.*|\$$KEY = $VAL;|" "$CONFIG_FILE"  # E.g. $db_port = 3306;
@@ -75,7 +75,9 @@ echo "$CONFILE_FILE_CONTENT" | grep -E '^\$' | while read -r KEY EQUALS VALUE; d
     KEY=$( echo "$KEY" | sed 's/^\$//' )    # Strip the dollar sign. E.g. '$db_host' -> 'db_host'
     VALUE=$( echo "$VALUE" | rev | sed 's/^;//' | rev )    # Strip the trailing semicolon
     TYPE=
-    if echo "$VALUE" | grep -E "^'" > /dev/null; then
+    if echo "$VALUE" | grep -E "^false|true$" > /dev/null; then
+        TYPE=boolean
+    elif echo "$VALUE" | grep -E "^'" > /dev/null; then
         TYPE=string
     elif echo "$VALUE" | grep -E "^array\(" > /dev/null; then
         TYPE=array
