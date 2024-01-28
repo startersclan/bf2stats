@@ -17,8 +17,11 @@ setup() {
 echo "Setting permissions on backup volume"
 setup /src/ASP/system/database/backups 1
 
-echo "Setting up config file"
 CONFIG_FILE=/src/ASP/system/config/config.php
+if [ -f "$CONFIG_FILE" ]; then 
+    echo "Removing existing config file"
+fi
+echo "Setting up config file"
 php /src/ASP/index.php > /dev/null 
 ls -al $CONFIG_FILE
 
