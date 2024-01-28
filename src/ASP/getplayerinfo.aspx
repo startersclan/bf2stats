@@ -344,13 +344,13 @@ else
 				$favoi = $row2['attacker'];
 				$favok = $row2['count'];
 				
-				$query = "SELECT `name`, `rank` FROM `player` WHERE `id` = {$favoi} $WHERE";
+				$query = "SELECT `id`, `name`, `rank` FROM `player` WHERE `id` = {$favoi} $WHERE";
 				$result = $connection->query($query);
 				$row2 = $result->fetch();
 				$favon = '';
 				$favor = '';
 				if ($row2) {
-					$favon = trim($row2['name']);
+					$favon = Config::Get('bfhq_pids_as_names') ? $row2['id'] : trim($row2['name']);
 					$favor = $row2['rank'];
 				}else {
 					$favoi = $favon = $favor = ' ';
@@ -376,13 +376,13 @@ else
 				$favvk = $row2['count'];
 				
 				//
-				$query = "SELECT `name`, `rank` FROM `player` WHERE `id` = {$favvi} $WHERE";
+				$query = "SELECT `id`, `name`, `rank` FROM `player` WHERE `id` = {$favvi} $WHERE";
 				$result = $connection->query($query);
 				$row2 = $result->fetch();
 				$favvn = '';
 				$favvr = '';
 				if ($row2) {
-					$favvn = trim($row2['name']);
+					$favvn = Config::Get('bfhq_pids_as_names') ? $row2['id'] : trim($row2['name']);
 					$favvr = $row2['rank'];
 				}else {
 					$favvi = $favvn = $favvr= ' ';
