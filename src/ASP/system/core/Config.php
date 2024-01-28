@@ -86,6 +86,7 @@ class Config
 			'bfhq_hide_hidden_players' => false,
 			'bfhq_hide_pids_start' => 1,
 			'bfhq_hide_pids_end' => 999999999,
+			'bfhq_pids_as_names' => false,
 			'debug_lvl' => 2,
 			'game_hosts' => array('127.0.0.1','192.168.2.0/24','192.168.1.102','192.168.1.110','localhost','::1'),
 			'game_custom_mapid' => 700,

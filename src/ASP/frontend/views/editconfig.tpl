@@ -187,6 +187,15 @@
                         />
                     </div>
                 </div>
+                <div class="mws-form-row">
+                    <label>Show PIDs instead of player names in BFHQ:</label>
+                    <div class="mws-form-item small">
+                        <select name="cfg__bfhq_pids_as_names" title="Show PIDs instead of player names in BFHQ.">
+                            <option value="true" <?php if('{config.bfhq_pids_as_names}' == true) echo 'selected="selected"'; ?>>Yes</option>
+                            <option value="false" <?php if('{config.bfhq_pids_as_names}' == false) echo 'selected="selected"'; ?>>No</option>
+                        </select>
+                    </div>
+                </div>
                 
                 <!-- Global Config -->
                 <h3 style="margin-left: 50px; margin-top: 35px;">Global Game Server Configuration</h3>
