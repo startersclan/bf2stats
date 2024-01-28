@@ -397,6 +397,13 @@
 					if(empty($country))
 						$country = 'xx';
 					
+					$hidden = '';
+					if (Config::Get('stats_hide_new_players')) {
+						$hidden .= ', hidden = 1';
+					}else {
+						$hidden .= ', hidden = 0';
+					}
+					
 					// Insert information 
 					$query = "INSERT INTO player SET
 						id = " . $data["pID_$x"] . ",
@@ -445,6 +452,7 @@
 						mode1 = " . $globals['mode1'] .",
 						mode2 = " . $globals['mode2'] .",
 						isbot = ". $data["ai_$x"] ."
+						$hidden
 					";
 					$result = $DB->exec( $query );
 					checkQueryResult($result, $query, $DB);

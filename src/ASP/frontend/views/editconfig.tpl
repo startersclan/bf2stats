@@ -62,6 +62,15 @@
                     </div>
                 </div>
                 <div class="mws-form-row">
+                    <label>Auto-hide new players:</label>
+                    <div class="mws-form-item small">
+                        <select name="cfg__stats_hide_new_players" title="Auto-hide new players from ranking.">
+                            <option value="true" <?php if('{config.stats_hide_new_players}' == true) echo 'selected="selected"'; ?>>Yes</option>
+                            <option value="false" <?php if('{config.stats_hide_new_players}' == false) echo 'selected="selected"'; ?>>No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mws-form-row">
                     <label>Min. Game Time (Round):</label>
                     <div class="mws-form-item small">
                         <input type="text" class="mws-textinput required" name="cfg__stats_min_game_time" value="{config.stats_min_game_time}" title="Minimum game time of total round in SNAPSHOT before processing (Seconds)?"/>
