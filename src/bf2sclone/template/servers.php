@@ -166,8 +166,8 @@ $template = '
 			</div> <!-- content-id --><!-- content -->
 		</div>	<!-- Page 3 -->
 		
-		<div id="footer">This page was last updated {:LASTUPDATE:} ago. Next update will be in {:NEXTUPDATE:}<br>
-		This page was processed in {:PROCESSED:} seconds.</div>
+		<div id="footer">This page was last updated {:LASTUPDATE:} ago. Next update will be in {:NEXTUPDATE:}<br>' .
+		(FOOTER_PAGELOADSPEED_ENABLE ? 'This page was processed in {:PROCESSED:} seconds.</div>' : '') . '
 	
 		<ul id="navitems">
 			<li class="' . ($GO == 'leaderboard' ? 'current' : '') . '"><a href="'. $ROOT .'?go=leaderboard">Leaderboard</a></li>

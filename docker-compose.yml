@@ -145,6 +145,7 @@ services:
       - DBLOGIN=admin
       - DBPASSWORD=admin
       # - TITLE=BF2S Clone
+      # - FOOTER_PAGELOADSPEED_ENABLE=false
       - RANKING_REFRESH_TIME=0
       # - RANKING_HIDE_BOTS=false
       # - RANKING_HIDE_COUNTRY=false
