@@ -20,6 +20,7 @@ setup /src/ASP/system/database/backups 1
 CONFIG_FILE=/src/ASP/system/config/config.php
 if [ -f "$CONFIG_FILE" ]; then 
     echo "Removing existing config file"
+    rm -fv "$CONFIG_FILE"
 fi
 echo "Setting up config file"
 php /src/ASP/index.php > /dev/null 
