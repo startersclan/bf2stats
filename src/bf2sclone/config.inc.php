@@ -30,6 +30,9 @@ defineVar('RANKING_REFRESH_TIME', 600); // -> default: 600 seconds (10 minutes)
 // Whether to hide bots from rankings
 defineVar('RANKING_HIDE_BOTS', false);
 
+// Whether to hide player country flag from rankings
+defineVar('RANKING_HIDE_COUNTRY', false);
+
 // Whether to hide hidden players from rankings
 defineVar('RANKING_HIDE_HIDDEN_PLAYERS', false);
 
@@ -37,7 +40,7 @@ defineVar('RANKING_HIDE_HIDDEN_PLAYERS', false);
 defineVar('RANKING_HIDE_PIDS_START', 1);
 defineVar('RANKING_HIDE_PIDS_END', 999999999);
 
-// Whether to show PIDs instead of player names hidden players from rankings
+// Whether to show PIDs instead of player names in rankings
 defineVar('RANKING_PIDS_AS_NAMES', false);
 
 // Number of players to show on the leaderboard frontpage

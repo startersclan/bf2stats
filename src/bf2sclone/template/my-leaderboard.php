@@ -79,7 +79,7 @@ $template = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "htt
 					<tr>
 						<td>
 							<img src="'.$ROOT.'game-images/ranks/icon/rank_'.$value['rank'].'.gif" alt="" style="border: 0pt none ;"> 
-							<a href="'.$ROOT.'?pid='.$value['id'].'">&nbsp;' . esc_attr(RANKING_PIDS_AS_NAMES ? $value['id'] : $value['name']) . '&nbsp;<img src="'.$ROOT.'game-images/flags/'.strtoupper($value['country']).'.png" width="16" height="12"></a>
+							<a href="'.$ROOT.'?pid='.$value['id'].'">&nbsp;' . esc_attr(RANKING_PIDS_AS_NAMES ? $value['id'] : $value['name']) . '&nbsp;<img src="'.$ROOT.'game-images/flags/' . esc_attr(RANKING_HIDE_COUNTRY ? 'xx' : strtoupper($value['country'])) . '.png" width="16" height="12"></a>
 						</td>
 						<td>'.$value['score'].'</td>
 						<td>'.$value['spm'].'</td>

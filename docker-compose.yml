@@ -147,6 +147,7 @@ services:
       # - TITLE=BF2S Clone
       - RANKING_REFRESH_TIME=0
       # - RANKING_HIDE_BOTS=false
+      # - RANKING_HIDE_COUNTRY=false
       # - RANKING_HIDE_HIDDEN_PLAYERS=false
       # - RANKING_HIDE_PIDS_START=1
       # - RANKING_HIDE_PIDS_END=999999999
