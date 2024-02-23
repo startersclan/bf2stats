@@ -48,7 +48,7 @@ $template = '
 					<img class="vehicle" src="' . $ROOT . 'game-images/vehicles/vehicles_' . $playerFavorite['vehicle'] . '.jpg" alt="' . getVehicleByID($playerFavorite['vehicle']) . '" />
 					<img class="kit" src="' . $ROOT . 'game-images/kits/kit_' . $playerFavorite['kit'] . '.jpg" alt="' . getKitByID($playerFavorite['kit']) . '" />
 					<img class="map" src="' . $ROOT . 'game-images/maps/map_' . $playerFavorite['map'] . '.jpg" alt="' . getMapByID( $playerFavorite['map'] ) . '" />
-					<img id="flag" src="' . $ROOT . 'game-images/flags/' . strtoupper($player['country']) . '.png" alt="' . getCountryByCode($player['country']) . '" width="32" height="24" />
+					<img id="flag" src="' . $ROOT . 'game-images/flags/' . esc_attr(RANKING_HIDE_COUNTRY ? 'xx' : strtoupper($player['country'])) . '.png" alt="' . getCountryByCode($player['country']) . '" width="32" height="24" />
 				</div>
 				<a id="add-to-mlb" href="'.$ROOT.'/?go=my-leaderboard&add=' . $PID . '"><img src="' . $ROOT . '/site-images/user_add.png" alt="Add to My Leader Board" /></a>
 			</div>

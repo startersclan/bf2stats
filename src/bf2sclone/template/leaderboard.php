@@ -64,7 +64,7 @@ $template = '
 										</td>
 										<td>'.$value['score'].'</td>
 										<td>
-											<img src="'.$ROOT.'game-images/flags/'.strtoupper($value['country']).'.png" height="12" width="16">
+											<img src="'.$ROOT.'game-images/flags/' . esc_attr(RANKING_HIDE_COUNTRY ? 'xx' : strtoupper($value['country'])) . '.png" height="12" width="16">
 										</td>
 										<td>'.intToTime($value['time']).'</td>
 										<!--
