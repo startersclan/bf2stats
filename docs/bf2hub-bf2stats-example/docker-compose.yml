@@ -1,8 +1,8 @@
 version: '2.2'
 services:
-  # Battlefield 2 1.5 server with bf2stats 2.8.1 python scripts
+  # Battlefield 2 1.5 server with bf2stats 2.9.0 python scripts
   bf2:
-    image: startersclan/docker-bf2:v1.5.3153.0-bf2stats-2.8.1
+    image: startersclan/docker-bf2:v1.5.3153.0-bf2stats-2.9.0
     volumes:
       - ./config/bf2/mods/bf2/ai/aidefault-custom.ai:/server/bf2/mods/bf2/ai/aidefault.ai:ro # Customize bots
       - ./config/bf2/mods/bf2/settings/serversettings-custom.con:/server/bf2/mods/bf2/settings/serversettings.con:ro # Server config
@@ -81,7 +81,7 @@ services:
 
   # The gamespy ASP. The dashboard is available at https://asp.example.com/ASP
   asp:
-    image: startersclan/bf2stats:2.8.1-asp
+    image: startersclan/bf2stats:2.9.0-asp
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${COMPOSE_PROJECT_NAME?err}_traefik-network"
@@ -126,7 +126,7 @@ services:
 
   # The bf2sclone for viewing BFHQ on the web. It is available at https://bf2sclone.example.com
   bf2sclone:
-    image: startersclan/bf2stats:2.8.1-bf2sclone
+    image: startersclan/bf2stats:2.9.0-bf2sclone
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${COMPOSE_PROJECT_NAME?err}_traefik-network"

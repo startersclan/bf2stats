@@ -7,6 +7,8 @@ categories:
   - title: '✨ Enhancements'
     labels:
       - 'enhancement'
+  - title: '🎚 Change'
+    labels:
       - 'change'
   - title: '🐛 Bug Fixes'
     labels:
