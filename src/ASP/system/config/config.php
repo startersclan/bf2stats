@@ -31,6 +31,7 @@ $stats_awds_complete = 0;
 $stats_lan_override = '174.49.21.221';
 $stats_local_pids = array('LocalPlayer01','210.84.29.151','LocalPlayer02','210.84.29.151');
 $bfhq_hide_bots = false;
+$bfhq_hide_country = false;
 $bfhq_hide_hidden_players = false;
 $bfhq_hide_pids_start = 1;
 $bfhq_hide_pids_end = 999999999;

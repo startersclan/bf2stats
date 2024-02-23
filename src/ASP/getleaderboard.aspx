@@ -133,7 +133,7 @@ else
                         $plpid = $row['id'];
                         $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
-                        $country = strtoupper($row['country']);
+                        $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                         $time = $row['time'];
                         $score = $row['score'];
                         $out .= "D\t" . $pos++ . "\t$plpid\t$name\t$score\t$time\t$rank\t$country\n";
@@ -153,7 +153,7 @@ else
                         {
                             $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                             $rank = $row['rank'];
-                            $country = strtoupper($row['country']);
+                            $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                             $time = $row['time'];
                             $score = $row['score'];
                             $out .= "D\t" . $pos++ . "\t$plpid\t$name\t$score\t$time\t$rank\t$country\n";
@@ -182,7 +182,7 @@ else
                         $plpid = $row['id'];
                         $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
-                        $country = strtoupper($row['country']);
+                        $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                         $cmdtime = $row['cmdtime'];
                         $cmdscore = $row['cmdscore'];
                         $out .= "D\t" . $pos++ . "\t$plpid\t$name\t$cmdscore\t$cmdtime\t$rank\t$country\n";
@@ -202,7 +202,7 @@ else
                         {
                             $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                             $rank = $row['rank'];
-                            $country = strtoupper($row['country']);
+                            $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                             $cmdtime = $row['cmdtime'];
                             $cmdscore = $row['cmdscore'];
                             $out .= "D\t" . $pos++ . "\t$pid\t$name\t$cmdscore\t$cmdtime\t$rank\t$country\n";
@@ -231,7 +231,7 @@ else
                         $plpid = $row['id'];
                         $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
-                        $country = strtoupper($row['country']);
+                        $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                         $time = $row['time'];
                         $teamscore = $row['teamscore'];
                         $out .= "D\t" . $pos++ . "\t$plpid\t$name\t$teamscore\t$time\t$rank\t$country\n";
@@ -250,7 +250,7 @@ else
                         if ($plpid == $pid) {
                             $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                             $rank = $row['rank'];
-                            $country = strtoupper($row['country']);
+                            $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                             $time = $row['time'];
                             $teamscore = $row['teamscore'];
                             $out .= "D\t" . $pos++ . "\t$pid\t$name\t$teamscore\t$time\t$rank\t$country\n";
@@ -279,7 +279,7 @@ else
                         $plpid = $row['id'];
                         $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
-                        $country = strtoupper($row['country']);
+                        $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                         $time = $row['time'];
                         $kills = $row['kills'];
                         $combatscore = $row['skillscore'];
@@ -300,7 +300,7 @@ else
                         {
                             $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                             $rank = $row['rank'];
-                            $country = strtoupper($row['country']);
+                            $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                             $time = $row['time'];
                             $kills = $row['kills'];
                             $combatscore = $row['skillscore'];
@@ -338,7 +338,7 @@ else
                     $plpid = $row['id'];
                     $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                     $rank = $row['rank'];
-                    $country = strtoupper($row['country']);
+                    $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                     $time = $row['time'];
                     $score = $row['weeklyscore'];
                     $joined = date('m/d/y h:i:00 A', $row['joined']);
@@ -363,7 +363,7 @@ else
                     {
                         $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
-                        $country = strtoupper($row['country']);
+                        $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                         $time = $row['time'];
                         $score = $row['weeklyscore'];
                         $joined = date('m/d/y h:i:00 A', $row['joined']);
@@ -393,7 +393,7 @@ else
                     $plpid = $row['plid'];
                     $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                     $rank = $row['rank'];
-                    $country = strtoupper($row['country']);
+                    $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                     $time = $row['time'];
                     $kills = $row['kills'];
                     $deaths = $row['deaths'];
@@ -414,7 +414,7 @@ else
                     {
                         $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
-                        $country = strtoupper($row['country']);
+                        $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                         $time = $row['time'];
                         $kills = $row['kills'];
                         $deaths = $row['deaths'];
@@ -444,7 +444,7 @@ else
                     $plpid = $row['plid'];
                     $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                     $rank = $row['rank'];
-                    $country = strtoupper($row['country']);
+                    $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                     $time = $row['time'];
                     $kills = $row['kills'];
                     $deaths = $row['deaths'];
@@ -465,7 +465,7 @@ else
                     {
                         $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
-                        $country = strtoupper($row['country']);
+                        $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                         $time = $row['time'];
                         $kills = $row['kills'];
                         $deaths = $row['deaths'];
@@ -496,7 +496,7 @@ else
                     $plpid = $row['plid'];
                     $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                     $rank = $row['rank'];
-                    $country = strtoupper($row['country']);
+                    $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                     $time = $row['time'];
                     $kills = $row['kills'];
                     $deaths = $row['deaths'];
@@ -518,7 +518,7 @@ else
                     {
                         $name = Config::Get('bfhq_pids_as_names') ? $row['id'] : trim($row['name']);
                         $rank = $row['rank'];
-                        $country = strtoupper($row['country']);
+                        $country = Config::Get('bfhq_hide_country') ? 'xx' : strtoupper($row['country']);
                         $time = $row['time'];
                         $kills = $row['kills'];
                         $deaths = $row['deaths'];

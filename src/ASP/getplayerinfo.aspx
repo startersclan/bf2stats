@@ -1387,7 +1387,7 @@ else
 					$roww['c4hit'] . "\t" .
 					$roww['claymorehit'] . "\t" .
 					$roww['atminehit'] . "\t" .
-					$row['country'] . "\t" .
+					(Config::Get('bfhq_hide_country') ? 'xx' : $row['country']) . "\t" .
 					$row['teamkills'] . "\t" .
 					$row['teamdamage'] . "\t" .
 					$row['teamvehicledamage'] . "\t";

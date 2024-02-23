@@ -165,6 +165,15 @@
                     </div>
                 </div>
                 <div class="mws-form-row">
+                    <label>Hide player country flag:</label>
+                    <div class="mws-form-item small">
+                        <select name="cfg__bfhq_hide_country" title="Hide country flags from BFHQ ranking?">
+                            <option value="true" <?php if('{config.bfhq_hide_country}' == true) echo 'selected="selected"'; ?>>Yes</option>
+                            <option value="false" <?php if('{config.bfhq_hide_country}' == false) echo 'selected="selected"'; ?>>No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mws-form-row">
                     <label>Hide hidden players:</label>
                     <div class="mws-form-item small">
                         <select name="cfg__bfhq_hide_hidden_players" title="Hide hidden players from BFHQ ranking?">
