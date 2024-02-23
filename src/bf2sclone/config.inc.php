@@ -24,6 +24,9 @@ defineVar('HOME_PAGE', 'leaderboard');
 // Leader board title
 defineVar('TITLE', 'BF2S Clone');
 
+// Whether to show page load speed in the footer
+defineVar('FOOTER_PAGELOADSPEED_ENABLE', false);
+
 // Refresh time in seconds for stats
 defineVar('RANKING_REFRESH_TIME', 600); // -> default: 600 seconds (10 minutes)
 
