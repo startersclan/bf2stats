@@ -31,6 +31,7 @@ function get_pid_txt()
 
 function getLeaderBoardEntries($LEADERBOARD)
 {
+	$LEADERBOARD = mysqli_real_escape_string($GLOBALS['link'], $LEADERBOARD);
 	include( ROOT . DS . 'queries'. DS .'getLeaderBoardEntry.php' ); // imports the correct sql statement
 	$result = mysqli_query($GLOBALS['link'], $query) or die('Query failed: ' . mysqli_error($GLOBALS['link']));
 	$data = array();
