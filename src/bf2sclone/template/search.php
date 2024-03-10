@@ -123,7 +123,9 @@ $template .= '
 		<a id="secondhome" href="'.$ROOT.'"> </a>
 	</div><!-- page 3 -->
 	</div><!-- page 2 -->
-	<div id="footer">This page was processed in {:PROCESSED:} seconds.</div>
+	
+	<div id="footer">' .
+	(FOOTER_PAGELOADSPEED_ENABLE ? 'This page was processed in {:PROCESSED:} seconds.</div>' : '') . '
 
 	<ul id="navitems">
 		<li class="' . ($GO == 'leaderboard' ? 'current' : '') . '"><a href="'. $ROOT .'?go=leaderboard">Leaderboard</a></li>
