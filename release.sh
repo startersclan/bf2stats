@@ -19,10 +19,11 @@ if ! echo "$TAG_PREV" | grep -E "$TAG_REGEX" > /dev/null; then
     echo "Previous git tag is invalid. It does not match regex: $TAG_REGEX"
     exit 1
 fi
+TAG_PREV_REGEX=$( echo "$TAG_PREV" | sed 's/\./\\./g' ) # '1.0.0' -> '1\.0\.0'
 
 # Update version in docs, .php, and .sql files
 git ls-files | grep -E '(README.md|docker-compose.yml|BF2StatisticsConfig.*\.py|src/ASP/index\.php|src/ASP/bf2statistics\.php)' | while read -r l; do
-    sed -i "s/$TAG_PREV/$TAG/g" "$l"
+    sed -i "s/$TAG_PREV_REGEX/$TAG/g" "$l"
 done
 
 echo "Done bumping version to $TAG in all files."
