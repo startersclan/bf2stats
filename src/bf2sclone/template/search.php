@@ -50,7 +50,7 @@ $template = '
 					<label>Search Player by ID\'s or Nick: <br>
 						<input name="searchvalue" size="80" value="';
 							if ($SEARCHVALUE)
-								$template .= $SEARCHVALUE;
+								$template .= esc_attr($SEARCHVALUE);
 							$template .= '" type="text">
 					</label> 
 					<input name="search" value="Search" type="submit">
@@ -70,15 +70,15 @@ if ($SEARCHVALUE)
 						<th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">Time Played<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
 						<th class="nosort">Last Update</th>
 						<th><a href="#" class="sortheader" onclick="ts_resortTable(this);return false;">PID<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
-					</tr>
-					<tr>';
+					</tr>';
 				$total = count($searchresults);
-				for ($i=0; $i < $total; $i++)
-				{
-					$template .= '
+				if ($total > 0) {
+					for ($i=0; $i < $total; $i++) {
+						$template .= '
+					<tr>
 						<td>
 							<img src="'.$ROOT.'game-images/ranks/icon/rank_'.$searchresults[$i]['rank'].'.gif" alt="" style="border: 0pt none ;"> 
-							<a href="'.$ROOT.'?pid='.$searchresults[$i]['id'].'"> ' . (RANKING_PIDS_AS_NAMES ? $searchresults[$i]['id'] : esc_attr($searchresults[$i]['name'])) . '</a>&nbsp;
+							<a href="'.$ROOT.'?pid='.$searchresults[$i]['id'].'"> ' . esc_attr(RANKING_PIDS_AS_NAMES ? $searchresults[$i]['id'] : $searchresults[$i]['name']) . '</a>&nbsp;
 							<img src="'.$ROOT.'game-images/flags/' . esc_attr(RANKING_HIDE_COUNTRY ? 'xx' : strtoupper($searchresults[$i]['country'])) .'.png" height="12" width = "16">
 						</td>
 						<td>'.$searchresults[$i]['score'].'</td>
@@ -96,9 +96,15 @@ if ($SEARCHVALUE)
 								$template .= 'N/A';
 							else
 								$template .= intToTime(getLastUpdate(getcwd().'/cache/'.$searchresults[$i]['id'].'.cache'));
-						  $template .= '								
+						$template .= '								
 						</td>
 						<td>'.$searchresults[$i]['id'].'</td>
+					</tr>';
+					}
+				} else {
+						$template .= '
+					<tr>
+						<td title="No results" colspan="7" style="text-align: center;">No results</td>
 					</tr>';
 				}
 				$template .= '
