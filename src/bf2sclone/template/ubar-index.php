@@ -146,7 +146,10 @@ $template = '
 			<input type="submit" class="btn" value="Go" />
 		</form>
 	</div><!-- page 2 -->
-	<div id="footer">This page was processed in {:PROCESSED:} seconds.</div>
+	
+	<div id="footer">' .
+	(FOOTER_PAGELOADSPEED_ENABLE ? 'This page was processed in {:PROCESSED:} seconds.</div>' : '') . '
+	</div>
 </div>
 </body>
 </html>';
