@@ -193,7 +193,7 @@ $template = '
 							<tbody>
 								<tr>
 									<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;">#<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></th>
-									<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;">PLAYER NAME<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
+									<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;">' . (RANKING_PIDS_AS_NAMES ? 'PID' : 'PLAYER NAME') . '<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
 									<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;"><img src="game-images/playerIcons/overallscore_icon.png" alt="Overall Score" /><span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
 									<!--<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;"><img src="game-images/scoreboard/scoreboard_icons_overallscore.png" alt="Overall Score" /><span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>-->
 									<th><a href="#" class="sortheader" onclick="ts_resortTable(this); return false;"><img src="game-images/playerIcons/killscore_icon.png" alt="Kills" /><span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a></th>
