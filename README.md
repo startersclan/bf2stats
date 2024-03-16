@@ -27,9 +27,11 @@ See [this](docs/full-bf2-stack-example) example showing how to deploy [Battlefie
 
 See [this](docs/bf2hub-bf2stats-example) example showing how to deploy [Battlefield 2 1.5 server](https://github.com/startersclan/docker-bf2/), with BF2Hub as the master server and `bf2stats` as the stats web server, using `docker-compose`.
 
-### Upgrading
+### Upgrading (docker)
 
-See instructions to upgrade to v2.6.x [here](docs/upgrading-docker-images-to-2.6.md).
+- For upgrades between `v2.2.0` and `v2.5.x`: Bump the docker image tags, login to the ASP and click follow the instructions to upgrade the DB
+- For `<= v2.5.x`, see instructions to upgrade to `v2.6.x` [here](docs/upgrading-docker-images-to-2.6.md)
+- For upgrades between `v2.6.0` and above: Bump the docker image tags, login to the ASP and click follow the instructions to upgrade the DB
 
 ## Development
 
