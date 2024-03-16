@@ -221,80 +221,82 @@ class Testconfig
             $out .= " > Checking BF2Statistics Processing...<br />";
 
             // Post the headers and snapshot data
+            $url = "http://{$_SERVER['HTTP_HOST']}/ASP/bf2statistics.php";
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "http://{$_SERVER['HTTP_HOST']}/ASP/bf2statistics.php");
+            curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $tst_snapshot);
             curl_setopt($ch, CURLOPT_USERAGENT, "GameSpyHTTP/1.0");
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); 
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
             curl_setopt($ch, CURLOPT_TIMEOUT, 5);
             $result = curl_exec($ch);
+			$err = curl_error($ch);
             $curlInfo = curl_getinfo($ch);
             curl_close($ch);
 
             if ($result && $curlInfo['http_code'] == 200) 
             {
-                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- BF2Statistics Processing Check: ".__PASS;
+                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- BF2Statistics Processing Check (URL: $url): ".__PASS;
             } 
             else 
             {
-                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- BF2Statistics Processing Check: ".__FAIL;
+                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- BF2Statistics Processing Check (URL: $url): Error: $err. ".__FAIL;
                 $errors = true;
             }
             
             // Check .aspx Page Responses
             $out .= " > Checking Gamespy (.aspx) File Basic Response...<br />";
             $url = "http://".$_SERVER['HTTP_HOST']."/ASP/getbackendinfo.aspx";
-            $response = getPageContents($url);
+            list($response, $err) = getPageContents($url);
             if ($response === false || trim($response[0]) != 'O') 
             {
-                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Basic Response: ".__FAIL;
+                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Basic Response (URL: $url): Error: $err. ".__FAIL;
                 $errors = true;
             } 
             else 
             {
-                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Basic Response: ".__PASS;
+                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Basic Response (URL: $url): ".__PASS;
             }
             
             // Advanced request (1)
             $out .= " > Checking Gamespy (.aspx) File Advanced Responses...<br />";
             $url = "http://".$_SERVER['HTTP_HOST']."/ASP/getawardsinfo.aspx?pid=". $tst_pid;
-            $response = getPageContents($url);
+            list($response, $err) = getPageContents($url);
             if ($response === false || trim($response[0]) != 'O') 
             {
-                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Advanced (1) Response: ".__FAIL;
+                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Advanced (1) Response (URL: $url): Error: $err. ".__FAIL;
                 $errors = true;
             } 
             else 
             {
-                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Advanced (1) Response: ".__PASS;
+                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Advanced (1) Response (URL: $url): ".__PASS;
             }
             
             // Advanced Request (2)
             $url = "http://".$_SERVER['HTTP_HOST']."/ASP/getrankinfo.aspx?pid=". $tst_pid;
-            $response = getPageContents($url);
+            list($response, $err) = getPageContents($url);
             if ($response === false || trim($response[0]) != 'O') 
             {
-                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Advanced (2) Response: ".__FAIL;
+                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Advanced (2) Response (URL: $url): Error: $err. ".__FAIL;
                 $errors = true;
             } 
             else 
             {
-                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Advanced (2) Response: ".__PASS;
+                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Advanced (2) Response (URL: $url): ".__PASS;
             }
             
             // Advanced Request (3)
             $url = "http://".$_SERVER['HTTP_HOST']."/ASP/getunlocksinfo.aspx?pid=". $tst_pid;
-            $response = getPageContents($url);
+            list($response, $err) = getPageContents($url);
             if ($response === false || trim($response[0]) != 'O') 
             {
-                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Advanced (3) Response: ".__FAIL;
+                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Advanced (3) Response (URL: $url): Error: $err. ".__FAIL;
                 $errors = true;
             } 
             else 
             {
-                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Advanced (3) Response: ".__PASS;
+                $out .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Gamespy (.aspx) Advanced (3) Response (URL: $url): ".__PASS;
             }
         }
         

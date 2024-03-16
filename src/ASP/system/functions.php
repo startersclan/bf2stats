@@ -417,6 +417,7 @@
 	{	
 		// Try file() first
 		$results = null;
+		$err = '';
 		if( function_exists('file') && function_exists('fopen') && ini_get('allow_url_fopen') ) 
 		{
 			ini_set("user_agent", "GameSpyHTTP/1.0");
@@ -434,14 +435,17 @@
 			curl_setopt($curl_handle, CURLOPT_TIMEOUT, 10);
 			$results = curl_exec($curl_handle);
 			$err = curl_error($curl_handle);
-			if( $err != '' ) 
-				return false;
+			if( $err != '' ) {
+				return array($results, $err);
+			}
 			$results = explode("\n",trim($results));
 			curl_close($curl_handle);
 		}
 		
 		// still nothing, forgetd a'bout it
-		if( !$results ) return false;
-		return $results;
+		if( !$results ) {
+			return array($results, "None of these functions exist: file, fopen, allow_url_fopen, curl_exec");
+		};
+		return array($results, $err);
 	}
 ?>
